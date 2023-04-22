@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d93b3b;
+    margin: 0;
+    padding: 0;
+  }
+  
+
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.input-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #3c9cee;
+}
+
+button {
+  background-color: #3c9cee;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: #2b86d0;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-item{
+background-color:#ffffff;
+padding:16px;
+max-width: 600px;
+min-width: 400px;
+max-height: 100px;
+min-height: 50px;
+border-radius: 10px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+font-weight: 700;
+font-size: 24px;
+}
+#taskList{
+  width: 1200px;
+  max-height: 900px;
+  min-height:400px;
+  height: auto;
+  background-color: #c0392b;
+  padding:15px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+}
+button {
+  background-color: #e74c3c;
+}
+button:hover {
+  background-color: #c0392b;
+}
+
+
+
+.checkbox{
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+.checkbox_input{
+  display: none;
+}
+.checkbox_box{
+  width:1.25em;
+  height:1.25em;
+  border: 1px solid #000;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.checkbox_box::after{
+  content:'\2714';
+  color: white;
+  transform: scale(0);
+  
+}
+.checkbox_input:checked + .checkbox_box{
+  background: #000;
+
+}
+.checkbox_input:checked + .checkbox_box::after{
+  transform: scale(1);
+}
