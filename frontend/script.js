@@ -38,7 +38,9 @@ function addTask() {
     newTask.appendChild(deleteButton);
     taskList.appendChild(newTask);
     taskInput.value = '';
-  }
+
+}
+
 function generateRandomId(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -55,3 +57,4 @@ function handleCheckboxChange(checkbox){
     console.log(checkbox.id)//change to add in below list
   }
 }
+
