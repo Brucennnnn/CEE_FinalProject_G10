@@ -1,9 +1,11 @@
+
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #d93b3b;
-    margin: 0;
-    padding: 0;
-  }
+  font-family: Inter, sans-serif;
+  background-color: #d93b3b;
+  margin: 0;
+  padding: 0;
+}
   
 
 
@@ -74,6 +76,7 @@ align-items: center;
 font-weight: 700;
 font-size: 24px;
 }
+
 #taskList{
   width: 1200px;
   max-height: 900px;
@@ -127,4 +130,45 @@ button:hover {
 }
 .checkbox_input:checked + .checkbox_box::after{
   transform: scale(1);
+}
+
+.outdate{
+  justify-content: center;
+}
+
+.outdate_top{
+  width: 5.435vw;
+  height: 2.335vh;
+  border-radius: 0.512vw 0.512vw 0px 0px;
+}
+
+.outdate_bottom{
+  width: 5.435vw;
+  height: 4.263vh; 
+  border-radius: 0px 0px 0.512vw 0.512vw;
+
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: 35.897vw;
+  font-size: 1.230vw;
+  background: #EFEFEF; 
+}
+
+.taskitem{
+  display: table-cell;
+  vertical-align: middle;
+  font-weight: 35.897vw;
+  font-size: 1.230vw;
+  width: 18.5vw;
+
+  padding: 1vw;
+  filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
+  background: white;
+  width: 30.871vw;
+  height: 6.949vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.512vw;
 }
