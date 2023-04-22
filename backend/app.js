@@ -40,4 +40,6 @@ app.use("/", (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log(`Server started at http://${process.env.backendIPAddress}`);
 });
+
+
 module.exports = app;

@@ -54,7 +54,7 @@ exports.accessToken = (req, res) => {
           console.log(req.session);
           if (token) {
             res.writeHead(302, {
-              Location: `http://${process.env.frontendIPAddress}/index.html`,
+              Location: `http://${process.env.frontendIPAddress}/frontend/index.html`,
             });
             res.end();
           }
@@ -134,7 +134,7 @@ exports.getCourses = async (req, res) => {
 
 
           arr = []
-          passer(courseid, req).then(e => e.forEach(k => arr.push(k))).then(() => res.send(arr)).then(() => res.end())
+          passer(courseid, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
         });
       }
     );
@@ -154,7 +154,7 @@ exports.getCourses = async (req, res) => {
 async function passer(courseid, req) {
   try {
 
-    const re = await Promise.all(courseid.map(element => {
+    const re = Promise.all(courseid.map(element => {
       return findAllAssignmentbyID(req, element)
     }))
     return re
