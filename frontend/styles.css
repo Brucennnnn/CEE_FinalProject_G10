@@ -1,14 +1,36 @@
-
-
 body {
   font-family: Inter, sans-serif;
-  background-color: #d93b3b;
+  background-color: white;
   margin: 0;
   padding: 0;
 }
-  
 
+#taskpage{
+  font-family: Inter, sans-serif;
+  width: 77vw;
+  height: 91.5vh;
+  border-radius: 0.512vw;
+  padding-left: 2vw;
+  padding-right: 1.5vw;
+  padding-top: 2vw;
+}
 
+#taglist{
+  padding-top: 2vw;
+  overflow: auto;
+  width: 100%;
+  min-height: 2.2vh;
+  max-height: 15vh;
+  display: flex;
+}
+
+#taskpage_header {
+  display: flex;
+  justify-content: space-between;
+  font-family: Inter, sans-serif;
+  font-size: 2vw;
+  font-weight: bold;
+}
 
 .container {
   max-width: 600px;
@@ -63,31 +85,28 @@ ul {
 }
 
 .list-item{
-background-color:#ffffff;
-padding:16px;
-max-width: 600px;
-min-width: 400px;
-max-height: 100px;
-min-height: 50px;
-border-radius: 10px;
-display: flex;
-justify-content: space-around;
-align-items: center;
-font-weight: 700;
-font-size: 24px;
+  background-color:#ffffff;
+  padding:16px;
+  max-width: 600px;
+  min-width: 400px;
+  max-height: 100px;
+  min-height: 50px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 #taskList{
-  width: 1200px;
-  max-height: 900px;
-  min-height:400px;
-  height: auto;
-  background-color: #c0392b;
-  padding:15px;
+  width: 75vw;
+  height: 73vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 
+  overflow: auto;
 }
 button {
   background-color: #e74c3c;
@@ -132,13 +151,11 @@ button:hover {
 .outdate{
   justify-content: center;
 }
-
 .outdate_top{
   width: 5.435vw;
   height: 2.335vh;
   border-radius: 0.512vw 0.512vw 0px 0px;
 }
-
 .outdate_bottom{
   width: 5.435vw;
   height: 4.263vh; 
@@ -168,8 +185,9 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   border-radius: 0.512vw;
-}
 
+  margin: 1%;
+}
 .taskitem_closebutton{
   font-weight: bold;
   font-size: 0.725vw;
@@ -197,4 +215,28 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
   border-radius: 0.512vw;
+}
+
+.tagbox{
+  background-color: #BABABA;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 0.861vw;
+  height: 2.117vh;
+  margin: 0.5%;
+  padding-left: 0.778vw;
+  padding-right: 0.778vw;
+  padding-top: 0.358vw;
+  padding-bottom: 0.358vw;
+
+  border-radius: 100px;
+}
+
+.createtask_button{
+  border-radius: 100px;
+  filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
+  width: 2.1vw;
+  height: 2.1vw;
 }

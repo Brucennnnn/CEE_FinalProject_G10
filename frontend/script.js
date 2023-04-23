@@ -8,7 +8,7 @@ function addTask() {
   }
 
   const taskList = document.getElementById('taskList');
-  taskList.appendChild(getCompletedTaskItem(taskInput.value,new Date(2342342)));
+  taskList.appendChild(getTagbox(taskInput.value));
   taskInput.value = '';
 }
 function generateRandomId(length) {
@@ -115,4 +115,15 @@ function getCompletedTaskItem(text, outdate) {
   taskItem.appendChild(overlay);
 
   return taskItem;
+}
+
+function getTagbox(text) {
+  if(text.length > 40) {
+    text = text.slice(0,40) + "...";
+  }
+
+  let tagBox = document.createElement("div");
+  tagBox.className = "tagbox";
+  tagBox.textContent = text;
+  return tagBox;
 }
