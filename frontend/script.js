@@ -8,7 +8,7 @@ function addTask() {
   }
 
   const taskList = document.getElementById('taskList');
-  taskList.appendChild(getTaskItem(taskInput.value,new Date(2342342)));
+  taskList.appendChild(getCompletedTaskItem(taskInput.value,new Date(2342342)));
   taskInput.value = '';
 }
 function generateRandomId(length) {
@@ -37,7 +37,7 @@ function getDeadlineBox(now,outdate) {
 
   let top = document.createElement("div");
   top.className = "outdate_top";
-  if(now < outdate) {
+  if(now > outdate) {
     top.style.background = "#D43F00";
   }
   else {
@@ -89,7 +89,30 @@ function getTaskItem(text, outdate) {
 
   let back = getDeadlineBox(Date.now(), outdate);
 
+  let close_button = document.createElement("div");
+  close_button.className = "taskitem_closebutton";
+  close_button.textContent = "x";
+
   taskitem.appendChild(front);
   taskitem.appendChild(back);
+  taskitem.appendChild(close_button)
   return taskitem;
+}
+
+function getCompletedTaskItem(text, outdate) {
+  let taskItem = getTaskItem(text, outdate);
+
+  let checkbox = taskItem.firstChild;
+  checkbox.style.zIndex = 2;
+  taskItem.querySelector('input[type="checkbox"]').checked = true;
+
+  let close_button = taskItem.lastChild;
+  close_button.style.zIndex = 2;
+
+  let overlay = document.createElement("div");
+  overlay.className = "completed_task_overlay";
+
+  taskItem.appendChild(overlay);
+
+  return taskItem;
 }

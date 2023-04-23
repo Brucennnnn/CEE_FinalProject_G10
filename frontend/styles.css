@@ -109,7 +109,7 @@ button:hover {
 .checkbox_box{
   width:1.25em;
   height:1.25em;
-  border: 1px solid #000;
+  border: 1px solid #BABABA;
   border-radius: 100px;
   display: flex;
   align-items: center;
@@ -125,12 +125,9 @@ button:hover {
   
 }
 .checkbox_input:checked + .checkbox_box{
-  background: #000;
+  background: #1ED400;
+}
 
-}
-.checkbox_input:checked + .checkbox_box::after{
-  transform: scale(1);
-}
 
 .outdate{
   justify-content: center;
@@ -170,5 +167,34 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 0.512vw;
+}
+
+.taskitem_closebutton{
+  font-weight: bold;
+  font-size: 0.725vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
+  position: absolute;
+  width: 1.25vw;
+  height: 1.25vw;
+  top: -0.358vw;
+  right: -0.358vw;
+  background: white;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.completed_task_overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
   border-radius: 0.512vw;
 }
