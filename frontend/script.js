@@ -89,13 +89,8 @@ function getTaskItem(text, outdate) {
 
   let back = getDeadlineBox(Date.now(), outdate);
 
-  let close_button = document.createElement("div");
-  close_button.className = "taskitem_closebutton";
-  close_button.textContent = "x";
-
   taskitem.appendChild(front);
   taskitem.appendChild(back);
-  taskitem.appendChild(close_button)
   return taskitem;
 }
 
@@ -127,3 +122,4 @@ function getTagbox(text) {
   tagBox.textContent = text;
   return tagBox;
 }
+
