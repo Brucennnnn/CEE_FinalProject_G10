@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
 </head>
 
 <body style="padding: 1vw; display: flex;justify-content: space-between;">
@@ -17,8 +18,10 @@
             <div>
                 Today is the day
             </div>
-            <img src="image/createtask_button.png" class="createtask_button">
+            <button id="createtask_button">
+                <img src="image/createtask_button.png" id="createtask_img" onclick="openCreatetaskOverlay()">
             </img>
+            </button>
         </div>
         <div id="taglist">
             <div class="tagbox"> hello </div>
@@ -43,21 +46,28 @@
             <div class="tagbox"> hello </div>
         </div>
         <div id="taskList">
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
-            <div class="taskitem"> hello world</div>
+            <div class= "taskitem">
+                <div style="display:flex;">
+                  <label class="checkbox" for="myCheckboxList">
+                  <input class="checkbox_input" type="checkbox" name="myCheckboxName" id="myCheckboxList"
+                    onchange=handleCheckboxChange()>
+                  <div class="checkbox_box"></div>
+                  </label>
+                  <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
+                    fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                  </div>
+                </div >
+                <div class="outdate">
+                  <div class="outdate_top" style="background: #D43F00;">
+                  </div>
+                  <div class="outdate_bottom">
+                      08.00
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
+    
 </body>
 <script src="script.js"></script>
 </html>

@@ -12,36 +12,31 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <script src="script.js"></script>
 </head>
 <body style="background: white;">
     <div id="createtask_box" >
         <div id="createtask_header"> 
             Create Task 
-            <img src="image/createtask_close.png" id="createtask_close"></img>
+            <img src="image/createtask_close.png" id="createtask_close" onclick="closeCreatetask()"></img>
         </div>
         <input type="text" id="createtask_Name" placeholder="Name">
         <hr>
-        <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' id="createtask_Description" name="message" rows="1" placeholder="Description"></textarea>
+        <textarea oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' id="createtask_Description" rows="1" placeholder="Description"></textarea>
         <hr>
         <div id="createtask_taglist">
             <div class="createtask_tagbox">
                 My Task
             </div>
-            <div class="createtask_tagbox">
-                <div class="createtask_tagclose">
-                    X
-                </div>
-                This is tag box
-            </div>
         </div>
-        <select class="createtask_select">
+        <select class="createtask_select" id="createtask_tagselect" onchange="onchangeTagSelector()">
             <option> Add tag </option>
             <option> hello </option>
-            <option> hello </option>
-            <option> hello </option>
-            <option> hello </option>
-            <option> hello </option>
-            <option> hello </option>
+            <option> hello1 </option>
+            <option> hello2 </option>
+            <option> hello3 </option>
+            <option> hello4 </option>
+            <option> hello5 </option>
         </select>
         <hr>
         <div style="font-weight: bold; font-size: 1vw;">Time</div>

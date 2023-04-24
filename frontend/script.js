@@ -8,7 +8,7 @@ function addTask() {
   }
 
   const taskList = document.getElementById('taskList');
-  taskList.appendChild(getTagbox(taskInput.value));
+  taskList.appendChild(getCreatetaskTagbox(taskInput.value));
   taskInput.value = '';
 }
 function generateRandomId(length) {
@@ -112,6 +112,10 @@ function getCompletedTaskItem(text, outdate) {
   return taskItem;
 }
 
+function closeCreatetask() {
+  let createtask_box = document.getElementById("createtask_box");
+  createtask_box.parentNode.removeChild(createtask_box);
+}
 function getTagbox(text) {
   if(text.length > 40) {
     text = text.slice(0,40) + "...";
@@ -122,4 +126,109 @@ function getTagbox(text) {
   tagBox.textContent = text;
   return tagBox;
 }
+function deleteCreatetaskTagbox(id) {
+  let tagbox = document.getElementById(id);
+  tagbox.parentNode.removeChild(tagbox);
+}
+function getCreatetaskTagbox(text) {
+  if(text > 15) {
+    text = text.slice(0,15) + "...";
+  }
+  let tagbox = document.createElement("div");
+  tagbox.id = generateRandomId(10);
+  tagbox.className = "createtask_tagbox";
 
+  let closebutton = document.createElement("div");
+  closebutton.className = "createtask_tagclose";
+  closebutton.onclick = function() {deleteCreatetaskTagbox(tagbox.id);}
+  closebutton.textContent = "X";
+  
+  tagbox.textContent = text;
+  tagbox.appendChild(closebutton);
+  return tagbox;
+}
+function onchangeTagSelector() {
+  let selector = document.getElementById("createtask_tagselect");
+  let tag_select = selector.options[selector.selectedIndex].text;
+  let new_tagbox = getCreatetaskTagbox(tag_select);
+
+  let taglist = document.getElementById("createtask_taglist");
+  taglist.appendChild(new_tagbox);
+
+  selector.selectedIndex = 0;
+}
+function getCreatetaskSelector(list) {
+  let selector = document.createElement("select");
+  selector.className = "createtask_select";
+  selector.id = "createtask_tagselect";
+  selector.onchange = function() {
+    onchangeTagSelector()
+  }
+  let first_tagbox = document.createElement("option");
+  first_tagbox.textContent = "Add Tag";
+  selector.appendChild(first_tagbox);
+  for(i in list) {
+    let tagbox = document.createElement("option");
+    selector.appendChild(tagbox);
+  }
+
+  return selector;
+}
+function getAllTagList(){
+  // return list of string of every tag
+}
+function openCreatetaskOverlay() {
+  let taskpage = document.getElementById("taskpage");
+
+  let createtask_box = document.createElement("div");
+  createtask_box.id = "createtask_box";
+
+  let header = document.createElement("div");
+  header.id = "createtask_header";
+  header.textContent = "Create Task";
+  let close_button = document.createElement("img");
+  close_button.src = "image/createtask_close.png";
+  close_button.id = "createtask_close";
+  close_button.onclick = function() {closeCreatetask()};
+  header.appendChild(close_button);
+
+  let name = document.createElement("input");
+  name.id = "createtask_Name";
+  name.placeholder = "Name";
+  name.type = "text";
+
+  let description = document.createElement("textarea");
+  description.oninput = function() {
+    this.style.height = "";
+    this.style.height = this.scrollHeight + "px";
+  }
+  description.id = "createtask_Description";
+  description.rows = 1;
+  description.placeholder = "Description";
+
+  let taglist = document.createElement("div");
+  taglist.id = "createtask_taglist";
+  let first_tagbox = document.createElement("div");
+  first_tagbox.className = "createtask_tagbox";
+  first_tagbox.textContent = "My task";
+  taglist.appendChild(first_tagbox);
+
+  let alltaglist = getAllTagList();
+  let tagselector = getCreatetaskSelector(alltaglist);
+  
+  let timeheader = document.createElement("div");
+  timeheader.style = "font-weight: bold; font-size: 1vw;";
+  timeheader.textContent = "Time";
+
+  createtask_box.appendChild(header);
+  createtask_box.appendChild(name);
+  createtask_box.appendChild(document.createElement("hr"));
+  createtask_box.appendChild(description);
+  createtask_box.appendChild(document.createElement("hr"));
+  createtask_box.appendChild(taglist);
+  createtask_box.appendChild(tagselector);
+  createtask_box.appendChild(document.createElement("hr"));
+  createtask_box.appendChild(timeheader);
+
+  taskpage.appendChild(createtask_box);
+}
