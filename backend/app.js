@@ -9,7 +9,7 @@ const session = require("express-session");
 const toDoTaskRoutes = require("./routes/toDoTaskRoutes");
 const courseVilleRoutes = require("./routes/courseVilleRoutes");
 dotenv.config();
-
+const middleware = require("./routes/middleware")
 const app = express();
 
 const sessionOptions = {
@@ -33,7 +33,7 @@ app.use(session(sessionOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/task", toDoTaskRoutes);
+app.use("/task", middleware.middleware, toDoTaskRoutes);
 app.use("/courseville", courseVilleRoutes);
 // app.use("/", (req, res) => {
 //   res.send("Hello World");
