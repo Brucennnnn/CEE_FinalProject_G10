@@ -1,16 +1,4 @@
-function addTask() {
-  const taskInput = document.getElementById('taskInput');
-  const taskText = taskInput.value.trim();
 
-  if (taskText === '') {
-    alert('Please enter a task.');
-    return;
-  }
-
-  const taskList = document.getElementById('taskList');
-  taskList.appendChild(getCreatetaskTagbox(taskInput.value));
-  taskInput.value = '';
-}
 function generateRandomId(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -174,6 +162,126 @@ function getCreatetaskSelector(list) {
 
   return selector;
 }
+/* ---------------------------------------------------------- calendar thingy-----------------------------------------*/
+let currDate = new Date()
+let curr_month = {value: currDate.getMonth()}
+let curr_year = {value: currDate.getFullYear()}
+function regenerateCtCalendar(month, year) {
+  let newcalendar = getCalendar(month, year);
+  let calendar = document.getElementById("ctcalendar");
+  calendar.appendChild(newcalendar);
+}
+function getCalendar(month, year) {
+    let calendar = document.createElement('div')
+    calendar.className = 'calendar';
+
+    let calendar_header = document.createElement('div');
+    calendar_header.className = "calendar-header";
+    let insideheader = '<span class="month-picker" id="month-picker">April</span><div class="year-picker"><span class="year-change" id="ctprev-year"><pre><</pre></span><span id="year">2022</span><span class="year-change" id="ctnext-year"><pre>></pre></span></div>';
+    calendar_header.innerHTML = insideheader;
+
+    let calendar_body = document.createElement('div');
+    let insidebody = '<div class="calendar-week-day"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendar-days"></div>';
+    calendar_body.innerHTML = insidebody;
+
+    let month_list = document.createElement('div');
+    month_list.className = "month-list";
+    month_list.id = "month-list";
+
+    calendar.appendChild(calendar_header);
+    calendar.appendChild(calendar_body);
+    calendar.appendChild(month_list);
+
+    const month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    isLeapYear = (year) => {
+        return (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) || (year % 100 === 0 && year % 400 ===0)
+    }
+    getFebDays = (year) => {
+        return isLeapYear(year) ? 29 : 28
+    }
+    function changeSelect(e){
+        // const last = document.querySelector('.curr-date');
+        // last.classList.remove('curr-date');
+        const last = document.querySelector('.ctselect-date');
+        if(last != null) last.classList.remove('ctselect-date');
+
+        e.currentTarget.classList.add('ctselect-date');
+        console.log(this.innerHTML.substring(0, this.innerHTML.indexOf('<')))
+        console.log(curr_month.value+1)
+        console.log(curr_year.value)
+    }
+
+    month_names.forEach((e, index) => {
+        let month = document.createElement('div')
+        month.innerHTML = `<div data-month="${index}">${e}</div>`
+        month.querySelector('div').onclick = () => {
+            month_list.classList.remove('show')
+            curr_month.value = index
+            regenerateCtCalendar(index, curr_year.value)
+        }
+        month_list.appendChild(month)
+    })
+    month_picker = calendar.querySelector('.month-picker');
+    month_picker.onclick = () => {
+        month_list.classList.add('show')
+    }
+
+    let calendar_days = calendar.querySelector('.calendar-days')
+    let calendar_header_year = calendar.querySelector('#year')
+
+    let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    calendar_days.innerHTML = ''
+
+    if (month > 11 || month < 0) month = currDate.getMonth()
+    if (!year) year = currDate.getFullYear()
+
+    let curr_month = `${month_names[month]}`
+    month_picker.innerHTML = curr_month
+    calendar_header_year.innerHTML = year
+
+    // get first day of month
+    
+    let first_day = new Date(year, month, 1)
+
+    for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
+        let day = document.createElement('div')
+        if (i >= first_day.getDay()) {
+            day.classList.add('calendar-day-hover')
+            day.innerHTML = i - first_day.getDay() + 1
+            day.innerHTML += `<span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>`
+            if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
+                day.classList.add('curr-date')
+            }
+        }
+        day.addEventListener('click', changeSelect);
+        calendar_days.appendChild(day)
+    }
+    // var days = document.getElementsByClassName("calendar-days");
+    // console.log(calendar_days.length);
+    // for (var i = 0; i < calendar_days.length; i++) {
+    //     console.log(calendar_days.length);
+    //     console.log(calendar_days[i])
+    //     calendar_days[i].addEventListener('click', changeSelect);
+    // }
+
+    calendar_header.querySelector('#ctprev-year').onclick = () => {
+      --ctcurr_year.value
+      regenerateCtCalendar(curr_month.value, curr_year.value)
+    }
+    calendar_header.querySelector('#ctnext-year').onclick = () => {
+      ++ctcurr_year.value
+      regenerateCtCalendar(curr_month.value, curr_year.value)
+    }
+
+    return calendar;
+}
+// ----------------------------------------------- end of calendar thingy -----------------------------
+
+
 function getAllTagList(){
   // return list of string of every tag
 }
@@ -220,6 +328,9 @@ function openCreatetaskOverlay() {
   timeheader.style = "font-weight: bold; font-size: 1vw;";
   timeheader.textContent = "Time";
 
+  let calendar = document.createElement("div");
+  calendar.id = "ctcalendar";
+
   createtask_box.appendChild(header);
   createtask_box.appendChild(name);
   createtask_box.appendChild(document.createElement("hr"));
@@ -229,6 +340,9 @@ function openCreatetaskOverlay() {
   createtask_box.appendChild(tagselector);
   createtask_box.appendChild(document.createElement("hr"));
   createtask_box.appendChild(timeheader);
+  createtask_box.appendChild(calendar);
+  
 
   taskpage.appendChild(createtask_box);
+  regenerateCtCalendar(curr_month.value, curr_year.value);
 }
