@@ -6,24 +6,25 @@ const {
     PutCommand,
     DeleteCommand,
     ScanCommand,
+    GetCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
 const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION });
 
 exports.addTask = async (req, res) => {
     const task_id = uuidv4();
-    const task = { task_id: item_id, ...req.body, created_date: created_date };
+    const created_date = new Date().toISOString();
+    const task = { task_id: task_id, ...req.body, created_date: created_date };
 
-    // You should change the response below.
     const params = {
-        TableName: process.env.aws_items_table_name,
-        Item: item,
+        TableName: process.env.USER_TABLE_NAME,
+        Item: task,
     }
 
     try {
-        // Use the DocumentClient.put method to add a new item to the table
-        const data = docClient.send(new PutCommand(params));
-        res.send()
+        const data = await docClient.send(new PutCommand(params));
+        console.log(data)
+        res.send(data)
     } catch (error) {
         console.error(error);
         res.status(500).json({
@@ -32,3 +33,22 @@ exports.addTask = async (req, res) => {
         });
     }
 };
+
+exports.getTasks = async (req, res) => {
+    const params = {
+        TableName: "user_task",
+        Key: {
+            user_id: req.body.user_id,
+        }
+    };
+    try {
+        const data = await docClient.send(new GetCommand(params));
+        res.send(data)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: 'Error getting item from DynamoDB',
+            error: err,
+        });
+    }
+}

@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 
 
+
+const toDoTaskRoutes = require("./routes/toDoTaskRoutes");
 const courseVilleRoutes = require("./routes/courseVilleRoutes");
 dotenv.config();
 
@@ -31,11 +33,11 @@ app.use(session(sessionOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
+app.use("/task", toDoTaskRoutes);
 app.use("/courseville", courseVilleRoutes);
-app.use("/", (req, res) => {
-  res.send("Hello World");
-});
+// app.use("/", (req, res) => {
+//   res.send("Hello World");
+// });
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at http://${process.env.backendIPAddress}`);

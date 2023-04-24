@@ -1,19 +1,28 @@
+
 const dotenv = require("dotenv");
 dotenv.config();
 const https = require("https");
 const url = require("url");
 const querystring = require("querystring");
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const {
+  PutCommand,
+  DeleteCommand,
+  ScanCommand,
+} = require("@aws-sdk/lib-dynamodb");
+
+const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION });
 
 const redirect_uri = `http://${process.env.backendIPAddress}/courseville/access_token`;
 const authorization_url = `https://www.mycourseville.com/api/oauth/authorize?response_type=code&client_id=${process.env.client_id}&redirect_uri=${redirect_uri}`;
 const access_token_url = "https://www.mycourseville.com/api/oauth/access_token";
 
-
+const axios = require("axios");
 exports.authApp = (req, res) => {
   res.redirect(authorization_url);
 };
 
-exports.accessToken = (req, res) => {
+exports.accessToken = async (req, res) => {
   const parsedUrl = url.parse(req.url);
   const parsedQuery = querystring.parse(parsedUrl.query);
 
@@ -33,123 +42,73 @@ exports.accessToken = (req, res) => {
     });
 
     const tokenOptions = {
-      method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Content-Length": postData.length,
       },
     };
 
-    const tokenReq = https.request(
-      access_token_url,
-      tokenOptions,
-      (tokenRes) => {
-        let tokenData = "";
-        tokenRes.on("data", (chunk) => {
-          tokenData += chunk;
+    try {
+      const tokenRes = await axios.post(access_token_url, postData, tokenOptions);
+      const token = tokenRes.data;
+      req.session.token = token;
+      console.log(req.session);
+      if (token) {
+        res.writeHead(302, {
+          Location: `http://${process.env.frontendIPAddress}/frontend/index.html`,
         });
-        tokenRes.on("end", () => {
-          const token = JSON.parse(tokenData);
-          req.session.token = token;
-          console.log(req.session);
-          if (token) {
-            res.writeHead(302, {
-              Location: `http://${process.env.frontendIPAddress}/frontend/index.html`,
-            });
-            res.end();
-          }
-        });
+        res.send(getUserID(req));
+        res.end();
       }
-    );
-    tokenReq.on("error", (err) => {
+    } catch (err) {
       console.error(err);
-    });
-    tokenReq.write(postData);
-    tokenReq.end();
+    }
   } else {
     res.writeHead(302, { Location: authorization_url });
     res.end();
   }
 };
 
-exports.getUserInfo = (req, res) => {
+exports.getUserInfo = async (req, res) => {
   try {
     const profileOptions = {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    const profileReq = https.request(
-      "https://www.mycourseville.com/api/v1/public/users/me",
-      profileOptions,
-      (profileRes) => {
-        let profileData = "";
-        profileRes.on("data", (chunk) => {
-          profileData += chunk;
-        });
-        profileRes.on("end", () => {
-          const profile = JSON.parse(profileData);
-          res.send(profile);
-          res.end();
-        });
-      }
-    );
-    profileReq.on("error", (err) => {
-      console.error(err);
-    });
-    profileReq.end();
-  } catch (error) {
-    console.log(error);
-    console.log("Please logout, then login again.");
+    axios.get("https://www.mycourseville.com/api/v1/public/users/me", profileOptions).then(profileRes => {
+      res.send(profileRes.data);
+      res.end();
+    }).catch((err) => {
+      console.log(err);
+    })
+  } catch (err) {
+    console.log(err);
   }
 };
-
-let courses = [];
 
 exports.getCourses = async (req, res) => {
-  // You should change the response below.
-  // res.send("This route should get all courses that you enrolled.");
-
   try {
     const profileOptions = {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    const profileReq = https.request(
-      "https://www.mycourseville.com/api/v1/public/get/user/courses",
-      profileOptions,
-      (profileRes) => {
-        let profileData = "";
-        profileRes.on("data", (chunk) => {
-          profileData += chunk;
-        });
-
-
-        profileRes.on("end", () => {
-          const profile = JSON.parse(profileData);
-          let attendedCourses = "";
-          courses = profile.data.student;
-          let courseid = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => e.cv_cid);
-
-
-          arr = []
-          passer(courseid, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
-        });
+      axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses",profileOptions).then(profileRes =>
+      profileRes.data.data.student).then(courses => {
+        let courseid = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => e.cv_cid);
+        return courseid
       }
-    );
-
-
-    profileReq.on("error", (err) => {
-      console.error(err);
-    });
-    profileReq.end();
-  } catch (error) {
-    console.log(error);
-    console.log("Please logout, then login again.");
+      ).then(
+        courseid => {
+          arr = []
+          return passer(courseid, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
+        }).catch(error => {
+          console.log(error)
+      });
+  } catch (err) {
+    console.log(err);
   }
 };
-
 
 async function passer(courseid, req) {
   try {
@@ -164,7 +123,6 @@ async function passer(courseid, req) {
   }
 }
 
-
 function findAllAssignmentbyID(req, element) {
   return new Promise((resolve, reject) => {
     const profileOptions = {
@@ -172,31 +130,38 @@ function findAllAssignmentbyID(req, element) {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    const profileReq = https.request(
-      `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${element}&detail=1`,
-      profileOptions,
-      (profileRes) => {
-        let profileData = "";
-
-        profileRes.on("data", (chunk) => {
-          profileData += chunk;
-        });
-
-        profileRes.on("end", () => {
-          const profile = JSON.parse(profileData);
-          if (profile.data != []) {
-            resolve(profile.data);
-          }
-
-        });
-      }
-    );
-    profileReq.on("error", (err) => {
-      console.error(err);
-      reject(err);
-    });
-
-    profileReq.end();
+    axios
+      .get(
+        `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${element}&detail=1`,
+        profileOptions
+      )
+      .then((profileRes) => {
+        const profile = profileRes.data;
+        if (profile.data != []) {
+          resolve(profile.data);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
   });
 }
 
+const getUserID = (req) => {
+  try {
+    const profileOptions = {
+      headers: {
+        Authorization: `Bearer ${req.session.token.access_token}`,
+      },
+    };
+    const profileReq = axios.get("https://www.mycourseville.com/api/v1/public/users/me", profileOptions)
+    profileReq.then((profileRes) => {
+      return profileRes.data.user.id;
+    }).catch((err) => {
+      console.log(err);
+    })
+  } catch (err) {
+    console.log(err);
+  }
+};

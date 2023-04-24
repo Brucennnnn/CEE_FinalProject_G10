@@ -1,6 +1,4 @@
 
-const dotenv = require("dotenv");
-dotenv.config();
 function addTask() {
   const taskInput = document.getElementById('taskInput');
   const taskText = taskInput.value.trim();
@@ -108,9 +106,42 @@ async function createMCVTask() {
     method: "GET",
     credentials: "include",
   };
-  await fetch(`http://127.0.0.1:3000/courseville/getcourses/2/2022`, options).then(res => res.json()).then(data => data.forEach(k=>addMCVTask(k)))
+  await fetch(`http://127.0.0.1:3000/courseville/getcourses/2/2022`, options).then(res => res.json()).then(data => data.forEach(k => addMCVTask(k)))
     .catch((err) => { console.log("err") })
 }
+function login() {
+  if (!localStorage.getItem('user_id')) {
+    const options = {
+      method: "GET",
+      credentials: "include",
+    };
+    let user_id = ""
+    fetch('http://127.0.0.1:3000/courseville/me', options).then(res => res.json()).then(data => {
+      localStorage.setItem('user_id', data.user.id);
+    });
+  }
+}
+
+function calluser() {
+  console.log(localStorage.getItem('user_id'))
+}
+
+async function testPost() {
+  const Task = {
+    task_name: "Task1",
+    due_date: "15:4",
+    user_id: localStorage.getItem('user_id'),
+  };
+  const options = {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(Task)
+
+  }
+  await fetch(`http://127.0.0.1:3000/task/addTask`, options).then(res => res.json()).then(data => console.log(data))
 
 
-
+}
