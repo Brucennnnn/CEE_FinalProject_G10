@@ -53,6 +53,19 @@ exports.getTasks = async (req, res) => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 exports.deleteTask = async (req, res) => {
     try {
         const params = {
@@ -73,6 +86,7 @@ exports.deleteTask = async (req, res) => {
         });
     }
 }
+
 
 exports.updateTask = async (req, res) => {
     try {

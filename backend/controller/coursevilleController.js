@@ -86,29 +86,58 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
-exports.getCourses = async (req, res) => {
+
+
+exports.getCourse = async (req, res) => {
   try {
     const profileOptions = {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-      axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses",profileOptions).then(profileRes =>
+    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
       profileRes.data.data.student).then(courses => {
-        let courseid = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => e.cv_cid);
-        return courseid
-      }
-      ).then(
-        courseid => {
+        let allcourse = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
+          let = { cv_cid: e.cv_cid, title: e.title }
+          return x
+        })
+        return allcourse
+      }).then(e => res.send(e)).then(() => res.end())
+  } catch (err) {
+    console.log(err);
+  }
+
+
+}
+
+exports.getAllAssignment = async (req, res) => {
+  try {
+    const profileOptions = {
+      headers: {
+        Authorization: `Bearer ${req.session.token.access_token}`,
+      },
+    };
+    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
+      profileRes.data.data.student).then(courses => {
+        let allcourse = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => e.cv_cid)
+        return allcourse
+      })
+      .then(
+        courses => {
           arr = []
-          return passer(courseid, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
+          return passer(courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
-      });
+        });
   } catch (err) {
     console.log(err);
   }
 };
+
+
+
+
+
 
 async function passer(courseid, req) {
   try {

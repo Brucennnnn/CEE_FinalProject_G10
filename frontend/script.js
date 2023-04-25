@@ -7,7 +7,6 @@ function addTask() {
     alert('Please enter a task.');
     return;
   }
-
   const taskList = document.getElementById('taskList');
   const newTask = document.createElement('div');
   newTask.className = 'list-item'
@@ -18,11 +17,8 @@ function addTask() {
   inp.type = 'checkbox';
   inp.id = `${generateRandomId(10)}`;
   inp.setAttribute("onchange", "handleCheckboxChange(this)");
-
-
   const di = document.createElement('div');
   di.className = 'checkbox_box';
-
   la.appendChild(inp);
   la.appendChild(di);
   newTask.appendChild(la);
@@ -35,11 +31,9 @@ function addTask() {
   deleteButton.onclick = function () {
     taskList.removeChild(newTask);
   };
-
   newTask.appendChild(deleteButton);
   taskList.appendChild(newTask);
   taskInput.value = '';
-
 }
 
 function addMCVTask(info) {
@@ -106,7 +100,7 @@ async function createMCVTask() {
     method: "GET",
     credentials: "include",
   };
-  await fetch(`http://127.0.0.1:3000/courseville/getcourses/2/2022`, options).then(res => res.json()).then(data => data.forEach(k => addMCVTask(k)))
+  await fetch(`http://127.0.0.1:3000/courseville/assignment/2/2022`, options).then(res => res.json()).then(data => data.forEach(k => addMCVTask(k)))
     .catch((err) => { console.log("err") })
 }
 function login() {
