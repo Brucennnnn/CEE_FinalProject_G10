@@ -1,4 +1,3 @@
-
 const dotenv = require("dotenv");
 dotenv.config();
 const https = require("https");
@@ -86,22 +85,28 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
-exports.getCourses = async (req, res) => {
+exports.getAllAssignments = async (req, res) => {
   try {
     const profileOptions = {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-      axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses",profileOptions).then(profileRes =>
+      axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1",profileOptions).then(profileRes =>
       profileRes.data.data.student).then(courses => {
-        let courseid = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => e.cv_cid);
-        return courseid
+        let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
+          return {cv_cid: e.cv_cid, title: e.title}
+        })
+        return all_courses
       }
       ).then(
-        courseid => {
+        all_courses => {
           arr = []
-          return passer(courseid, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
+          console.log(all_courses);
+          // Promise.all(all_courses.map(element => {
+          //   findAllAssignmentbyID(req, element.cv_cid).then(e => e.forEach(k => k.forEach(s => (arr.push({course_title: element.title, item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
+          // }))
+          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
       });
@@ -110,9 +115,9 @@ exports.getCourses = async (req, res) => {
   }
 };
 
+
 async function passer(courseid, req) {
   try {
-
     const re = Promise.all(courseid.map(element => {
       return findAllAssignmentbyID(req, element)
     }))
@@ -132,12 +137,16 @@ function findAllAssignmentbyID(req, element) {
     };
     axios
       .get(
-        `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${element}&detail=1`,
+        `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${element.cv_cid}&detail=1`,
         profileOptions
       )
       .then((profileRes) => {
         const profile = profileRes.data;
         if (profile.data != []) {
+          profile.data.forEach((e) => {
+            Object.assign(e, { course_title: element.title })
+            Object.assign(e, { cv_cid: element.cv_cid })
+          });
           resolve(profile.data);
         }
       })
