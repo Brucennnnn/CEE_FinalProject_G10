@@ -39,6 +39,7 @@ exports.getTasks = async (req, res) => {
         KeyConditionExpression: "user_id = :pk",
         ExpressionAttributeValues: {
             ":pk": req.user_id
+            
         },
     };
     try {
