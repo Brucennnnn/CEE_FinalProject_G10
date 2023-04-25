@@ -73,3 +73,30 @@ exports.deleteTask = async (req, res) => {
         });
     }
 }
+
+exports.updateTask = async (req, res) => {
+    try {
+        const params = {
+            TableName: process.env.aws_user_tasks_table_name,
+            Key: {
+                user_id: req.user_id,
+                task_id: req.body.task_id
+            },
+            UpdateExpression: "set task_name = :task_name, task_description = :task_description, task_status = :task_status",
+            ExpressionAttributeValues: {
+                ":task_name": req.body.task_name,
+                ":task_description": req.body.task_description,
+                ":task_status": req.body.task_status
+            },
+            ReturnValues: "UPDATED_NEW"
+        };
+        const data = await docClient.send(new UpdateCommand(params));
+        res.send(data)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: 'Error getting item from DynamoDB',
+            error: err,
+        });
+    }
+}
