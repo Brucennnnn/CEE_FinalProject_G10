@@ -194,7 +194,7 @@ function getCalendar(month, year) {
 
     let calendar_header = document.createElement('div');
     calendar_header.className = "calendar-header";
-    let insideheader = '<span class="month-picker" id="month-picker">April</span><div class="year-picker"><span class="year-change" id="ctprev-year"><pre><</pre></span><span id="year">2022</span><span class="year-change" id="ctnext-year"><pre>></pre></span></div>';
+    let insideheader = '<span class="month-picker" id="month-picker">April</span><div class="year-picker"><span class="year-change" id="ctprev-year"><</span><span id="year">2022</span><span class="year-change" id="ctnext-year">></span></div>';
     calendar_header.innerHTML = insideheader;
 
     let calendar_body = document.createElement('div');
@@ -252,7 +252,7 @@ function getCalendar(month, year) {
 
     if (month > 11 || month < 0) month = currDate.getMonth()
     if (!year) year = currDate.getFullYear()
-    
+
     month_picker.innerHTML = `${month_names[month]}`
     calendar_header_year.innerHTML = year
 
@@ -341,9 +341,11 @@ function openCreatetaskOverlay() {
   let tagselector = getCreatetaskTagSelector(alltaglist);
   
   let timeheader = document.createElement("div");
-  timeheader.style = "font-weight: bold; font-size: 1vw;";
+  timeheader.style = "font-weight: bold; font-size: 1.4vw;";
   timeheader.textContent = "Time";
   timeheader.id = "timeheader";
+  timeheader.style.margin = "4%";
+  timeheader.style.marginLeft = 0;
 
   let calendar = document.createElement("div");
   calendar.id = "ctcalendar";
@@ -368,7 +370,7 @@ function openCreatetaskOverlay() {
   })
   let colon = document.createElement("img");
   colon.src = "image/colon.png";
-  colon.style = "width: 2.547vw; height: 2.547vw;";
+  colon.style = "width: 2.547vw; height: 2.547vw; margin-right: 1.5%;margin-top: 1.5%";
   time.appendChild(hour_select);
   time.appendChild(colon);
   time.appendChild(minute_select);
