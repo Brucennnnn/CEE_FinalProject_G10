@@ -18,10 +18,8 @@
             <div>
                 Today is the day
             </div>
-            <button id="createtask_button">
-                <img src="image/createtask_button.png" id="createtask_img" onclick="openCreatetaskOverlay()">
+            <img src="image/createtask_button.png" id="createtask_button" onclick="openCreatetaskOverlay()">
             </img>
-            </button>
         </div>
         <div id="taglist">
             <div class="tagbox"> hello </div>
@@ -46,12 +44,12 @@
             <div class="tagbox"> hello </div>
         </div>
         <div id="taskList">
-            <div class= "taskitem">
+            <div class= "taskitem" onclick='openDetailtaskOverlay("hrllo","dfsf",["sdf"],Date())'>
                 <div style="display:flex;">
                   <label class="checkbox" for="myCheckboxList">
-                  <input class="checkbox_input" type="checkbox" name="myCheckboxName" id="myCheckboxList"
+                  <input onclick="event.stopPropagation();" class="checkbox_input" type="checkbox" name="myCheckboxName" id="myCheckboxList"
                     onchange=handleCheckboxChange()>
-                  <div class="checkbox_box"></div>
+                  <div onclick="event.stopPropagation();" class="checkbox_box"></div>
                   </label>
                   <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
                     fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

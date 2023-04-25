@@ -1,4 +1,3 @@
-
 function generateRandomId(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -9,6 +8,16 @@ function generateRandomId(length) {
   return result;
 }
 
+function openScreenOverlay() {
+  let screenOverlay = document.createElement("div");
+  screenOverlay.className = "overlay_screen";
+  document.body.appendChild(screenOverlay);
+}
+function closeScreenOverlay() {
+  document.querySelectorAll(".overlay_screen").forEach(overlay => {
+    document.body.removeChild(overlay);
+  });
+}
 
 function handleCheckboxChange(checkbox){
   if(checkbox.checked){
@@ -50,10 +59,12 @@ function getCheckBox() {
     inp.type='checkbox';
     inp.id=`${generateRandomId(10)}`;
     inp.setAttribute("onchange","handleCheckboxChange(this)");
+    inp.onclick="event.stopPropagation();"
 
 
     const di = document.createElement('div');
     di.className='checkbox_box';
+    di.onclick="event.stopPropagation();"
     
     la.appendChild(inp);
     la.appendChild(di);
@@ -145,7 +156,7 @@ function onchangeTagSelector() {
 
   selector.selectedIndex = 0;
 }
-function getCreatetaskSelector(list) {
+function getCreatetaskTagSelector(list) {
   let selector = document.createElement("select");
   selector.className = "createtask_select";
   selector.id = "createtask_tagselect";
@@ -157,6 +168,7 @@ function getCreatetaskSelector(list) {
   selector.appendChild(first_tagbox);
   for(i in list) {
     let tagbox = document.createElement("option");
+    tagbox.textContent = i;
     selector.appendChild(tagbox);
   }
 
@@ -164,16 +176,21 @@ function getCreatetaskSelector(list) {
 }
 /* ---------------------------------------------------------- calendar thingy-----------------------------------------*/
 let currDate = new Date()
-let curr_month = {value: currDate.getMonth()}
-let curr_year = {value: currDate.getFullYear()}
+let ctcurr_month = {value: currDate.getMonth()}
+let ctcurr_year = {value: currDate.getFullYear()}
 function regenerateCtCalendar(month, year) {
   let newcalendar = getCalendar(month, year);
   let calendar = document.getElementById("ctcalendar");
-  calendar.appendChild(newcalendar);
+  let timeheader = document.getElementById("timeheader");
+  if(calendar != null){
+    calendar.parentNode.removeChild(calendar);
+  }
+  timeheader.insertAdjacentElement('afterend',newcalendar);
 }
 function getCalendar(month, year) {
     let calendar = document.createElement('div')
     calendar.className = 'calendar';
+    calendar.id = "ctcalendar";
 
     let calendar_header = document.createElement('div');
     calendar_header.className = "calendar-header";
@@ -207,8 +224,8 @@ function getCalendar(month, year) {
 
         e.currentTarget.classList.add('ctselect-date');
         console.log(this.innerHTML.substring(0, this.innerHTML.indexOf('<')))
-        console.log(curr_month.value+1)
-        console.log(curr_year.value)
+        console.log(ctcurr_month.value+1)
+        console.log(ctcurr_year.value)
     }
 
     month_names.forEach((e, index) => {
@@ -216,12 +233,12 @@ function getCalendar(month, year) {
         month.innerHTML = `<div data-month="${index}">${e}</div>`
         month.querySelector('div').onclick = () => {
             month_list.classList.remove('show')
-            curr_month.value = index
-            regenerateCtCalendar(index, curr_year.value)
+            ctcurr_month.value = index
+            regenerateCtCalendar(index, ctcurr_year.value)
         }
         month_list.appendChild(month)
     })
-    month_picker = calendar.querySelector('.month-picker');
+    month_picker = calendar.querySelector('#month-picker');
     month_picker.onclick = () => {
         month_list.classList.add('show')
     }
@@ -235,9 +252,8 @@ function getCalendar(month, year) {
 
     if (month > 11 || month < 0) month = currDate.getMonth()
     if (!year) year = currDate.getFullYear()
-
-    let curr_month = `${month_names[month]}`
-    month_picker.innerHTML = curr_month
+    
+    month_picker.innerHTML = `${month_names[month]}`
     calendar_header_year.innerHTML = year
 
     // get first day of month
@@ -260,21 +276,14 @@ function getCalendar(month, year) {
         day.addEventListener('click', changeSelect);
         calendar_days.appendChild(day)
     }
-    // var days = document.getElementsByClassName("calendar-days");
-    // console.log(calendar_days.length);
-    // for (var i = 0; i < calendar_days.length; i++) {
-    //     console.log(calendar_days.length);
-    //     console.log(calendar_days[i])
-    //     calendar_days[i].addEventListener('click', changeSelect);
-    // }
 
     calendar_header.querySelector('#ctprev-year').onclick = () => {
       --ctcurr_year.value
-      regenerateCtCalendar(curr_month.value, curr_year.value)
+      regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value)
     }
     calendar_header.querySelector('#ctnext-year').onclick = () => {
       ++ctcurr_year.value
-      regenerateCtCalendar(curr_month.value, curr_year.value)
+      regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value)
     }
 
     return calendar;
@@ -288,6 +297,13 @@ function getAllTagList(){
 function openCreatetaskOverlay() {
   let taskpage = document.getElementById("taskpage");
 
+  let line1 = document.createElement("hr");
+  line1.style = "margin-top: 1%; margin-bottom: 1%";
+  let line2 = document.createElement("hr");
+  line2.style = "margin-top: 1%; margin-bottom: 1%";
+  let line3 = document.createElement("hr");
+  line3.style = "margin-top: 1%; margin-bottom: 1%";
+
   let createtask_box = document.createElement("div");
   createtask_box.id = "createtask_box";
 
@@ -297,7 +313,7 @@ function openCreatetaskOverlay() {
   let close_button = document.createElement("img");
   close_button.src = "image/createtask_close.png";
   close_button.id = "createtask_close";
-  close_button.onclick = function() {closeCreatetask()};
+  close_button.onclick = function() {closeCreatetask();closeScreenOverlay();};
   header.appendChild(close_button);
 
   let name = document.createElement("input");
@@ -322,27 +338,150 @@ function openCreatetaskOverlay() {
   taglist.appendChild(first_tagbox);
 
   let alltaglist = getAllTagList();
-  let tagselector = getCreatetaskSelector(alltaglist);
+  let tagselector = getCreatetaskTagSelector(alltaglist);
   
   let timeheader = document.createElement("div");
   timeheader.style = "font-weight: bold; font-size: 1vw;";
   timeheader.textContent = "Time";
+  timeheader.id = "timeheader";
 
   let calendar = document.createElement("div");
   calendar.id = "ctcalendar";
 
+  let time = document.createElement("div");
+  time.id = "createtask_time";
+  let hour_select = document.createElement("select");
+  hour_select.className = "createtask_select";
+  let hourlist = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
+  hourlist.forEach(hour => {
+    option = document.createElement("option");
+    option.textContent = hour;
+    hour_select.appendChild(option);
+  })
+  let minute_select = document.createElement("select");
+  minute_select.className = "createtask_select";
+  let minutelist = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
+  minutelist.forEach(minute => {
+    option = document.createElement("option");
+    option.textContent = minute;
+    minute_select.appendChild(option);
+  })
+  let colon = document.createElement("img");
+  colon.src = "image/colon.png";
+  colon.style = "width: 2.547vw; height: 2.547vw;";
+  time.appendChild(hour_select);
+  time.appendChild(colon);
+  time.appendChild(minute_select);
+
+  let white_space = document.createElement("div");
+  white_space.style = "height: 1.18vw;";
+
+  let create_button = document.createElement("div");
+  create_button.id = "createtask_createbutton";
+  create_button.onclick = function() {
+    createTask();
+  }
+  create_button.textContent = "Create";
+
+
   createtask_box.appendChild(header);
   createtask_box.appendChild(name);
-  createtask_box.appendChild(document.createElement("hr"));
+  createtask_box.appendChild(line1);
   createtask_box.appendChild(description);
-  createtask_box.appendChild(document.createElement("hr"));
+  createtask_box.appendChild(line2);
   createtask_box.appendChild(taglist);
   createtask_box.appendChild(tagselector);
-  createtask_box.appendChild(document.createElement("hr"));
+  createtask_box.appendChild(line3);
   createtask_box.appendChild(timeheader);
   createtask_box.appendChild(calendar);
-  
+  createtask_box.appendChild(time);
+  createtask_box.appendChild(white_space)
+  createtask_box.appendChild(create_button);
 
+  openScreenOverlay();
   taskpage.appendChild(createtask_box);
-  regenerateCtCalendar(curr_month.value, curr_year.value);
+  ctcurr_month = {value: currDate.getMonth()}
+  ctcurr_year = {value: currDate.getFullYear()}
+  regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value);
+}
+function createTask(){
+  let name = document.getElementById("createtask_Name").value;
+  let description = document.getElementById("createtask_Description").value;
+  let tags = [];
+  document.getElementById("createtask_taglist").querySelectorAll(".createtask_tagbox").forEach(tagbox =>{
+    tags.push(tagbox.textContent);
+  });
+  
+  console.log(name,description,tags)
+}
+
+function openDetailtaskOverlay(name,des,tags,outdate) {
+  let now = new Date();
+
+  let detailtask_box = document.createElement("div");
+  detailtask_box.id = "detailtask";
+
+  let line1 = document.createElement("hr");
+  line1.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
+  let line2 = document.createElement("hr");
+  line2.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
+  let line3 = document.createElement("hr");
+  line3.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
+
+  let headBox = document.createElement("div");
+  headBox.style = "border-radius: 0.512vw 0.512vw 0px 0px; width: 100%; height: 3.5vw";
+  if(now > outdate) {
+    headBox.style.background = "#D43F00";
+  }
+  else {
+    headBox.style.background = "#1ED400";
+  }
+  
+  let header = document.createElement("div");
+  header.id = "detailtask_header";
+  header.textContent = name;
+  let close_button = document.createElement("img");
+  close_button.src = "image/createtask_close.png";
+  close_button.id = "detailtask_close";
+  close_button.onclick = function() {
+    let detailtaskbox = document.getElementById("detailtask");
+    document.body.removeChild(detailtaskbox);
+    closeScreenOverlay();
+  }
+  header.appendChild(close_button);
+
+  let taglist = document.createElement("div");
+  taglist.id = "detailtask_taglist";
+  tags.forEach(tag => {
+    let tagbox = document.createElement("div");
+    tagbox.className = "detailtask_tagbox";
+    tagbox.textContent = tag;
+    taglist.appendChild(tagbox);
+  })
+
+  let description = document.createElement("div");
+  description.id = "detailtask_description";
+  description.textContent = des;
+
+  let time = document.createElement("div");
+  time.id = "detailtask_deadline";
+  const monthname = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  let day = now.getDay() <= 9 ? "0" + now.getDay().toString() : now.getDay().toString();
+  let month = monthname[now.getMonth()];
+  let year = now.getFullYear().toString();
+  let hour = now.getHours().toString();
+  let minute = now.getMinutes().toString();
+  time.textContent = day + " " + month + " " + year + "   " + hour + ":" + minute;
+
+  detailtask_box.appendChild(headBox);
+  detailtask_box.appendChild(header);
+  detailtask_box.appendChild(line1);
+  detailtask_box.appendChild(taglist);
+  detailtask_box.appendChild(line2);
+  detailtask_box.appendChild(description);
+  detailtask_box.appendChild(line3);
+  detailtask_box.appendChild(time);
+  
+  openScreenOverlay();
+  document.body.appendChild(detailtask_box);
 }

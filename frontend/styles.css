@@ -14,7 +14,14 @@
     --white: #fff;
     --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
-
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes overlay-fade-in {
+  from {opacity: 0;}
+  to {opacity: 0.2;}
+}
 
 body {
   font-family: Inter, sans-serif;
@@ -58,6 +65,7 @@ body {
   font-family: Inter, sans-serif;
   font-size: 2vw;
   font-weight: bold;
+  width: 75vw;
 }
 .container {
   max-width: 600px;
@@ -133,14 +141,14 @@ input[type="text"]:focus {
   display: none;
 }
 .checkbox_box{
-  width:1.25em;
-  height:1.25em;
+  width: 1.25em;
+  height: 1.25em;
   border: 1px solid #BABABA;
   border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 0.512vw;
   flex-shrink: 0;
   transition: 200ms;
 }
@@ -167,7 +175,7 @@ input[type="text"]:focus {
 .calendar {
   height: max-content;
   width: max-content;
-  background-color: var(--bg-main);
+  background-color: white;
   border-radius: 30px;
   padding: 20px;
   position: relative;
@@ -334,7 +342,7 @@ input[type="text"]:focus {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: var(--bg-main);
+  background-color: white;
   padding: 20px;
   grid-template-columns: repeat(3, auto);
   gap: 5px;
@@ -342,6 +350,7 @@ input[type="text"]:focus {
   transform: scale(1.5);
   visibility: hidden;
   pointer-events: none;
+
 }
 .month-list.show {
   transform: scale(1);
@@ -373,12 +382,12 @@ input[type="text"]:focus {
 }
 .outdate_top{
   width: 5.435vw;
-  height: 2.335vh;
+  height: 1.377vw;
   border-radius: 0.512vw 0.512vw 0px 0px;
 }
 .outdate_bottom{
   width: 5.435vw;
-  height: 4.263vh; 
+  height: 2.5vw; 
   border-radius: 0px 0px 0.512vw 0.512vw;
 
   display: table-cell;
@@ -399,7 +408,7 @@ input[type="text"]:focus {
   filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
   background: white;
   width: 32.025vw;
-  height: 6.949vh;
+  height: 4.098vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -415,7 +424,7 @@ input[type="text"]:focus {
   margin-right: -0.05%;
   margin-bottom: -0.04%;
   width: 33.514vw;
-  height: 7.296vh;
+  height: 4.302vw;
 }
 
 .completed_task_overlay{
@@ -435,13 +444,13 @@ input[type="text"]:focus {
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
-  font-size: 0.861vw;
-  height: 2.117vh;
+  font-size: 0.862vw;
+  height: 1.248vw;
   margin: 0.5%;
   padding-left: 0.778vw;
   padding-right: 0.778vw;
-  padding-top: 0.358vw;
-  padding-bottom: 0.358vw;
+  padding-top: 0.357vw;
+  padding-bottom: 0.357vw;
 
   border-radius: 100px;
 }
@@ -456,14 +465,6 @@ input[type="text"]:focus {
   cursor: pointer;
   transition: width 200ms,height 200ms,margin 200ms;
 }
-#createtask_img{
-  width: 205%;
-  height: 130%;
-  margin-left: -55%;
-  margin-top: -10%;
-  cursor: pointer;
-  transition: width 200ms,height 200ms,margin 200ms;
-}
 #createtask_button:hover{
   width: 2.3vw;
   height: 2.3vw;
@@ -475,8 +476,8 @@ input[type="text"]:focus {
 
 #createtask_box{
   position: absolute;
-  right: 2%;
-  top: 4%;
+  right: 1.9vw;
+  top: 3vw;
   height: 8vh;
   font-family: Inter, sans-serif;
   border-radius: 0.512vw;
@@ -488,6 +489,8 @@ input[type="text"]:focus {
   max-height: 80vh;
   overflow: auto;
   z-index: 2;
+  animation-name: fade-in;
+  animation-duration: 300ms;
 }
 #createtask_header{
   font-family: Inter, sans-serif;
@@ -518,7 +521,7 @@ input[type="text"]:focus {
   margin-top: 4%;
   margin-left: -2.2%;
   width: 90%;
-  max-height: 2vh;
+  max-height: 1.179vw;
   background: none;
   font-size: 1.2vw;
   font-weight: bold;
@@ -535,12 +538,13 @@ input[type="text"]:focus {
 #createtask_Description {
   font-family: Inter, sans-serif;
   width: 90%;
-  min-height: 2.8vh;
+  min-height: 1.65vw;
   background: none;
   font-size: 1vw;
   border: none;
   resize: none;
   height: auto;
+  margin-top: 2%;
 
   transition: 200ms;
 }
@@ -571,13 +575,13 @@ input[type="text"]:focus {
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
-  font-size: 0.861vw;
-  height: 2.117vh;
+  font-size: 0.855vw;
+  height: 1.248vw;
   margin: 1.5%;
   padding-left: 0.778vw;
   padding-right: 0.778vw;
-  padding-top: 0.358vw;
-  padding-bottom: 0.358vw;
+  padding-top: 0.531vw;
+  padding-bottom: 0.357vw;
   border-radius: 100px;
 }
 .createtask_tagclose{
@@ -612,19 +616,19 @@ input[type="text"]:focus {
   text-align: center;
   vertical-align: middle;
   font-weight: bold;
-  font-size: 0.861vw;
-  height: 4.117vh;
+  font-size: 0.855vw;
+  height: 2.307vw;
   margin: 0.5%;
   padding-left: 0.778vw;
   padding-right: 0.778vw;
-  padding-top: 0.358vw;
-  padding-bottom: 0.358vw;
+  padding-top: 0.357vw;
+  padding-bottom: 0.357vw;
   border-radius: 100px;
   cursor: pointer;
   transition: 200ms;
 }
 #createtask_createbutton{
-  height: 5.568vh;
+  height: 3.283vw;
   width: 23.258vw;
   display: table-cell;
   vertical-align: middle;
@@ -636,22 +640,37 @@ input[type="text"]:focus {
   background: #309CFF;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.512vw;
+  
 
   transition: 200ms;
 }
-
 #createtask_createbutton:hover{
   background: #1476d1;
 }
+#createtask_time{
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: left;
+  margin: 1.3%;
+  margin-left: -1%;
+}
+
+
 
 #detailtask{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
-  position: relative;
   background-color: white;
   border-radius: 0.512vw;
   width: 39vw;
-  height: 60vh;
+  max-height: 60vh;
   overflow: auto;
+  z-index: 2;
+  animation-name: fade-in;
+  animation-duration: 300ms;
 }
 #detailtask_header{
   font-family: Inter, sans-serif;
@@ -667,6 +686,14 @@ input[type="text"]:focus {
   width: 1.9vw;
   height: 1.9vw;
   cursor: pointer;
+  transition: 200ms;
+  margin-left: 2%;
+}
+#detailtask_close:hover{
+  width: 2.1vw;
+  height: 2.1vw;
+  margin: -0.5%;
+  margin-left: 1.5%;;
 }
 #detailtask_description{
   font-family: Inter, sans-serif;
@@ -677,6 +704,33 @@ input[type="text"]:focus {
   justify-content: space-between;
   max-width: 36.3vw;
 }
+#detailtask_taglist{
+  width: 95%;
+  margin-left: 2%;
+  max-height: 10000px;
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+}
+.detailtask_tagbox{
+  filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 0.855vw;
+  height: 1.248vw;
+  margin: 1%;
+  padding-left: 0.778vw;
+  padding-right: 0.778vw;
+  padding-top: 0.531vw;
+  padding-bottom: 0.357vw;
+  border-radius: 100px;
+}
 #detailtask_deadline{
   font-family: Inter, sans-serif;
   text-align: center;
@@ -685,5 +739,18 @@ input[type="text"]:focus {
   font-weight: bold;
   font-size: 1.48vw;
   max-width: 36.3vw;
-  height: 6vh;
+  height: 3.53vw;
+}
+
+.overlay_screen{
+  position: absolute;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0.2;
+  z-index: 1;
+  animation-name: over-layfade-in;
+  animation-duration: 300ms;
 }
