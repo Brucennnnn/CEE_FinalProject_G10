@@ -6,5 +6,5 @@ router.get("/auth_app", coursevilleController.authApp);
 router.get("/access_token", coursevilleController.accessToken);
 router.get("/me", coursevilleController.getUserInfo);
 router.get("/getAllAssignments/:semester/:year", coursevilleController.getAllAssignments);
-
+router.get("/getCourse/:semester/:year", coursevilleController.getAllAssignments);
 module.exports = router;
