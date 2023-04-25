@@ -8,54 +8,24 @@ const {
     ScanCommand,
     GetCommand,
     UpdateCommand,
+    QueryCommand
 } = require("@aws-sdk/lib-dynamodb");
 
 const docClient = new DynamoDBClient({ regions: process.env.AWS_REGION });
 
 exports.addTask = async (req, res) => {
-
-    let newMember;
     const task_id = uuidv4();
     const created_date = new Date().toISOString();
+    const item = {user_id: req.user_id, task_id: task_id, ...req.body, created_date}
+    const params = {
+        TableName: process.env.aws_user_tasks_table_name,
+        Item: item 
+    };
     try {
-        const getparams = {
-            TableName: "user_task",
-            Key: {
-                user_id: req.user_id,
-            }
-        };
-        const data = await docClient.send(new GetCommand(getparams));
-        const newbody = { task_id: task_id, ...req.body, created_date: created_date }
-        newMember = [...data.Item.Task, newbody]
+      const data = await docClient.send(new PutCommand(params));
+      res.send(data)  
     } catch (error) {
-
-        const createparams = {
-            TableName: "user_task",
-            Item: { user_id: req.user_id, Task: [{ task_id: task_id, ...req.body, created_date: created_date }] }
-        }
-        const createdata = await docClient.send(new PutCommand(createparams))
-        res.send(createdata)
-        return
-    }
-
-    try {
-        const params = {
-            TableName: "user_task",
-            Key: {
-                user_id: req.user_id
-            },
-            ExpressionAttributeNames: {
-                "#task": "Task"
-            },
-            UpdateExpression: `SET #task = :p`,
-            ExpressionAttributeValues: {
-                ":p": newMember
-            },
-        }
-        const newdata = await docClient.send(new UpdateCommand(params));
-        res.send(newdata)
-    } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({
             message: 'Error adding item to DynamoDB',
             error: error,
@@ -64,16 +34,16 @@ exports.addTask = async (req, res) => {
 };
 
 exports.getTasks = async (req, res) => {
-    const params = {
-        TableName: "user_task",
-        Key: {
-            user_id: req.user_id,
-        }
+    var params = {
+        TableName: process.env.aws_user_tasks_table_name,
+        KeyConditionExpression: "user_id = :pk",
+        ExpressionAttributeValues: {
+            ":pk": req.user_id
+        },
     };
     try {
-        const data = await docClient.send(new GetCommand(params));
+        const data = await docClient.send(new QueryCommand(params));
         res.send(data)
-
     } catch (err) {
         console.error(err);
         res.status(500).json({
@@ -84,12 +54,7 @@ exports.getTasks = async (req, res) => {
 }
 
 
-
-
-
 exports.deleteTask = async (req, res) => {
-    
-    
     try {
         const getparams = {
             TableName: "user_task",

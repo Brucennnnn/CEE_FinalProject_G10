@@ -35,9 +35,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/task", middleware.middleware, toDoTaskRoutes);
 app.use("/courseville", courseVilleRoutes);
-// app.use("/", (req, res) => {
-//   res.send("Hello World");
-// });
+app.use("/", (req, res) => {
+  res.send("Hello World");
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at http://${process.env.backendIPAddress}`);
