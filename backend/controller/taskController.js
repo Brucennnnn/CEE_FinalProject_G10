@@ -53,33 +53,17 @@ exports.getTasks = async (req, res) => {
     }
 }
 
-
 exports.deleteTask = async (req, res) => {
     try {
-        const getparams = {
-            TableName: "user_task",
+        const params = {
+            TableName: process.env.aws_user_tasks_table_name,
             Key: {
                 user_id: req.user_id,
+                task_id: req.body.task_id
             }
         };
-        const data = await docClient.send(new GetCommand(getparams));
-        const newmember = data.Item.Task.filter((item) => item.task_id !== req.body.task_id)
-        const params = {
-            TableName: "user_task",
-            Key: {
-                user_id: req.user_id
-            },
-            ExpressionAttributeNames: {
-                "#task": "Task"
-            },
-            UpdateExpression: `SET #task = :p`,
-            ExpressionAttributeValues: {
-                ":p": newmember
-            },
-        }
-        const newdata = await docClient.send(new UpdateCommand(params));
-
-        res.send(newdata)
+        const data = await docClient.send(new DeleteCommand(params));
+        res.send(data)
     }
     catch (err) {
         console.error(err);
