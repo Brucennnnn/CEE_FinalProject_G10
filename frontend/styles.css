@@ -202,6 +202,7 @@ input[type="text"]:focus {
   grid-template-columns: repeat(7, 1fr);
   font-weight: 600;
   font-size: 0.955vw;
+  color: #7f7f7f;
 }
 .calendar-week-day div {
   display: grid;
@@ -309,24 +310,24 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .month-picker:hover {
-  background-color: var(--color-hover);
+  background-color: #e3e3e3;
 }
 .year-picker {
   display: flex;
   align-items: center;
 }
 .year-change {
-  height: 1.048vw;
-  width: 1.048vw;
+  height: 1.548vw;
+  width: 1.548vw;
   border-radius: 50%;
   display: grid;
   place-items: center;
   margin: 0 0.512vw;
-  margin-bottom: 0.512vw;
+  margin-bottom: 0.128vw;
   cursor: pointer;
 }
 .year-change:hover {
-  background-color: var(--color-hover);
+  background-color: #d0d0d0;
 }
 .calendar-footer {
   padding: 0.512vw;
@@ -343,19 +344,20 @@ input[type="text"]:focus {
 }
 .month-list {
   position: absolute;
+  font-size: 0.955vw;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   background-color: white;
   padding: 1.024vw;
+  padding-left: 0.112vw;
   grid-template-columns: repeat(3, auto);
   gap: 0.256vw;
   display: grid;
   transform: scale(1.5);
   visibility: hidden;
   pointer-events: none;
-  font-size: 1.02vw;
 }
 .month-list.show {
   transform: scale(1);
@@ -368,15 +370,14 @@ input[type="text"]:focus {
   place-items: center;
 }
 .month-list > div > div {
-  width: 100%;
-  padding: 0.256vw 1.024vw;
+  padding: 0.256vw 0.512vw;
   border-radius: 0.512vw;
   text-align: center;
   cursor: pointer;
   color: var(--color-txt);
 }
 .month-list > div > div:hover {
-  background-color: var(--color-hover);
+  background-color: #e3e3e3;
 }
 
 

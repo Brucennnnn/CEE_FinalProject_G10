@@ -25,6 +25,52 @@ function handleCheckboxChange(checkbox){
   }
 }
 
+function renderTaskpage(date,tags,tasks) {
+  let taskpage = document.createElement("div");
+  taskpage.id = "taskpage";
+
+  let header = document.createElement("div");
+  header.id = "taskpage_header"
+  let title = document.createElement("div");
+  title.textContent = date == currDate ? "Today" : getDateString(date);
+  let createtask_button = document.createElement("img");
+  createtask_button.src = "image/createtask_button.png";
+  createtask_button.id = "createtask_button"
+  createtask_button.onclick = function() {
+    openCreatetaskOverlay()
+  }
+  
+  let taglist = document.createElement("div");
+  taglist.id = "taglist";
+  tags.forEach(tag => {
+    let tagbox = document.createElement("div");
+    tagbox.className = "tagbox";
+    tagbox.textContent = tag;
+    taglist.appendChild(tagbox);
+  })
+
+  let tasklist = document.createElement("div");
+  tasklist.id = "tasklist";
+  tasks.forEach(task=> {
+    let taskbox = getTaskItem(task.id,task.name,task.outdate);
+    tasklist.appendChild(taskbox);
+  })
+
+  taskpage.appendChild(header);
+  taskpage.appendChild(taglist);
+  taskpage.appendChild(tasklist);
+
+  let oldtaskpage = document.getElementById("taskpage");
+  if(oldtaskpage != null) {
+    oldtaskpage.parentNode.remove(oldtaskpage);
+  }
+  document.body.appendChild(taskpage);
+}
+
+function renderCompleteTaskpage() {
+
+}
+
 function getDeadlineBox(now,outdate) {
   const hour = outdate.getHours();
   const minute = outdate.getMinutes();
@@ -71,12 +117,13 @@ function getCheckBox() {
     return la
 }
 
-function getTaskItem(text, outdate) {
+function getTaskItem(id, text, outdate) {
   if(text.length > 100) {
     text = text.slice(0,100) + "...";
   }
   let taskitem = document.createElement("div");
   taskitem.className = "taskitem"
+  taskitem.id = id;
 
   let front = document.createElement("div");
   front.style.display = "flex";
@@ -514,13 +561,7 @@ function openDetailtaskOverlay(name,des,tags,outdate) {
 
   let time = document.createElement("div");
   time.id = "detailtask_deadline";
-  const monthname = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  let day = now.getDay() <= 9 ? "0" + now.getDay().toString() : now.getDay().toString();
-  let month = monthname[now.getMonth()];
-  let year = now.getFullYear().toString();
-  let hour = now.getHours().toString();
-  let minute = now.getMinutes().toString();
-  time.textContent = day + " " + month + " " + year + "   " + hour + ":" + minute;
+  time.textContent = getDateString(now);
 
   detailtask_box.appendChild(headBox);
   detailtask_box.appendChild(header);
@@ -533,4 +574,14 @@ function openDetailtaskOverlay(name,des,tags,outdate) {
   
   openScreenOverlay();
   document.body.appendChild(detailtask_box);
+}
+
+function getDateString(date) {
+  const monthname = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  let day = date.getDay() <= 9 ? "0" + date.getDay().toString() : date.getDay().toString();
+  let month = monthname[date.getMonth()];
+  let year = date.getFullYear().toString();
+  let hour = date.getHours().toString();
+  let minute = date.getMinutes().toString();
+  return day + " " + month + " " + year + "   " + hour + ":" + minute;
 }
