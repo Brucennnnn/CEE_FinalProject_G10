@@ -34,7 +34,7 @@ exports.addTask = async (req, res) => {
 };
 
 exports.getTasks = async (req, res) => {
-    var params = {
+    const params = {
         TableName: process.env.aws_user_tasks_table_name,
         KeyConditionExpression: "user_id = :pk",
         ExpressionAttributeValues: {
@@ -58,7 +58,7 @@ exports.getTaskByTags = async (req, res) => {
     try {
         if (req.body.tag.length >= 1) {
             let tag = req.body.tag[0];
-        var params = {
+        const params = {
             TableName: process.env.aws_user_tasks_table_name,
             KeyConditionExpression: "user_id = :pk",
             FilterExpression: "contains(tags, :sk)",
