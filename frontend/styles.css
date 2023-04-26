@@ -1,3 +1,5 @@
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #d93b3b;
@@ -65,7 +67,7 @@ background-color:#ffffff;
 padding:16px;
 max-width: 600px;
 min-width: 400px;
-max-height: 100px;
+max-height: 80px;
 min-height: 50px;
 border-radius: 10px;
 display: flex;
@@ -119,7 +121,7 @@ button:hover {
   content:'\2714';
   color: white;
   transform: scale(0);
-  
+
 }
 .checkbox_input:checked + .checkbox_box{
   background: #000;
