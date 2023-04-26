@@ -128,14 +128,33 @@ function getTagbox(text) {
 function deleteCreatetaskTagbox(id) {
   let tagbox = document.getElementById(id);
   tagbox.parentNode.removeChild(tagbox);
+
+  let selector = document.getElementById("createtask_tagselect");
+
+  let tagoption = document.createElement("option");
+  tagoption.textContent = tagbox.textContent.slice(0,-1);
+  tagoption.id = id;
+  let tags = selector.children;
+  let found = false;
+  for(let i = 0 ;i < tags.length;i++) {
+    if(parseInt(tags[i].id.slice(8)) > parseInt(id.slice(8))) {
+      selector.children[i].insertAdjacentElement('beforebegin',tagoption);
+      found = true;
+      break;
+    }
+  }
+  if(!found) {
+    selector.appendChild(tagoption);
+  }
 }
-function getCreatetaskTagbox(text) {
+function getCreatetaskTagbox(text,id) {
   if(text > 15) {
     text = text.slice(0,15) + "...";
   }
   let tagbox = document.createElement("div");
-  tagbox.id = generateRandomId(10);
+  tagbox.id = id;
   tagbox.className = "createtask_tagbox";
+  
 
   let closebutton = document.createElement("div");
   closebutton.className = "createtask_tagclose";
@@ -149,12 +168,14 @@ function getCreatetaskTagbox(text) {
 function onchangeTagSelector() {
   let selector = document.getElementById("createtask_tagselect");
   let tag_select = selector.options[selector.selectedIndex].text;
-  let new_tagbox = getCreatetaskTagbox(tag_select);
+  let new_tagbox = getCreatetaskTagbox(tag_select,selector.options[selector.selectedIndex].id);
 
   let taglist = document.getElementById("createtask_taglist");
   taglist.appendChild(new_tagbox);
-
+  
+  selector.remove(selector.selectedIndex);
   selector.selectedIndex = 0;
+  
 }
 function getCreatetaskTagSelector(list) {
   let selector = document.createElement("select");
@@ -165,12 +186,19 @@ function getCreatetaskTagSelector(list) {
   }
   let first_tagbox = document.createElement("option");
   first_tagbox.textContent = "Add Tag";
+  first_tagbox.id = "cttagbox0";
   selector.appendChild(first_tagbox);
-  for(i in list) {
+  let count = 1;
+  list.forEach(i => {
     let tagbox = document.createElement("option");
+    tagbox.id = "cttagbox" + count.toString();
+    if(i.length > 20) {
+      i = i.slice(0,20) + "...";
+    }
     tagbox.textContent = i;
     selector.appendChild(tagbox);
-  }
+    count++;
+  })
 
   return selector;
 }
@@ -263,17 +291,19 @@ function getCalendar(month, year) {
     for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
         let day = document.createElement('div')
         if (i >= first_day.getDay()) {
+            day.classList.add('calendar-day-cursor')
             day.classList.add('calendar-day-hover')
             day.innerHTML = i - first_day.getDay() + 1
             day.innerHTML += `<span></span>
                             <span></span>
                             <span></span>
                             <span></span>`
+            day.id = "ctday" + (i - first_day.getDay() + 1);
             if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
                 day.classList.add('curr-date')
             }
+            day.addEventListener('click', changeSelect);
         }
-        day.addEventListener('click', changeSelect);
         calendar_days.appendChild(day)
     }
 
@@ -291,8 +321,8 @@ function getCalendar(month, year) {
 // ----------------------------------------------- end of calendar thingy -----------------------------
 
 
-function getAllTagList(){
-  // return list of string of every tag
+function getAllTagList() {
+  return ["hello1","hello2","hello3","hello4","hello5"];
 }
 function openCreatetaskOverlay() {
   let taskpage = document.getElementById("taskpage");
@@ -354,6 +384,7 @@ function openCreatetaskOverlay() {
   time.id = "createtask_time";
   let hour_select = document.createElement("select");
   hour_select.className = "createtask_select";
+  hour_select.id = "cthour_select";
   let hourlist = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
   hourlist.forEach(hour => {
     option = document.createElement("option");
@@ -362,6 +393,7 @@ function openCreatetaskOverlay() {
   })
   let minute_select = document.createElement("select");
   minute_select.className = "createtask_select";
+  minute_select.id = "ctminute_select";
   let minutelist = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
   minutelist.forEach(minute => {
     option = document.createElement("option");
@@ -413,8 +445,23 @@ function createTask(){
   document.getElementById("createtask_taglist").querySelectorAll(".createtask_tagbox").forEach(tagbox =>{
     tags.push(tagbox.textContent);
   });
-  
-  console.log(name,description,tags)
+  let calendar = document.getElementById("ctcalendar");
+  let month = ctcurr_month.value;
+  let year = ctcurr_year.value;
+  let day = currDate.getDate();
+  if(calendar.querySelector('.ctselect-date') != null) {
+    day = parseInt(calendar.querySelector('.ctselect-date').id.slice(5));
+  }
+  let hour_select = document.getElementById("cthour_select");
+  let hour = parseInt(hour_select.options[hour_select.selectedIndex].text)
+  let minute_select = document.getElementById("ctminute_select");
+  let minute = parseInt(minute_select.options[minute_select.selectedIndex].text)
+  let time = new Date(year,month,day,hour,minute)
+
+  console.log(name,description,tags,time)
+
+  closeCreatetask();
+  closeScreenOverlay();
 }
 
 function openDetailtaskOverlay(name,des,tags,outdate) {

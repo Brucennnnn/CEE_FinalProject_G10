@@ -223,7 +223,6 @@ input[type="text"]:focus {
   justify-content: center;
   padding: 0.256vw;
   position: relative;
-  cursor: pointer;
   animation: to-top 1s forwards;
 }
 .calendar-days div span {
@@ -232,7 +231,10 @@ input[type="text"]:focus {
 /* .calendar-days div:hover span {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
 } */
-.calendar-days div:hover {
+.calendar-day-cursor{
+  cursor: pointer;
+}
+.calendar-day-hover:hover {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   background-color: #fbc7d4;
   /* border-radius: 20%; */
@@ -636,6 +638,11 @@ input[type="text"]:focus {
   border-radius: 100px;
   cursor: pointer;
   transition: 200ms;
+}
+.createtask_select div {
+  font-family: Inter;
+  border-radius: 0.512vw;
+  border: none;
 }
 #createtask_createbutton{
   height: 3.283vw;
