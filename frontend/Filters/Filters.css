@@ -65,3 +65,10 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+
+  .icon {
+    width: 15px;
+    height: auto;
+    background-size: 100% 100% !important;;
+    font-size: 15px !important;;
+  }
