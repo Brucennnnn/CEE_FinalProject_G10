@@ -47,7 +47,7 @@ generateCalendar = (month, year) => {
     for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
         let day = document.createElement('div')
         if (i >= first_day.getDay()) {
-            day.classList.add('calendar-day-hover')
+            day.classList.add('calendar-days-hover')
             day.innerHTML = i - first_day.getDay() + 1
             day.innerHTML += `<span></span>
                             <span></span>
@@ -56,8 +56,8 @@ generateCalendar = (month, year) => {
             if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
                 day.classList.add('curr-date')
             }
+            day.addEventListener('click', changeSelect);
         }
-        day.addEventListener('click', changeSelect);
         calendar_days.appendChild(day)
     }
     // var days = document.getElementsByClassName("calendar-days");
