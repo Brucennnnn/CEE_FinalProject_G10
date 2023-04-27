@@ -44,7 +44,7 @@ exports.getTasks = async (req, res) => {
     };
     try {
         const data = await docClient.send(new QueryCommand(params));
-        res.send(data)
+        res.send(data.Items)
     } catch (err) {
         console.error(err);
         res.status(500).json({
@@ -75,7 +75,7 @@ exports.getTaskByTags = async (req, res) => {
                 }
             })
         })
-        res.send(data)
+        res.send(data.Items)
         } else {
             this.getTasks(req, res)
         }
@@ -113,7 +113,7 @@ exports.getTasksByDueDate = async (req, res) => {
 
 exports.getTasksByStatus = async (req, res) => {
     try {
-        const status = false;
+        let status = false;
         if (req.params.status === "completed") {
             status = true;
         } else if (req.params.status === "incomplete") {

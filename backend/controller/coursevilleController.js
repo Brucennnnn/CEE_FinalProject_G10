@@ -173,7 +173,7 @@ exports.getAllAssignments = async (req, res) => {
           // Promise.all(all_courses.map(element => {
           //   findAllAssignmentbyID(req, element.cv_cid).then(e => e.forEach(k => k.forEach(s => (arr.push({course_title: element.title, item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
           // }))
-          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime, description: s.description}))))).then(() => res.send(arr)).then(() => res.end())
+          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime, instruction: s.instruction}))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
         });
