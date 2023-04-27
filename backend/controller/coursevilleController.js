@@ -124,7 +124,7 @@ exports.getAssignments = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    axios.get(`https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=32201&detail=1`, profileOptions).then(profileRes => {
+    axios.get(`https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${req.params.id}&detail=1`, profileOptions).then(profileRes => {
       res.send(profileRes.data)
       res.end()
       return

@@ -34,7 +34,7 @@ exports.addTask = async (req, res) => {
 };
 
 exports.getTasks = async (req, res) => {
-    var params = {
+    const params = {
         TableName: process.env.aws_user_tasks_table_name,
         KeyConditionExpression: "user_id = :pk",
         ExpressionAttributeValues: {
@@ -54,9 +54,39 @@ exports.getTasks = async (req, res) => {
     }
 }
 
-
-
-
+exports.getTaskByTags = async (req, res) => {
+    try {
+        if (req.body.tag.length >= 1) {
+            let tag = req.body.tag[0];
+        const params = {
+            TableName: process.env.aws_user_tasks_table_name,
+            KeyConditionExpression: "user_id = :pk",
+            FilterExpression: "contains(tags, :sk)",
+            ExpressionAttributeValues: {
+                ":pk": req.user_id,
+                ":sk": tag
+            },
+        };
+        const data = await docClient.send(new QueryCommand(params));
+        data.Items.forEach(element => {
+            req.body.tag.forEach(tag => {
+                if (!element.tags.includes(tag)) {
+                    data.Items.splice(data.Items.indexOf(element), 1)
+                }
+            })
+        })
+        res.send(data)
+        } else {
+            this.getTasks(req, res)
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: 'Error getting item from DynamoDB',
+            error: err,
+        });
+    }
+}
 exports.deleteTask = async (req, res) => {
     try {
         const params = {
