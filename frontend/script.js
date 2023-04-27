@@ -81,10 +81,10 @@ function getDeadlineBox(now,outdate) {
   let top = document.createElement("div");
   top.className = "outdate_top";
   if(now > outdate) {
-    top.style.background = "#D43F00";
+    top.style.background = "#E63946";
   }
   else {
-    top.style.background = "#1ED400";
+    top.style.background = "#49DFC4";
   }
 
   let bottom = document.createElement("div");
@@ -129,7 +129,7 @@ function getTaskItem(id, text, outdate) {
   front.style.display = "flex";
   front.appendChild(getCheckBox());
   let front_text = document.createElement("div");
-  front_text.style = "margin-left: 3%; word-wrap: break-word; width: 21vw;";
+  front_text.style = "margin-left: 3%; overflow-wrap: anywhere; width: 21vw;";
   front_text.textContent = text;
   front.appendChild(front_text);
 
@@ -138,6 +138,10 @@ function getTaskItem(id, text, outdate) {
   taskitem.appendChild(front);
   taskitem.appendChild(back);
   return taskitem;
+}
+
+function getMcvTaskItem(id, text, outdate){
+
 }
 
 function getCompletedTaskItem(text, outdate) {
