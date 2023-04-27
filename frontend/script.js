@@ -109,7 +109,7 @@ async function createMCVTask() {
     method: "GET",
     credentials: "include",
   };
-  await fetch(`http://127.0.0.1:3000/courseville/assignment/2/2022`, options).then(res => res.json()).then(data => data.forEach(k => addMCVTask(k)))
+  await fetch(`http://127.0.0.1:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).then(data => data.forEach(k => addMCVTask(k)))
     .catch((err) => { console.log("err") })
 }
 function login() {
@@ -614,3 +614,124 @@ function openDetailtaskOverlay(name, des, tags, outdate) {
   openScreenOverlay();
   document.body.appendChild(detailtask_box);
 }
+
+
+
+///////////////////////datebox////////////////////////
+
+function addrotate() {
+  const h = document.getElementById("fsq1");
+  const r = document.getElementById("fsq2");
+  const month = document.getElementById("monthchange");
+  const date = document.getElementById("daynumberchange");
+  const weekday = document.getElementById("weekdaychange");
+
+
+  const rmonth = document.getElementById("month");
+  const rweekday = document.getElementById("weekday");
+  const rdaynum = document.getElementById("daynumber");
+
+  r.classList.remove("rotatere")
+  r.style.animationPlayState = "end"
+  h.classList.add("rotate");
+  function change() {
+      const { backDate, backMonth, backweekday } = getBackDateAndMonth(date.innerText, month.innerText, weekday.innerText);
+      date.innerText = backDate;
+      month.innerText = backMonth;
+      weekday.innerText = backweekday;
+
+      rweekday.innerText = backweekday;
+      rdaynum.innerText = backDate;
+      rmonth.innerText = backMonth;
+  }
+  h.addEventListener("animationiteration", change);
+
+  h.addEventListener("animationend", () => {
+      h.removeEventListener("animationiteration", change);
+      h.classList.remove("rotate");
+  }, { once: true });
+
+}
+
+
+function addrotatere() {
+  const h = document.getElementById("fsq1");
+  const month = document.getElementById("monthchange");
+  const date = document.getElementById("daynumberchange");
+  const weekday = document.getElementById("weekdaychange");
+
+  const rmonth = document.getElementById("month");
+  const rweekday = document.getElementById("weekday");
+  const rdaynum = document.getElementById("daynumber");
+  const r = document.getElementById("fsq2");
+  h.classList.remove("rotate");
+  h.style.animationPlayState = "end";
+  r.classList.add("rotatere");
+
+  function change() {
+
+      const { nextDate, nextMonth, nextweekday } = getNextDateAndMonth(date.innerText, month.innerText, weekday.innerText);
+      date.innerText = nextDate;
+      month.innerText = nextMonth;
+      weekday.innerText = nextweekday;
+      rmonth.innerText = nextMonth;
+      rweekday.innerText = nextweekday;
+      rdaynum.innerText = nextDate;
+      console.log(nextDate, nextMonth, nextweekday)
+  }
+  r.addEventListener("animationiteration", change);
+  r.addEventListener("animationend", () => {
+      r.removeEventListener("animationiteration", change);
+      r.classList.remove("rotatere");
+  }, { once: true });
+
+}
+function getNextDateAndMonth(date, smonth, weekday) {
+  const monthToNumber = {
+      Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+      Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12
+  };
+
+  const numberToMonth = {
+      1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
+      7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
+  };
+  month = monthToNumber[smonth];
+  arr = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  let index = arr.findIndex((element) => { return element == weekday });
+  let nextweekday = arr[(index + 1) % 7];
+  let ranint = Math.floor(Math.random() * ((31 - 1) + 1))
+  const dateObj = new Date(null, month - 1, date);
+  dateObj.setDate(dateObj.getDate() + ranint);
+  const nextDate = dateObj.getDate();
+
+  const nextMonth = numberToMonth[dateObj.getMonth() + 1];
+  return { nextDate, nextMonth, nextweekday };
+}
+
+
+function getBackDateAndMonth(date, smonth, weekday) {
+  const monthToNumber = {
+      Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+      Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12
+  };
+
+  const numberToMonth = {
+      1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
+      7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
+  };
+  month = monthToNumber[smonth];
+  arr = ["Sun", "Sat", "Fri", "Thu", "Wed", "Tue", "Mon"];
+  let index = arr.findIndex((element) => { return element == weekday });
+  let backweekday = arr[(index + 1) % 7];
+  const dateObj = new Date(null, month - 1, date);
+  let ranint = Math.floor(Math.random() * ((31 - 1) + 1))
+  dateObj.setDate(dateObj.getDate() - ranint);
+  const backDate = dateObj.getDate();
+  const backMonth = numberToMonth[dateObj.getMonth() + 1];
+  return { backDate, backMonth, backweekday };
+}
+
+console.log(Math.floor(Math.random() * ((31 - 1) + 1)))
+
+/////////////////////////datebox///////////////////////
