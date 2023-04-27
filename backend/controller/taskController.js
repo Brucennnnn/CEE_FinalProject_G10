@@ -34,7 +34,7 @@ exports.addTask = async (req, res) => {
 };
 
 exports.getTasks = async (req, res) => {
-    var params = {
+    const params = {
         TableName: process.env.aws_user_tasks_table_name,
         KeyConditionExpression: "user_id = :pk",
         ExpressionAttributeValues: {
@@ -44,7 +44,7 @@ exports.getTasks = async (req, res) => {
     };
     try {
         const data = await docClient.send(new QueryCommand(params));
-        res.send(data)
+        res.send(data.Items)
     } catch (err) {
         console.error(err);
         res.status(500).json({
@@ -58,7 +58,7 @@ exports.getTaskByTags = async (req, res) => {
     try {
         if (req.body.tag.length >= 1) {
             let tag = req.body.tag[0];
-        var params = {
+        const params = {
             TableName: process.env.aws_user_tasks_table_name,
             KeyConditionExpression: "user_id = :pk",
             FilterExpression: "contains(tags, :sk)",
@@ -75,7 +75,7 @@ exports.getTaskByTags = async (req, res) => {
                 }
             })
         })
-        res.send(data)
+        res.send(data.Items)
         } else {
             this.getTasks(req, res)
         }
@@ -87,6 +87,61 @@ exports.getTaskByTags = async (req, res) => {
         });
     }
 }
+
+exports.getTasksByDueDate = async (req, res) => {
+    const params = {
+        TableName: process.env.aws_user_tasks_table_name,
+        KeyConditionExpression: "user_id = :pk",
+        FilterExpression: "due_date = :sk",
+        ExpressionAttributeValues: {
+            ":pk": req.user_id,
+            ":sk": req.body.due_date
+        },
+    };
+
+    try {
+        const data = await docClient.send(new QueryCommand(params));
+        res.send(data.Items)
+    } catch {
+        console.error(err);
+        res.status(500).json({
+            message: 'Error getting item from DynamoDB',
+            error: err,
+        });
+    }
+}
+
+exports.getTasksByStatus = async (req, res) => {
+    try {
+        let status = false;
+        if (req.params.status === "completed") {
+            status = true;
+        } else if (req.params.status === "incomplete") {
+            status = false;
+        } else {
+            throw new Error("Invalid status");
+        }
+        const params = {
+            TableName: process.env.aws_user_tasks_table_name,
+            KeyConditionExpression: "user_id = :pk",
+            FilterExpression: "task_status = :sk",
+            ExpressionAttributeValues: {
+                ":pk": req.user_id,
+                ":sk": status
+            },
+        };
+        
+        const data = await docClient.send(new QueryCommand(params));
+        res.send(data.Items)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: 'Error getting item from DynamoDB',
+            error: err,
+        });
+    }
+}
+
 exports.deleteTask = async (req, res) => {
     try {
         const params = {
@@ -107,7 +162,6 @@ exports.deleteTask = async (req, res) => {
         });
     }
 }
-
 
 exports.updateTask = async (req, res) => {
     try {
