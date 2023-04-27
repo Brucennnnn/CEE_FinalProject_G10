@@ -111,21 +111,29 @@ exports.getTasksByDueDate = async (req, res) => {
     }
 }
 
-exports.getCompletedTasks = async (req, res) => {
-    const params = {
-        TableName: process.env.aws_user_tasks_table_name,
-        KeyConditionExpression: "user_id = :pk",
-        FilterExpression: "task_status = :sk",
-        ExpressionAttributeValues: {
-            ":pk": req.user_id,
-            ":sk": true
-        },
-    };
-    
+exports.getTasksByStatus = async (req, res) => {
     try {
+        const status = false;
+        if (req.params.status === "completed") {
+            status = true;
+        } else if (req.params.status === "incomplete") {
+            status = false;
+        } else {
+            throw new Error("Invalid status");
+        }
+        const params = {
+            TableName: process.env.aws_user_tasks_table_name,
+            KeyConditionExpression: "user_id = :pk",
+            FilterExpression: "task_status = :sk",
+            ExpressionAttributeValues: {
+                ":pk": req.user_id,
+                ":sk": status
+            },
+        };
+        
         const data = await docClient.send(new QueryCommand(params));
         res.send(data.Items)
-    } catch {
+    } catch (err) {
         console.error(err);
         res.status(500).json({
             message: 'Error getting item from DynamoDB',
@@ -154,7 +162,6 @@ exports.deleteTask = async (req, res) => {
         });
     }
 }
-
 
 exports.updateTask = async (req, res) => {
     try {
