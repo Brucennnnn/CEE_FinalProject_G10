@@ -125,7 +125,7 @@ function login() {
   }
 }
 
-function renderTaskpage(date,tags,tasks) {
+function renderTaskpage(date, tags, tasks) {
   let taskpage = document.createElement("div");
   taskpage.id = "taskpage";
 
@@ -136,10 +136,10 @@ function renderTaskpage(date,tags,tasks) {
   let createtask_button = document.createElement("img");
   createtask_button.src = "image/createtask_button.png";
   createtask_button.id = "createtask_button"
-  createtask_button.onclick = function() {
+  createtask_button.onclick = function () {
     openCreatetaskOverlay()
   }
-  
+
   let taglist = document.createElement("div");
   taglist.id = "taglist";
   tags.forEach(tag => {
@@ -151,8 +151,8 @@ function renderTaskpage(date,tags,tasks) {
 
   let tasklist = document.createElement("div");
   tasklist.id = "tasklist";
-  tasks.forEach(task=> {
-    let taskbox = getTaskItem(task.id,task.name,task.outdate);
+  tasks.forEach(task => {
+    let taskbox = getTaskItem(task.id, task.name, task.outdate);
     tasklist.appendChild(taskbox);
   })
 
@@ -161,7 +161,7 @@ function renderTaskpage(date,tags,tasks) {
   taskpage.appendChild(tasklist);
 
   let oldtaskpage = document.getElementById("taskpage");
-  if(oldtaskpage != null) {
+  if (oldtaskpage != null) {
     oldtaskpage.parentNode.remove(oldtaskpage);
   }
   document.body.appendChild(taskpage);
@@ -171,7 +171,7 @@ function renderCompleteTaskpage() {
 
 }
 
-function getDeadlineBox(now,outdate) {
+function getDeadlineBox(now, outdate) {
   const hour = outdate.getHours();
   const minute = outdate.getMinutes();
   let time_string = hour.toString() + ":" + minute.toString();
@@ -180,7 +180,7 @@ function getDeadlineBox(now,outdate) {
 
   let top = document.createElement("div");
   top.className = "outdate_top";
-  if(now > outdate) {
+  if (now > outdate) {
     top.style.background = "#E63946";
   }
   else {
@@ -220,8 +220,8 @@ function getCheckBox() {
 }
 
 function getTaskItem(id, text, outdate) {
-  if(text.length > 100) {
-    text = text.slice(0,100) + "...";
+  if (text.length > 100) {
+    text = text.slice(0, 100) + "...";
   }
   let taskitem = document.createElement("div");
   taskitem.className = "taskitem"
@@ -242,7 +242,7 @@ function getTaskItem(id, text, outdate) {
   return taskitem;
 }
 
-function getMcvTaskItem(id, text, outdate){
+function getMcvTaskItem(id, text, outdate) {
 
 }
 
@@ -285,29 +285,29 @@ function deleteCreatetaskTagbox(id) {
   let selector = document.getElementById("createtask_tagselect");
 
   let tagoption = document.createElement("option");
-  tagoption.textContent = tagbox.textContent.slice(0,-1);
+  tagoption.textContent = tagbox.textContent.slice(0, -1);
   tagoption.id = id;
   let tags = selector.children;
   let found = false;
-  for(let i = 0 ;i < tags.length;i++) {
-    if(parseInt(tags[i].id.slice(8)) > parseInt(id.slice(8))) {
-      selector.children[i].insertAdjacentElement('beforebegin',tagoption);
+  for (let i = 0; i < tags.length; i++) {
+    if (parseInt(tags[i].id.slice(8)) > parseInt(id.slice(8))) {
+      selector.children[i].insertAdjacentElement('beforebegin', tagoption);
       found = true;
       break;
     }
   }
-  if(!found) {
+  if (!found) {
     selector.appendChild(tagoption);
   }
 }
-function getCreatetaskTagbox(text,id) {
-  if(text > 15) {
-    text = text.slice(0,15) + "...";
+function getCreatetaskTagbox(text, id) {
+  if (text > 15) {
+    text = text.slice(0, 15) + "...";
   }
   let tagbox = document.createElement("div");
   tagbox.id = id;
   tagbox.className = "createtask_tagbox";
-  
+
 
   let closebutton = document.createElement("div");
   closebutton.className = "createtask_tagclose";
@@ -321,14 +321,14 @@ function getCreatetaskTagbox(text,id) {
 function onchangeTagSelector() {
   let selector = document.getElementById("createtask_tagselect");
   let tag_select = selector.options[selector.selectedIndex].text;
-  let new_tagbox = getCreatetaskTagbox(tag_select,selector.options[selector.selectedIndex].id);
+  let new_tagbox = getCreatetaskTagbox(tag_select, selector.options[selector.selectedIndex].id);
 
   let taglist = document.getElementById("createtask_taglist");
   taglist.appendChild(new_tagbox);
-  
+
   selector.remove(selector.selectedIndex);
   selector.selectedIndex = 0;
-  
+
 }
 function getCreatetaskTagSelector(list) {
   let selector = document.createElement("select");
@@ -345,8 +345,8 @@ function getCreatetaskTagSelector(list) {
   list.forEach(i => {
     let tagbox = document.createElement("option");
     tagbox.id = "cttagbox" + count.toString();
-    if(i.length > 20) {
-      i = i.slice(0,20) + "...";
+    if (i.length > 20) {
+      i = i.slice(0, 20) + "...";
     }
     tagbox.textContent = i;
     selector.appendChild(tagbox);
@@ -441,24 +441,24 @@ function getCalendar(month, year) {
 
   let first_day = new Date(year, month, 1)
 
-    for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
-        let day = document.createElement('div')
-        if (i >= first_day.getDay()) {
-            day.classList.add('calendar-day-cursor')
-            day.classList.add('calendar-day-hover')
-            day.innerHTML = i - first_day.getDay() + 1
-            day.innerHTML += `<span></span>
+  for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
+    let day = document.createElement('div')
+    if (i >= first_day.getDay()) {
+      day.classList.add('calendar-day-cursor')
+      day.classList.add('calendar-day-hover')
+      day.innerHTML = i - first_day.getDay() + 1
+      day.innerHTML += `<span></span>
                             <span></span>
                             <span></span>
                             <span></span>`
-            day.id = "ctday" + (i - first_day.getDay() + 1);
-            if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
-                day.classList.add('curr-date')
-            }
-            day.addEventListener('click', changeSelect);
-        }
-        calendar_days.appendChild(day)
+      day.id = "ctday" + (i - first_day.getDay() + 1);
+      if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
+        day.classList.add('curr-date')
+      }
+      day.addEventListener('click', changeSelect);
     }
+    calendar_days.appendChild(day)
+  }
 
   calendar_header.querySelector('#ctprev-year').onclick = () => {
     --ctcurr_year.value
@@ -475,7 +475,7 @@ function getCalendar(month, year) {
 
 
 function getAllTagList() {
-  return ["hello1","hello2","hello3","hello4","hello5"];
+  return ["hello1", "hello2", "hello3", "hello4", "hello5"];
 }
 function openCreatetaskOverlay() {
   let taskpage = document.getElementById("taskpage");
@@ -602,16 +602,16 @@ function createTask() {
   let month = ctcurr_month.value;
   let year = ctcurr_year.value;
   let day = currDate.getDate();
-  if(calendar.querySelector('.ctselect-date') != null) {
+  if (calendar.querySelector('.ctselect-date') != null) {
     day = parseInt(calendar.querySelector('.ctselect-date').id.slice(5));
   }
   let hour_select = document.getElementById("cthour_select");
   let hour = parseInt(hour_select.options[hour_select.selectedIndex].text)
   let minute_select = document.getElementById("ctminute_select");
   let minute = parseInt(minute_select.options[minute_select.selectedIndex].text)
-  let time = new Date(year,month,day,hour,minute)
+  let time = new Date(year, month, day, hour, minute)
 
-  console.log(name,description,tags,time)
+  console.log(name, description, tags, time)
 
   closeCreatetask();
   closeScreenOverlay();
@@ -685,6 +685,35 @@ function openDetailtaskOverlay(name, des, tags, outdate) {
 
 
 ///////////////////////datebox////////////////////////
+const color = {
+  "Sun": "#FFB2AD",
+  "Fri": "#ADD8FF",
+  "Mon": "#FDFFAD",
+  "Wed": "#D1FFAD",
+  "Sat": "#BEADFF",
+  "Tue": "#FFADDE",
+  "Thu": "#FFD4AD",
+}
+const colordaybefore = {
+  "Tue": "#FDFFAD",
+  "Wed": "#FFADDE",
+  "Thu": "#D1FFAD",
+  "Fri": "#FFD4AD",
+  "Sun": "#ADD8FF",
+  "Sat": "#FFB2AD",
+  "Mon": "#BEADFF",
+}
+
+const colordayafter = {
+  "Sun": "#FDFFAD",
+  "Mon": "#FFADDE",
+  "Tue": "#D1FFAD",
+  "Wed": "#FFD4AD",
+  "Thu": "#ADD8FF",
+  "Fri": "#BEADFF",
+  "Sat": "#FFB2AD",
+}
+
 
 function addrotate() {
   const h = document.getElementById("fsq1");
@@ -692,7 +721,8 @@ function addrotate() {
   const month = document.getElementById("monthchange");
   const date = document.getElementById("daynumberchange");
   const weekday = document.getElementById("weekdaychange");
-
+  const colorlast = document.getElementById("fsq2")
+  const colorone = document.getElementById("ffsq2")
 
   const rmonth = document.getElementById("month");
   const rweekday = document.getElementById("weekday");
@@ -701,27 +731,34 @@ function addrotate() {
   r.classList.remove("rotatere")
   r.style.animationPlayState = "end"
   h.classList.add("rotate");
-  function change() {
-      const { backDate, backMonth, backweekday } = getBackDateAndMonth(date.innerText, month.innerText, weekday.innerText);
-      date.innerText = backDate;
-      month.innerText = backMonth;
-      weekday.innerText = backweekday;
 
-      rweekday.innerText = backweekday;
-      rdaynum.innerText = backDate;
-      rmonth.innerText = backMonth;
+  function change() {
+    const { backDate, backMonth, backweekday } = getBackDateAndMonth(date.innerText, month.innerText, weekday.innerText);
+    date.innerText = backDate;
+    month.innerText = backMonth;
+    weekday.innerText = backweekday;
+
+    rweekday.innerText = backweekday;
+    rdaynum.innerText = backDate;
+    rmonth.innerText = backMonth;
+    colorlast.style.backgroundColor = color[weekday.innerText];
+    colorone.style.backgroundColor = colordayafter[weekday.innerText];
   }
   h.addEventListener("animationiteration", change);
 
   h.addEventListener("animationend", () => {
-      h.removeEventListener("animationiteration", change);
-      h.classList.remove("rotate");
+    colorlast.style.backgroundColor = color[weekday.innerText];
+    colorone.style.backgroundColor = colordayafter[weekday.innerText];
+    h.removeEventListener("animationiteration", change);
+    h.classList.remove("rotate");
   }, { once: true });
 
 }
 
 
 function addrotatere() {
+  const colorlast = document.getElementById("fsq2")
+  const colorone = document.getElementById("ffsq2")
   const h = document.getElementById("fsq1");
   const month = document.getElementById("monthchange");
   const date = document.getElementById("daynumberchange");
@@ -735,34 +772,39 @@ function addrotatere() {
   h.style.animationPlayState = "end";
   r.classList.add("rotatere");
 
-  function change() {
+  async function change() {
 
-      const { nextDate, nextMonth, nextweekday } = getNextDateAndMonth(date.innerText, month.innerText, weekday.innerText);
-      date.innerText = nextDate;
-      month.innerText = nextMonth;
-      weekday.innerText = nextweekday;
-      rmonth.innerText = nextMonth;
-      rweekday.innerText = nextweekday;
-      rdaynum.innerText = nextDate;
-      console.log(nextDate, nextMonth, nextweekday)
+    const { nextDate, nextMonth, nextweekday } = getNextDateAndMonth(date.innerText, month.innerText, weekday.innerText);
+    date.innerText = nextDate;
+    month.innerText = nextMonth;
+    weekday.innerText = nextweekday;
+    rmonth.innerText = nextMonth;
+    rweekday.innerText = nextweekday;
+    rdaynum.innerText = nextDate;
+    colorlast.style.backgroundColor = colordaybefore[nextweekday];
+    colorone.style.backgroundColor = color[nextweekday];
   }
   r.addEventListener("animationiteration", change);
+
   r.addEventListener("animationend", () => {
-      r.removeEventListener("animationiteration", change);
-      r.classList.remove("rotatere");
+    colorlast.style.backgroundColor = color[weekday.innerText];
+    colorone.style.backgroundColor = colordayafter[weekday.innerText];
+    r.removeEventListener("animationiteration", change);
+    r.classList.remove("rotatere");
   }, { once: true });
 
 }
 function getNextDateAndMonth(date, smonth, weekday) {
   const monthToNumber = {
-      Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
-      Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12
+    Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+    Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12
   };
 
   const numberToMonth = {
-      1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
-      7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
+    1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
+    7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
   };
+
   month = monthToNumber[smonth];
   arr = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   let index = arr.findIndex((element) => { return element == weekday });
@@ -779,13 +821,13 @@ function getNextDateAndMonth(date, smonth, weekday) {
 
 function getBackDateAndMonth(date, smonth, weekday) {
   const monthToNumber = {
-      Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
-      Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12
+    Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+    Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12
   };
 
   const numberToMonth = {
-      1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
-      7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
+    1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
+    7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
   };
   month = monthToNumber[smonth];
   arr = ["Sun", "Sat", "Fri", "Thu", "Wed", "Tue", "Mon"];
@@ -799,12 +841,12 @@ function getBackDateAndMonth(date, smonth, weekday) {
   return { backDate, backMonth, backweekday };
 }
 
-console.log(Math.floor(Math.random() * ((31 - 1) + 1)))
+
 
 /////////////////////////datebox///////////////////////
 
 function getDateString(date) {
-  const monthname = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const monthname = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   let day = date.getDay() <= 9 ? "0" + date.getDay().toString() : date.getDay().toString();
   let month = monthname[date.getMonth()];
   let year = date.getFullYear().toString();
