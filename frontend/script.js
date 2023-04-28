@@ -247,6 +247,7 @@ function openAddFilterOverlay() {
   newfilterContainer.appendChild(filterInput);
   buttonContainer.appendChild(addfilterButton);
   newfilterContainer.appendChild(buttonContainer);
+  openScreenOverlay();
   document.body.appendChild(newfilterContainer);
 }
 
