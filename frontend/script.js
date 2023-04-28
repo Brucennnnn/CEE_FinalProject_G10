@@ -10,21 +10,20 @@ async function addTask(task) {
   await fetch(`http://127.0.0.1:3000/task/addTask`, options)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
-      // location.reload();
+      createTaskitem({ ...task, task_id: data.id })
 
     })
     .catch(err => console.error(err.error))
 }
 
-var redrawDOM = () => {
-  window.document.dispatchEvent(
-    new Event("DOMContentLoaded", {
-      bubbles: true,
-      cancelable: true,
-    })
-  );
-}
+// var redrawDOM = () => {
+//   window.document.dispatchEvent(
+//     new Event("DOMContentLoaded", {
+//       bubbles: true,
+//       cancelable: true,
+//     })
+//   );
+// }
 
 window.onload = async function getAllTask() {
   const options = {
@@ -60,6 +59,7 @@ function createTaskitem(task) {
   let outdate_bottom = document.createElement('div')
 
   taskitem.className = "taskitem";
+  taskitem.id = task.task_id;
   taskitemtext.className = "taskitemtext";
   checkandtext.className = "checkandtext";
   checkbox.className = "checkbox";
@@ -112,9 +112,103 @@ function createTaskitem(task) {
 }
 
 function createMCVTaskitem(task) {
-  
-}
+  let taskList = document.getElementsByClassName("foraddtask")[0];
+  let taskitemmcv = document.createElement('div');
+  let mcviconandtext = document.createElement('div');
+  let mcvicon = document.createElement('img');
+  let mcvtext = document.createElement('div');
+  let mcvtextspan = document.createElement('span');
+  let outdate = document.createElement('div');
+  let outdate_top = document.createElement('div')
+  let outdate_bottom = document.createElement('div')
 
+  taskitemmcv.className = "taskitemmcv";
+  mcviconandtext.className = "mcviconandtext";
+  mcvicon.className = "mcvicon";
+  mcvtext.className = "mcvtext";
+  mcvtextspan.className = "mcvtextspan";
+  outdate.className = "outdate";
+  outdate_top.className = "outdate_top";
+  outdate_bottom.className = "outdate_bottom";
+
+  taskitemmcv.onclick = function () {
+    openDetailmcvtaskOverlay({ course_title: task.course_title, title: task.title, instruction: task.instruction, duetime: task.duetime });
+  }
+
+  mcvtextspan.innerText = task.title;
+  mcvicon.src = task.icon
+
+  if (new Date(task.duetime).getHours().toString().length == 1) {
+    outdate_bottom.innerText = "0" + new Date(task.duetime).getHours().toString() + ":"
+  } else {
+    outdate_bottom.innerText = new Date(task.duetime).getHours().toString() + ":"
+  }
+
+  if (new Date(task.time).getMinutes().toString().length == 1) {
+    outdate_bottom.innerText += "0" + new Date(task.duetime).getMinutes().toString()
+  } else {
+    outdate_bottom.innerText += new Date(task.duetime).getMinutes().toString()
+  }
+
+  outdate.appendChild(outdate_top);
+  outdate.appendChild(outdate_bottom);
+  mcvtext.appendChild(mcvtextspan);
+  mcviconandtext.appendChild(mcvicon);
+  mcviconandtext.appendChild(mcvtext);
+  taskitemmcv.appendChild(mcviconandtext);
+
+  taskList.appendChild(taskitemmcv);
+}
+async function deleteTask(id) {
+  const taskList = document.getElementsByClassName("foraddtask")[0];
+  const taskitem = document.getElementById(id);
+  taskList.removeChild(taskitem);
+  const task = {
+    task_id: id
+  }
+  const options = {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(task)
+  }
+  await fetch(`http://127.0.0.1:3000/task/deleteTask`, options).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
+
+}
+async function handleCheckboxChange(checkbox) {
+  if (checkbox.checked) {
+    console.log(checkbox.id)
+    const task = {
+      task_id: checkbox.id,
+      task_name: "Bruce",
+      task_description: "Wayne",
+      task_status: "completed",
+    }
+    const options = {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    }
+    try {
+
+      const upDateTask = await fetch(`http://127.0.0.1:3000/task/updateTask`, options).then(res => res.json()).catch(err => console.log(err));
+      const taskList = document.getElementsByClassName("foraddtask")[0];
+      const taskitem = document.getElementById(checkbox.id);
+      taskList.removeChild(taskitem);
+      console.log(upDateTask)
+    }
+    catch (err) {
+      console.log(err);
+    }
+
+  }
+
+}
 
 function addMCVTask(info) {
   const taskInput = document.getElementById('taskInput');
@@ -154,11 +248,6 @@ function addMCVTask(info) {
 
 }
 
-function handleCheckboxChange(checkbox) {
-  if (checkbox.checked) {
-    console.log(checkbox.id)//change to add in below list
-  }
-}
 
 function openScreenOverlay() {
   let screenOverlay = document.createElement("div");
@@ -202,6 +291,7 @@ function renderTasklist(tasks) {
     else {
       // my task
       createTaskitem(task);
+      console.log(task, 2)
     }
   });
 
@@ -721,12 +811,11 @@ function createTask() {
   closeCreatetask();
   closeScreenOverlay();
 }
-function deleteTask(id) {
 
-}
 
 function openDetailtaskOverlay(info) {
   let id = info.task_id;
+
   let name = info.task_name;
   let tags = info.tags;
   let des = info.task_description
@@ -763,8 +852,8 @@ function openDetailtaskOverlay(info) {
   close_button.id = "detailtask_close";
   close_button.onclick = function () {
     let detailtaskbox = document.getElementById("detailtask");
-    document.body.removeChild(detailtaskbox);
     closeScreenOverlay();
+    document.body.removeChild(detailtaskbox);
   }
   header.appendChild(close_button);
 
@@ -794,11 +883,15 @@ function openDetailtaskOverlay(info) {
 
   let delete_button = document.createElement("div");
   delete_button.id = "detailtask_delete";
-  delete_button.onclcik = function () {
+  delete_button.onclick = function () {
+
+    let detailtaskbox = document.getElementById("detailtask");
+    closeScreenOverlay();
+    document.body.removeChild(detailtaskbox);
     deleteTask(id);
   }
   let delete_content = document.createElement('p');
-  delete_content.textContent = "Delete";
+  delete_content.innerText = "Delete";
   delete_button.appendChild(delete_content);
 
   top.appendChild(headBox);
@@ -818,13 +911,15 @@ function openDetailtaskOverlay(info) {
   openScreenOverlay();
   document.body.appendChild(detailtask_box);
 }
-function openDetailmcvtaskOverlay(info) {
-  let now = new Date().now();
 
+
+function openDetailmcvtaskOverlay(info) {
+  let now = new Date();
   let mcvtitle = info.course_title;
 
   let box = document.createElement("div");
   box.id = "mcvdetailtask"
+  box.style = "width: 900px; height: 600px;";
 
   let top = document.createElement("div");
 
@@ -845,8 +940,8 @@ function openDetailmcvtaskOverlay(info) {
     headBox.style.background = "#49DFC4";
   }
 
-  let icon = document.createElement("div");
-  icon.style = "width: 3vw; height: 3vw; margin: 3%";
+  // let icon = document.createElement("div");
+  // icon.style = "width: 3vw; height: 3vw; margin: 3%";
   let title = document.createElement("id");
   title.textContent = mcvtitle;
   let close_button = document.createElement("img");
@@ -858,15 +953,16 @@ function openDetailmcvtaskOverlay(info) {
     closeScreenOverlay();
   }
 
-  header.appendChild(icon);
+  // header.appendChild(icon);
   header.appendChild(title);
-  header.appendChild(closebutton);
+  header.appendChild(close_button);
 
   let desheader = document.createElement("p");
   desheader.id = "mcvdetailtask_desheader";
   desheader.textContent = info.title;
 
   let des = document.createElement('div');
+  des.className = "mcvdetailtask_des"
   des.innerHTML = info.instruction;
 
   let bottom = document.createElement("div");

@@ -24,7 +24,7 @@
 }
 
 body {
-  font-family: Inter, sans-serif;
+  font-family:  sans-serif;
   background-color: white;
   margin: 0;
   padding: 0;
@@ -36,7 +36,7 @@ body {
 #taskpage{
   display: flex;
   flex-direction: column;
-  font-family: Inter, sans-serif;
+  font-family:  sans-serif;
   gap:1.2vw;
   width: 74vw;
   height: 100%;
@@ -69,7 +69,7 @@ body {
 #taskpage_header {
   display: flex;
   justify-content: space-between;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   font-size: 2vw;
   font-weight: bold;
   width: 75vw;
@@ -148,7 +148,7 @@ input[type="text"]:focus {
   transform: scale(0);
 }
 .checkbox_input:checked + .checkbox_box{
-  background: #49DFC4;
+  background: #24e170;
 }
 
 .light {
@@ -372,23 +372,29 @@ input[type="text"]:focus {
 
 .outdate{
   justify-content: center;
-  
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  flex-direction: column;
 }
+
 .outdate_top{
-  width: 5.435vw;
-  height: 0.825vw;
-  border-radius: 0.512vw 0.512vw 0px 0px;
-  border: 0.0512vw solid #000000;
+  width: 5vw;
+  height: 1vw;
+  border: 0.2vw solid #000000;
+  border-radius: 10px 10px 0px 0px;
   border-bottom: 0;
 }
 .outdate_bottom{
-  width: 5.435vw;
-  height: 2.0vw; 
-  border: 0.0512vw solid #000000;
+  width: 5vw;
+  height: 2vw; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-top: 0;
-  border-radius: 0px 0px 0.512vw 0.512vw;
+  border:0.2vw solid #000000;
+  border-radius: 0px 0px 10px 10px;
   font-weight: bold;
-  display: table-cell;
   vertical-align: middle;
   text-align: center;
   font-size: 1.230vw;
@@ -410,10 +416,8 @@ input[type="text"]:focus {
   align-items: center;
   border-radius: 0.512vw;
   border: 2px solid #000000;
-
   margin: 1%;
   transition: width 200ms,height 200ms,margin 200ms;
-
   cursor: pointer;
 }
 .taskitem:hover{
@@ -432,13 +436,13 @@ input[type="text"]:focus {
   padding: 1vw;
   filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
   background: #018ADA;
-  width: 32.025vw;
+  width: 31vw;
   height: 3.158vw;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   border-radius: 0.512vw;
-  border: 0.0512vw solid #000000;
+  border: 2px solid #000000;
 
   margin: 1%;
   transition: width 200ms,height 200ms,margin 200ms;
@@ -586,7 +590,7 @@ input[type="text"]:focus {
   right: 1.2vw;
   top: 2.5vw;
   height: 8vh;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   border-radius: 0.512vw;
   padding: 1vw;
   background-color: #ECECEC;
@@ -600,7 +604,7 @@ input[type="text"]:focus {
   animation-duration: 300ms;
 }
 #createtask_header{
-  font-family: Inter, sans-serif;
+  font-family:  sans-serif;
   font-weight: bold;
   font-size: 1.68vw;
   display: flex;
@@ -623,7 +627,7 @@ input[type="text"]:focus {
   margin-right: -0.5%;
 }
 #createtask_Name {
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   border: none;
   margin-top: 4%;
   padding: 0.512vw;
@@ -644,7 +648,7 @@ input[type="text"]:focus {
   font-size: 1.4vw;
 }
 #createtask_Description {
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   width: 90%;
   min-height: 1.25vw;
   background: none;
@@ -743,7 +747,7 @@ input[type="text"]:focus {
   border: 0.118vw solid #000000;
 }
 .createtask_select div {
-  font-family: Inter;
+  font-family: sans-serif;
   border-radius: 0.512vw;
   border: none;
 }
@@ -755,7 +759,7 @@ input[type="text"]:focus {
   text-align: center;
   font-weight: bold;
   font-size: 1.356vw;
-  font-family: Inter, sans-serif;
+  font-family:  sans-serif;
   color: white;
   background: #5FC9CD;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -809,7 +813,7 @@ input[type="text"]:focus {
 }
 #detailtask_header{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-weight: bold;
@@ -834,7 +838,7 @@ input[type="text"]:focus {
 }
 #detailtask_description{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-size: 1vw;
@@ -874,7 +878,7 @@ input[type="text"]:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.48vw;
   max-width: 36.3vw;
@@ -882,7 +886,7 @@ input[type="text"]:focus {
 }
 #detailtask_delete{
   display: flex;
-  font-family: Inter;
+  font-family:sans-serif;
   font-size: 1.2vw;
   width: 8.5vw;
   height: 2.5vw;
@@ -919,7 +923,7 @@ input[type="text"]:focus {
 }
 #mcvdetailtask_header{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-weight: bold;
@@ -927,10 +931,11 @@ input[type="text"]:focus {
   display: flex;
   justify-content: space-between;
   max-width: 36.3vw;
+  width: 100%;
 }
 #mcvdetailtask_desheader{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-weight: bold;
@@ -956,11 +961,6 @@ input[type="text"]:focus {
 
 
 
-button{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
   p{
     display: inline;
     vertical-align: middle;
@@ -1210,4 +1210,29 @@ button{
 
 .outdate_top{
   background-color: red;
+}
+
+.mcviconandtext {
+  display: flex;
+}
+
+.mcvicon {
+  width: 3vw;
+  height: 3vw;
+}
+
+.mcvtext {
+  color: white;
+  margin-left: 1.024vw;
+  overflow-wrap: anywhere;
+  width: 21vw;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.mcvdetailtask_des {
+  width: fit-content;
+  height: fit-content;
+  padding: 20px;
 }
