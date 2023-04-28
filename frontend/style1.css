@@ -187,7 +187,7 @@ input[type="text"]:focus {
   padding: 1vw;
   position: relative;
   overflow: hidden;
-  border: 0.1vw solid #000000;
+  border: 0.2vw solid #000000;
 }
 .light .calendar {
   box-shadow: var(--shadow);
@@ -238,16 +238,12 @@ input[type="text"]:focus {
 .calendar-days div span {
   position: absolute;
 }
-/* .calendar-days div:hover span {
-  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-} */
 .calendar-days-cursor{
   cursor: pointer;
 }
 .calendar-days-hover:hover {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   background-color: #fbc7d4;
-  /* border-radius: 20%; */
   border-radius: 50%;
   color: var(--dark-text);
 }
@@ -257,10 +253,6 @@ input[type="text"]:focus {
   height: 0;
   background-color: var(--color-txt);
 }
-/* .calendar-days div:hover span:nth-child(1),
-.calendar-days div:hover span:nth-child(3) {
-  height: 100%;
-} */
 .calendar-days div span:nth-child(1) {
   bottom: 0;
   left: 0;
@@ -275,10 +267,6 @@ input[type="text"]:focus {
   height: 0;
   background-color: var(--color-txt);
 }
-/* .calendar-days div:hover span:nth-child(2),
-.calendar-days div:hover span:nth-child(4) {
-  width: 100%;
-} */
 .calendar-days div span:nth-child(2) {
   top: 0;
   left: 0;
@@ -287,17 +275,6 @@ input[type="text"]:focus {
   bottom: 0;
   right: 0;
 }
-/* .calendar-days div:hover span:nth-child(2) {
-  transition-delay: 0.2s;
-}
-
-.calendar-days div:hover span:nth-child(3) {
-  transition-delay: 0.4s;
-}
-
-.calendar-days div:hover span:nth-child(4) {
-  transition-delay: 0.6s;
-} */
 .calendar-days div.curr-date,
 .calendar-days div.curr-date:hover {
   background-color: var(--blue);
@@ -1177,7 +1154,7 @@ font-weight: bold;
   gap: 1rem;
   flex-wrap: wrap;
   background: #ABDADC;
-  border-radius: 0.5vw;
+  border-radius: 15px;
   border: 0.2vw solid #000000;
   overflow: auto;
 }
@@ -1188,7 +1165,7 @@ font-weight: bold;
   padding: 1rem;
   align-items: center;
   flex-direction: row;
-  width: 100%;
+  width: 20vw;
   background-color: #F1FAFE;
   border-radius: 0.512vw;
   border-color: black;
@@ -1205,10 +1182,6 @@ font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.circle.white {
-  background-color: white;
 }
 
 #circle-number {
@@ -1236,16 +1209,6 @@ font-weight: bold;
   color: #000000;
 }
 
-.clicked {
-  background-color: black;
-  border-color: #F1FAFE;
-
-}
-
-.clicked .circle {
-  background-color: white;
-  color: #000000;
-}
 
 #filter-text {
   width: 100%;

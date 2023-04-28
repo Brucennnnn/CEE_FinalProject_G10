@@ -167,7 +167,7 @@ const text = document.getElementById("text");
 let numberTask = 0;
 
 const c1 = "white";
-const c2 = "#8BDCFF";
+const c2 = "#A6E4FF";
 
 // circle.appendChild(circleNumber);
 // circleNumber.innerHTML = numberTask;
@@ -178,12 +178,10 @@ const c2 = "#8BDCFF";
 function changeColor() {
     button.classList.toggle("clicked");
     circle.classList.toggle("clicked");
-    if (circle.style.backgroundColor === c1) {
-      circle.style.backgroundColor = c2;
-      button.style.backgroundColor = c1;
-    } else {
-      circle.style.backgroundColor = c1;
+    if (button.style.backgroundColor === c1) {
       button.style.backgroundColor = c2;
+    } else {
+      button.style.backgroundColor = c1;
     }
 }
 
