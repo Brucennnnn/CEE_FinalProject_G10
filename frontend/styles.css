@@ -114,29 +114,6 @@ input[type="text"]:focus {
   font-size: 24px;
 }
 
-#taskList{
-  padding: 0.5vw;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  background: #ABDADC;
-  border-radius: 15px;
-  border-color: black;
-  border: 3px solid #000000;
-  overflow: auto;
-}
-#taskList::-webkit-scrollbar {
-  background: #ddd;
-  width: 1.512vh;
-  border-radius: 100px;
-  cursor: pointer;
-}
-#taskList::-webkit-scrollbar-thumb {
-  cursor: pointer;
-  background: grey;
-  border-radius: 100px;
-}
 
 
 
@@ -440,11 +417,11 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .taskitem:hover{
-  margin-left: -0.05%;
-  margin-right: -0.05%;
-  margin-bottom: -0.04%;
-  width: 33.514vw;
-  height: 3.356vw;
+  margin-left: -0.025%;
+  margin-right: -0.025%;
+  margin-bottom: -0.02%;
+  width: 32vw;
+  height: 3.2vw;
 }
 .taskitemmcv{
   display: table-cell;
@@ -471,7 +448,6 @@ input[type="text"]:focus {
 .taskitemmcv:hover{
   margin-left: -0.05%;
   margin-right: -0.05%;
-  margin-bottom: -0.04%;
   width: 33.514vw;
   height: 3.356vw;
 }
@@ -1182,3 +1158,56 @@ button{
     }
    
   }
+
+  #taskList{
+    padding: 0.5vw;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    background: #ABDADC;
+    border-radius: 15px;
+    border-color: black;
+    border: 3px solid #000000;
+    overflow-y: scroll;
+    
+  }
+
+  .foraddtask{
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  display:flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+}
+
+.foraddtask::-webkit-scrollbar {
+  display: none;
+}
+
+.foraddtask::-webkit-scrollbar-track {
+  display: none;
+}
+.foraddtask::-webkit-scrollbar-thumb {
+  display: none;
+}
+  
+
+
+.taskitemtext{
+  margin-left: 3%;
+  word-wrap: break-word;
+  width: 21vw;
+
+}
+
+.checkandtext{
+  display: flex;
+}
+
+.outdate_top{
+  background-color: red;
+}

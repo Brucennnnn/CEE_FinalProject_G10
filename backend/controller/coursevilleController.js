@@ -53,7 +53,7 @@ exports.accessToken = async (req, res) => {
       console.log(req.session);
       if (token) {
         res.writeHead(302, {
-          Location: `http://${process.env.frontendIPAddress}/frontend/index.html`,
+          Location: `http://${process.env.frontendIPAddress}/frontend/taskpage.html`,
         });
         res.send(getUserID(req));
         res.end();
@@ -67,6 +67,10 @@ exports.accessToken = async (req, res) => {
   }
 };
 
+exports.returnSession = async (req, res) => {
+  res.send(req.session.token)
+  res.end()
+}
 
 
 exports.getCourse = async (req, res) => {
@@ -101,17 +105,18 @@ exports.getSemesterAndYear = async (req, res) => {
     let sem = 0;
     let year = 0;
     axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions)
-    .then(profileRes => profileRes.data.data.student)
-    .then(courses => {
-      courses.map(e => {
+      .then(profileRes => profileRes.data.data.student)
+      .then(courses => {
+        courses.map(e => {
           if (e.year > year) {
             year = e.year
             sem = e.semester
           }
           else if (e.year == year && e.semester > sem) {
             sem = e.semester
-          
-        }})
+
+          }
+        })
         res.send({ sem: sem, year: year })
         res.end()
         return
@@ -166,7 +171,7 @@ exports.getAllAssignments = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
+    await axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
       profileRes.data.data.student).then(courses => {
         let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
           return { cv_cid: e.cv_cid, title: e.title }
@@ -191,7 +196,7 @@ exports.getAllAssignments = async (req, res) => {
 
 async function passer(courseid, req) {
   try {
-    const re = Promise.all(courseid.map(element => {
+    const re = await Promise.all(courseid.map(element => {
       return findAllAssignmentbyID(req, element)
     }))
     return re

@@ -50,85 +50,43 @@
       </img>
     </div>
     <div id="taskList">
-      <div style="height: 0vh; display: flex;flex-direction: row; flex-wrap: wrap;">
-        <div class="taskitem" onclick='openDetailtaskOverlay("hrllo","dfsf",["sdf"],Date())'>
-          <div style="display:flex;">
-            <label class="checkbox" for="myCheckboxList">
+      <div class="foraddtask">
+        
+        
+        <div class="taskitem" onclick='openDetailtaskOverlay({task_id:"hrllo",task_name:"dfsf",tags:["sdf"],task_description: new Date(),due_date:new Date()})'>
+          
+          <div class="checkandtext">
+           
+            <label class="checkbox">
               <input onclick="event.stopPropagation();" class="checkbox_input" type="checkbox" name="myCheckboxName"
-                id="myCheckboxList" onchange=handleCheckboxChange()>
+                id="myCheckboxList" onchange=handleCheckboxChange(this)>
               <div onclick="event.stopPropagation();" class="checkbox_box"></div>
             </label>
-            <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
+            
+            <div class="taskitemtext">
               fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             </div>
+          
           </div>
+          
+          
           <div class="outdate">
-            <div class="outdate_top" style="background: #D43F00;">
+            
+            <div class="outdate_top">
             </div>
+            
             <div class="outdate_bottom">
               08.00
             </div>
+          
           </div>
+        
         </div>
 
 
-        <div class="taskitem" onclick='openDetailtaskOverlay("hrllo","dfsf",["sdf"],Date())'>
-          <div style="display:flex;">
-            <label class="checkbox" for="myCheckboxList">
-              <input onclick="event.stopPropagation();" class="checkbox_input" type="checkbox" name="myCheckboxName"
-                id="myCheckboxList" onchange=handleCheckboxChange()>
-              <div onclick="event.stopPropagation();" class="checkbox_box"></div>
-            </label>
-            <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
-              fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-            </div>
-          </div>
-          <div class="outdate">
-            <div class="outdate_top" style="background: #D43F00;">
-            </div>
-            <div class="outdate_bottom">
-              08.00
-            </div>
-          </div>
-        </div>
-        <div class="taskitem" onclick='openDetailtaskOverlay("hrllo","dfsf",["sdf"],Date())'>
-          <div style="display:flex;">
-            <label class="checkbox" for="myCheckboxList">
-              <input onclick="event.stopPropagation();" class="checkbox_input" type="checkbox" name="myCheckboxName"
-                id="myCheckboxList" onchange=handleCheckboxChange()>
-              <div onclick="event.stopPropagation();" class="checkbox_box"></div>
-            </label>
-            <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
-              fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-            </div>
-          </div>
-          <div class="outdate">
-            <div class="outdate_top" style="background: #D43F00;">
-            </div>
-            <div class="outdate_bottom">
-              08.00
-            </div>
-          </div>
-        </div>
-        <div class="taskitem" onclick='openDetailtaskOverlay("hrllo","dfsf",["sdf"],Date())'>
-          <div style="display:flex;">
-            <label class="checkbox" for="myCheckboxList">
-              <input onclick="event.stopPropagation();" class="checkbox_input" type="checkbox" name="myCheckboxName"
-                id="myCheckboxList" onchange=handleCheckboxChange()>
-              <div onclick="event.stopPropagation();" class="checkbox_box"></div>
-            </label>
-            <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
-              fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-            </div>
-          </div>
-          <div class="outdate">
-            <div class="outdate_top" style="background: #D43F00;">
-            </div>
-            <div class="outdate_bottom">
-              08.00
-            </div>
-          </div>
-        </div>
+        
+        
+        
 
       </div>
     </div>

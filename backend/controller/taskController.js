@@ -17,6 +17,7 @@ exports.addTask = async (req, res) => {
     const task_id = uuidv4();
     const created_date = new Date().toISOString();
     const item = {user_id: req.user_id, task_id: task_id, ...req.body, created_date}
+    console.log(item)
     const params = {
         TableName: process.env.aws_user_tasks_table_name,
         Item: item 
@@ -116,7 +117,7 @@ exports.getTasksByStatus = async (req, res) => {
         let status = false;
         if (req.params.status === "completed") {
             status = true;
-        } else if (req.params.status === "incomplete") {
+        } else if (req.params.status === "incompleted") {
             status = false;
         } else {
             throw new Error("Invalid status");
