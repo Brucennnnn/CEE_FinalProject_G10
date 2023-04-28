@@ -81,7 +81,7 @@ exports.getCourse = async (req, res) => {
         let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
           return { cv_cid: e.cv_cid, title: e.title }
         })
-        
+
         res.send(all_courses)
         res.end()
         return
@@ -90,6 +90,7 @@ exports.getCourse = async (req, res) => {
     console.log(err);
   }
 };
+
 exports.getSemesterAndYear = async (req, res) => {
   try {
     const profileOptions = {
@@ -97,17 +98,21 @@ exports.getSemesterAndYear = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    let sem=0;
-    let year=0;
-    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>  
-    profileRes.data.data.student).then(courses => {
-         courses.map(e => {
-          if(e.year>year && e.semester>sem ){
-            sem=e.semester
-            year=e.year
+    let sem = 0;
+    let year = 0;
+    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions)
+    .then(profileRes => profileRes.data.data.student)
+    .then(courses => {
+      courses.map(e => {
+          if (e.year > year) {
+            year = e.year
+            sem = e.semester
           }
-        })
-        res.send({sem:sem,year:year})
+          else if (e.year == year && e.semester > sem) {
+            sem = e.semester
+          
+        }})
+        res.send({ sem: sem, year: year })
         res.end()
         return
       })
@@ -115,6 +120,8 @@ exports.getSemesterAndYear = async (req, res) => {
     console.log(err);
   }
 };
+
+
 
 
 exports.getAssignments = async (req, res) => {
@@ -173,7 +180,7 @@ exports.getAllAssignments = async (req, res) => {
           // Promise.all(all_courses.map(element => {
           //   findAllAssignmentbyID(req, element.cv_cid).then(e => e.forEach(k => k.forEach(s => (arr.push({course_title: element.title, item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
           // }))
-          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime, instruction: s.instruction}))))).then(() => res.send(arr)).then(() => res.end())
+          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime, instruction: s.instruction }))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
         });
@@ -214,7 +221,7 @@ function findAllAssignmentbyID(req, element) {
             Object.assign(e, { cv_cid: element.cv_cid })
           });
           const now = new Date();
-          profile.data = profile.data.filter(e => e.duetime > now.getTime()/1000)
+          profile.data = profile.data.filter(e => e.duetime > now.getTime() / 1000)
           resolve(profile.data);
         }
       })
