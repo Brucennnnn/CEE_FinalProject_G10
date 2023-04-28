@@ -81,7 +81,6 @@ exports.getCourse = async (req, res) => {
         let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
           return { cv_cid: e.cv_cid, title: e.title }
         })
-        
         res.send(all_courses)
         res.end()
         return
@@ -162,7 +161,7 @@ exports.getAllAssignments = async (req, res) => {
     axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
       profileRes.data.data.student).then(courses => {
         let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
-          return { cv_cid: e.cv_cid, title: e.title }
+          return { cv_cid: e.cv_cid, title: e.title, icon: e.course_icon }
         })
         return all_courses
       }
@@ -173,7 +172,7 @@ exports.getAllAssignments = async (req, res) => {
           // Promise.all(all_courses.map(element => {
           //   findAllAssignmentbyID(req, element.cv_cid).then(e => e.forEach(k => k.forEach(s => (arr.push({course_title: element.title, item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
           // }))
-          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime, instruction: s.instruction}))))).then(() => res.send(arr)).then(() => res.end())
+          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, icon: s.icon, created: s.created, duetime: s.duetime, instruction: s.instruction}))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
         });
@@ -212,6 +211,7 @@ function findAllAssignmentbyID(req, element) {
           profile.data.forEach((e) => {
             Object.assign(e, { course_title: element.title })
             Object.assign(e, { cv_cid: element.cv_cid })
+            Object.assign(e, { icon: element.icon })
           });
           const now = new Date();
           profile.data = profile.data.filter(e => e.duetime > now.getTime()/1000)
