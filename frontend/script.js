@@ -132,24 +132,62 @@ function renderTasklist(tasks) {
   let _tasklist = document.createElement("div");
   _tasklist.style="height: 0vh; display: flex; flex-wrap: wrap;justify-content: left;";
 
-  let taskBoxs;
   tasks.forEach(task=> {
     if(task.tags !== undefined) {
       // mcv task
-      taskBoxs.appendChild(getMcvTaskItem(task));
+      _tasklist.appendChild(getMcvTaskItem(task));
     }
     else {
       // my task
-      taskBoxs.appendChild(getTaskItem(task));
+      _tasklist.appendChild(getTaskItem(task));
     }
   });
 
   tasklist.innerHTML = _tasklist;
 }
 function renderCompleteTasklist(today_task,yesterday_tasks,lastweek_tasks,lastmonth_task) {
+  let tasklist = document.getElementById("taskList");
+  tasklist.innerHTML = "";
 
+  let _tasklist = document.createElement("div");
+  _tasklist.style="height: 0vh; display: flex; flex-wrap: wrap;justify-content: left;";
+
+  let appendContent = function(text,tasks) {
+    let line = getCompTaskDateLine(text);
+    if(tasks.length != 0) {
+      _tasklist.appendChild(line);
+      tasks.forEach(task=> {
+        if(task.tags !== undefined) {
+          // mcv task
+          _tasklist.appendChild(getMcvTaskItem(task));
+        }
+        else {
+          // my task
+          _tasklist.appendChild(getTaskItem(task));
+        }
+      });
+    }  
+  }
+
+  appendContent("Today",today_task);
+  appendContent("Yesterday",yesterday_tasks);
+  appendContent("Last Week",lastweek_tasks);
+  appendContent("Last Month",lastmonth_task);
 }
-
+function getCompTaskDateLine(text) {
+  let linebox = document.createElement("div");
+  linebox.className = "comptask_linecontainter";
+  let line1 = document.createElement("hr");
+  line1.className=  "comptask_line1";
+  let text_content = document.createElement("p");
+  text_content.textContent = text;
+  let line2 = document.createElemente("hr");
+  line2.className = 'comptask_line2';
+  linebox.appendChild(line1);
+  linebox.appendChild(text_content);
+  linebox.appendChild(line2);
+  return linebox;
+}
 function getDeadlineBox(dealine) {
   let now = Date().now();
 
