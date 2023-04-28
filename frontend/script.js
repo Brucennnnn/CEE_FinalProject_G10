@@ -169,8 +169,15 @@ const Completed_num = document.getElementById("Completed_cnt");
 // const text = document.getElementById("text");
 let numberTask = 0;
 
-const c1 = "white";
-const c2 = "#A6E4FF";
+const c1 = hexToRgb("#F1FAFE");
+const c2 = hexToRgb("#A6E4FF");
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.substring(1, 3), 16);
+  const g = parseInt(hex.substring(3, 5), 16);
+  const b = parseInt(hex.substring(5, 7), 16);
+  return "rgb(" + r + ", " + g + ", " + b + ")";
+}
 
 function changeColor(button) {
     button.classList.toggle("clicked");
