@@ -125,62 +125,43 @@ function login() {
   }
 }
 
-function renderTaskpage(date, tags, tasks) {
-  let taskpage = document.createElement("div");
-  taskpage.id = "taskpage";
+function renderTasklist(tasks) {
+  let tasklist = document.getElementById("taskList");
+  tasklist.innerHTML = "";
 
-  let header = document.createElement("div");
-  header.id = "taskpage_header"
-  let title = document.createElement("div");
-  title.textContent = date == currDate ? "Today" : getDateString(date);
-  let createtask_button = document.createElement("img");
-  createtask_button.src = "image/createtask_button.png";
-  createtask_button.id = "createtask_button"
-  createtask_button.onclick = function () {
-    openCreatetaskOverlay()
-  }
+  let _tasklist = document.createElement("div");
+  _tasklist.style="height: 0vh; display: flex; flex-wrap: wrap;justify-content: left;";
 
-  let taglist = document.createElement("div");
-  taglist.id = "taglist";
-  tags.forEach(tag => {
-    let tagbox = document.createElement("div");
-    tagbox.className = "tagbox";
-    tagbox.textContent = tag;
-    taglist.appendChild(tagbox);
-  })
+  let taskBoxs;
+  tasks.forEach(task=> {
+    if(task.tags !== undefined) {
+      // mcv task
+      taskBoxs.appendChild(getMcvTaskItem(task));
+    }
+    else {
+      // my task
+      taskBoxs.appendChild(getTaskItem(task));
+    }
+  });
 
-  let tasklist = document.createElement("div");
-  tasklist.id = "tasklist";
-  tasks.forEach(task => {
-    let taskbox = getTaskItem(task.id, task.name, task.outdate);
-    tasklist.appendChild(taskbox);
-  })
-
-  taskpage.appendChild(header);
-  taskpage.appendChild(taglist);
-  taskpage.appendChild(tasklist);
-
-  let oldtaskpage = document.getElementById("taskpage");
-  if (oldtaskpage != null) {
-    oldtaskpage.parentNode.remove(oldtaskpage);
-  }
-  document.body.appendChild(taskpage);
+  tasklist.innerHTML = _tasklist;
 }
-
-function renderCompleteTaskpage() {
+function renderCompleteTasklist(today_task,yesterday_tasks,lastweek_tasks,lastmonth_task) {
 
 }
 
-function getDeadlineBox(now, outdate) {
-  const hour = outdate.getHours();
-  const minute = outdate.getMinutes();
+function getDeadlineBox(dealine) {
+  let now = Date().now();
+
+  const hour = dealine.getHours();
+  const minute = dealine.getMinutes();
   let time_string = hour.toString() + ":" + minute.toString();
   time_string = hour <= 9 ? "0" + time_string : time_string;
   let object = document.createElement("div");
 
   let top = document.createElement("div");
   top.className = "outdate_top";
-  if (now > outdate) {
+  if(now > dealine) {
     top.style.background = "#E63946";
   }
   else {
@@ -199,84 +180,140 @@ function getDeadlineBox(now, outdate) {
 
 
 
-function getCheckBox() {
+function getCheckBox(id) {
   const la = document.createElement('label');
   la.className = 'checkbox';
   const inp = document.createElement('input');
   inp.className = 'checkbox_input';
   inp.type = 'checkbox';
   inp.id = `${generateRandomId(10)}`;
-  inp.setAttribute("onchange", "handleCheckboxChange(this)");
+  inp.setAttribute("onchange", `${handleCheckboxChange(id)}`);
   inp.onclick = "event.stopPropagation();"
 
 
   const di = document.createElement('div');
   di.className = 'checkbox_box';
   di.onclick = "event.stopPropagation();"
-
+    
   la.appendChild(inp);
   la.appendChild(di);
   return la
 }
 
-function getTaskItem(id, text, outdate) {
+function getTaskItem(info) {
+  let text = info.task_name;
+  let deadline = new Date(info.due_date);
+  let id = info.task_id;
+
   if (text.length > 100) {
     text = text.slice(0, 100) + "...";
   }
   let taskitem = document.createElement("div");
   taskitem.className = "taskitem"
   taskitem.id = id;
+  taskitem.onclick=`${openDetailtaskOverlay(getTaskInfo(id))}`;
 
   let front = document.createElement("div");
   front.style.display = "flex";
-  front.appendChild(getCheckBox());
+  front.appendChild(getCheckBox(id));
   let front_text = document.createElement("div");
   front_text.style = "margin-left: 3%; overflow-wrap: anywhere; width: 21vw;";
   front_text.textContent = text;
   front.appendChild(front_text);
 
-  let back = getDeadlineBox(Date.now(), outdate);
+  let back = getDeadlineBox(deadline);
 
   taskitem.appendChild(front);
   taskitem.appendChild(back);
   return taskitem;
 }
+function getMcvTaskItem(info){
+  let text = info.title;
+  let id = info.item_id;
+  let deadline = Date(info.duetime);
+  let imgsrc = info.icon;
 
-function getMcvTaskItem(id, text, outdate) {
+  if (text.length > 100) {
+    text = text.slice(0, 100) + "...";
+  }
 
+  let taskitem = document.createElement("div");
+  taskitem.className = "taskitemmcv";
+
+  let front = document.createElement("div");
+  front.style= "display:flex;";
+  let icon =document.createElement("img");
+  icon.style = "width: 3vw;height: 3vw;";
+  icon.src = imgsrc;
+  let title = document.createElemente("div");
+  title.style = "color: white;margin-left: 1.024vw; overflow-wrap: anywhere; width: 21vw;display: flex;align-items: center;justify-content: left;";
+  let content = document.createElement("span");
+  content.textContent = text;
+
+  taskitem.appendChild(front);
+  taskitem.appendChild(getDeadlineBox(deadline));
+
+  return taskitem;
 }
+function getCompletedTaskItem(info) {
+  let text = info.title;
+  let deadline = Date(info.duetime);
+  let id = info.task_id
+  
+  let box = document.createElement("div");
+  box.className = "taskitemcomplete";
 
-function getCompletedTaskItem(text, outdate) {
-  let taskItem = getTaskItem(text, outdate);
+  let front = document.createElement("div");
+  front.style.display = "flex";
+  let checkbox = getCheckBox(id);
+  checkbox.querySelector('input[type="checkbox"]').checked = true;
+  let text_content = document.createElement("div");
+  text_content.style = "color: white;margin-left: 3%; word-wrap: break-word; width: 21vw;";
+  text_content.textContent = text;
+  front.appendChild(checkbox);
+  front.appendChild(text_content);
 
-  let checkbox = taskItem.firstChild;
-  checkbox.style.zIndex = 2;
-  taskItem.querySelector('input[type="checkbox"]').checked = true;
+  let deadline_box = getDeadlineBox(deadline);
+  deadline_box.lastChild.style.color = "#646464";
 
-  let close_button = taskItem.lastChild;
-  close_button.style.zIndex = 2;
+  box.appendChild(front);
+  box.appendChild(deadline);
 
-  let overlay = document.createElement("div");
-  overlay.className = "completed_task_overlay";
+  return box;
+}
+function getMcvCompletedTaskItem(info) {
+  let icon_src = info.icon;
+  let text = info.title;
+  let deadline = Date(info.duetime);
 
-  taskItem.appendChild(overlay);
+  let box = document.createElement("div");
+  box.className = "taskitemmcvcomplete";
 
-  return taskItem;
+  let front = document.createElement("div");
+  front.style.display = "flex";
+  let icon = document.createElement("img");
+  icon.src = icon_src;
+  icon.style = "width: 3vw;height: 3vw;";
+  let title = document.createElement("div");
+  title.style = "color: white;margin-left: 1.024vw; overflow-wrap: anywhere; width: 21vw;display: flex;align-items: center;justify-content: left;";
+  let text_content = document.createElement('span');
+  text_content.textContent = text;
+  title.appendChild(text_content);
+  front.appendChild(icon);
+  front.appendChild(title);
+
+  let deadline_box = getDeadlineBox(deadline);
+  deadline_box.lastChild.style.color = '#646464';
+
+  box.appendChild(front);
+  box.appendChild(deadline);
+
+  return box;
 }
 
 function closeCreatetask() {
   let createtask_box = document.getElementById("createtask_box");
   createtask_box.parentNode.removeChild(createtask_box);
-}
-function getTagbox(text) {
-  if (text.length > 40) {
-    text = text.slice(0, 40) + "...";
-  }
-
-  let tagBox = document.createElement("div");
-  tagBox.className = "tagbox";
-  tagBox.textContent = text;
-  return tagBox;
 }
 function deleteCreatetaskTagbox(id) {
   let tagbox = document.getElementById(id);
@@ -307,13 +344,13 @@ function getCreatetaskTagbox(text, id) {
   let tagbox = document.createElement("div");
   tagbox.id = id;
   tagbox.className = "createtask_tagbox";
-
+  
 
   let closebutton = document.createElement("div");
   closebutton.className = "createtask_tagclose";
   closebutton.onclick = function () { deleteCreatetaskTagbox(tagbox.id); }
   closebutton.textContent = "X";
-
+  
   tagbox.textContent = text;
   tagbox.appendChild(closebutton);
   return tagbox;
@@ -325,10 +362,10 @@ function onchangeTagSelector() {
 
   let taglist = document.getElementById("createtask_taglist");
   taglist.appendChild(new_tagbox);
-
+  
   selector.remove(selector.selectedIndex);
   selector.selectedIndex = 0;
-
+  
 }
 function getCreatetaskTagSelector(list) {
   let selector = document.createElement("select");
@@ -369,107 +406,107 @@ function regenerateCtCalendar(month, year) {
   timeheader.insertAdjacentElement('afterend', newcalendar);
 }
 function getCalendar(month, year) {
-  let calendar = document.createElement('div')
-  calendar.className = 'calendar';
-  calendar.id = "ctcalendar";
+    let calendar = document.createElement('div')
+    calendar.className = 'calendar';
+    calendar.id = "ctcalendar";
 
-  let calendar_header = document.createElement('div');
-  calendar_header.className = "calendar-header";
-  let insideheader = '<span class="month-picker" id="month-picker">April</span><div class="year-picker"><span class="year-change" id="ctprev-year"><</span><span id="year">2022</span><span class="year-change" id="ctnext-year">></span></div>';
-  calendar_header.innerHTML = insideheader;
+    let calendar_header = document.createElement('div');
+    calendar_header.className = "calendar-header";
+    let insideheader = '<span class="month-picker" id="month-picker">April</span><div class="year-picker"><span class="year-change" id="ctprev-year"><</span><span id="year">2022</span><span class="year-change" id="ctnext-year">></span></div>';
+    calendar_header.innerHTML = insideheader;
 
-  let calendar_body = document.createElement('div');
-  let insidebody = '<div class="calendar-week-day"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendar-days"></div>';
-  calendar_body.innerHTML = insidebody;
+    let calendar_body = document.createElement('div');
+    let insidebody = '<div class="calendar-week-day"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendar-days"></div>';
+    calendar_body.innerHTML = insidebody;
 
-  let month_list = document.createElement('div');
-  month_list.className = "month-list";
-  month_list.id = "month-list";
+    let month_list = document.createElement('div');
+    month_list.className = "month-list";
+    month_list.id = "month-list";
 
-  calendar.appendChild(calendar_header);
-  calendar.appendChild(calendar_body);
-  calendar.appendChild(month_list);
+    calendar.appendChild(calendar_header);
+    calendar.appendChild(calendar_body);
+    calendar.appendChild(month_list);
 
-  const month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  isLeapYear = (year) => {
+    const month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    isLeapYear = (year) => {
     return (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) || (year % 100 === 0 && year % 400 === 0)
-  }
-  getFebDays = (year) => {
-    return isLeapYear(year) ? 29 : 28
-  }
+    }
+    getFebDays = (year) => {
+        return isLeapYear(year) ? 29 : 28
+    }
   function changeSelect(e) {
-    // const last = document.querySelector('.curr-date');
-    // last.classList.remove('curr-date');
-    const last = document.querySelector('.ctselect-date');
+        // const last = document.querySelector('.curr-date');
+        // last.classList.remove('curr-date');
+        const last = document.querySelector('.ctselect-date');
     if (last != null) last.classList.remove('ctselect-date');
 
-    e.currentTarget.classList.add('ctselect-date');
-    console.log(this.innerHTML.substring(0, this.innerHTML.indexOf('<')))
+        e.currentTarget.classList.add('ctselect-date');
+        console.log(this.innerHTML.substring(0, this.innerHTML.indexOf('<')))
     console.log(ctcurr_month.value + 1)
-    console.log(ctcurr_year.value)
-  }
-
-  month_names.forEach((e, index) => {
-    let month = document.createElement('div')
-    month.innerHTML = `<div data-month="${index}">${e}</div>`
-    month.querySelector('div').onclick = () => {
-      month_list.classList.remove('show')
-      ctcurr_month.value = index
-      regenerateCtCalendar(index, ctcurr_year.value)
+        console.log(ctcurr_year.value)
     }
-    month_list.appendChild(month)
-  })
-  month_picker = calendar.querySelector('#month-picker');
-  month_picker.onclick = () => {
-    month_list.classList.add('show')
-  }
 
-  let calendar_days = calendar.querySelector('.calendar-days')
-  let calendar_header_year = calendar.querySelector('#year')
+    month_names.forEach((e, index) => {
+        let month = document.createElement('div')
+        month.innerHTML = `<div data-month="${index}">${e}</div>`
+        month.querySelector('div').onclick = () => {
+            month_list.classList.remove('show')
+            ctcurr_month.value = index
+            regenerateCtCalendar(index, ctcurr_year.value)
+        }
+        month_list.appendChild(month)
+    })
+    month_picker = calendar.querySelector('#month-picker');
+    month_picker.onclick = () => {
+        month_list.classList.add('show')
+    }
 
-  let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    let calendar_days = calendar.querySelector('.calendar-days')
+    let calendar_header_year = calendar.querySelector('#year')
 
-  calendar_days.innerHTML = ''
+    let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-  if (month > 11 || month < 0) month = currDate.getMonth()
-  if (!year) year = currDate.getFullYear()
+    calendar_days.innerHTML = ''
 
-  month_picker.innerHTML = `${month_names[month]}`
-  calendar_header_year.innerHTML = year
+    if (month > 11 || month < 0) month = currDate.getMonth()
+    if (!year) year = currDate.getFullYear()
 
-  // get first day of month
+    month_picker.innerHTML = `${month_names[month]}`
+    calendar_header_year.innerHTML = year
 
-  let first_day = new Date(year, month, 1)
+    // get first day of month
+    
+    let first_day = new Date(year, month, 1)
 
-  for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
-    let day = document.createElement('div')
-    if (i >= first_day.getDay()) {
-      day.classList.add('calendar-day-cursor')
-      day.classList.add('calendar-day-hover')
-      day.innerHTML = i - first_day.getDay() + 1
-      day.innerHTML += `<span></span>
+    for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
+        let day = document.createElement('div')
+        if (i >= first_day.getDay()) {
+            day.classList.add('calendar-day-cursor')
+            day.classList.add('calendar-day-hover')
+            day.innerHTML = i - first_day.getDay() + 1
+            day.innerHTML += `<span></span>
                             <span></span>
                             <span></span>
                             <span></span>`
-      day.id = "ctday" + (i - first_day.getDay() + 1);
-      if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
-        day.classList.add('curr-date')
-      }
-      day.addEventListener('click', changeSelect);
+            day.id = "ctday" + (i - first_day.getDay() + 1);
+            if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
+                day.classList.add('curr-date')
+            }
+            day.addEventListener('click', changeSelect);
+        }
+        calendar_days.appendChild(day)
     }
-    calendar_days.appendChild(day)
-  }
 
-  calendar_header.querySelector('#ctprev-year').onclick = () => {
-    --ctcurr_year.value
-    regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value)
-  }
-  calendar_header.querySelector('#ctnext-year').onclick = () => {
-    ++ctcurr_year.value
-    regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value)
-  }
+    calendar_header.querySelector('#ctprev-year').onclick = () => {
+      --ctcurr_year.value
+      regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value)
+    }
+    calendar_header.querySelector('#ctnext-year').onclick = () => {
+      ++ctcurr_year.value
+      regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value)
+    }
 
-  return calendar;
+    return calendar;
 }
 // ----------------------------------------------- end of calendar thingy -----------------------------
 
@@ -522,7 +559,7 @@ function openCreatetaskOverlay() {
 
   let alltaglist = getAllTagList();
   let tagselector = getCreatetaskTagSelector(alltaglist);
-
+  
   let timeheader = document.createElement("div");
   timeheader.style = "font-weight: bold; font-size: 1.4vw;";
   timeheader.textContent = "Time";
@@ -616,12 +653,23 @@ function createTask() {
   closeCreatetask();
   closeScreenOverlay();
 }
+function deleteTask(id) {
 
-function openDetailtaskOverlay(name, des, tags, outdate) {
+}
+
+function openDetailtaskOverlay(info) {
+  let id = info.task_id;
+  let name = info.task_name;
+  let tags = info.tags;
+  let des = ingfo.task_description
+  let deadline = Date(info.due_date);
+  
   let now = new Date();
 
   let detailtask_box = document.createElement("div");
   detailtask_box.id = "detailtask";
+
+  let top = document.createElement("div");
 
   let line1 = document.createElement("hr");
   line1.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
@@ -631,14 +679,14 @@ function openDetailtaskOverlay(name, des, tags, outdate) {
   line3.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
 
   let headBox = document.createElement("div");
-  headBox.style = "border-radius: 0.512vw 0.512vw 0px 0px; width: 100%; height: 3.5vw";
-  if (now > outdate) {
-    headBox.style.background = "#D43F00";
+  headBox.style = "background-color: #D43F00; border-radius: 0.512vw 0.512vw 0px 0px; width: 100%; height: 0.985vw";
+  if(now > deadline) {
+    headBox.style.background = "#E63946";
   }
   else {
-    headBox.style.background = "#1ED400";
+    headBox.style.background = "#49DFC4";
   }
-
+  
   let header = document.createElement("div");
   header.id = "detailtask_header";
   header.textContent = name;
@@ -665,21 +713,111 @@ function openDetailtaskOverlay(name, des, tags, outdate) {
   description.id = "detailtask_description";
   description.textContent = des;
 
+  let bottom = document.createElement("div");
+  bottom.style="display: flex; align-items: center;justify-content: space-between;padding: 1vw;";
+
   let time = document.createElement("div");
   time.id = "detailtask_deadline";
-  time.textContent = getDateString(now);
+  time.textContent = getDateString(deadline);
 
-  detailtask_box.appendChild(headBox);
-  detailtask_box.appendChild(header);
-  detailtask_box.appendChild(line1);
-  detailtask_box.appendChild(taglist);
-  detailtask_box.appendChild(line2);
-  detailtask_box.appendChild(description);
-  detailtask_box.appendChild(line3);
-  detailtask_box.appendChild(time);
+  let delete_button = document.createElement("div");
+  delete_button.id = "detailtask_delete";
+  delete_button.onclcik = function() {
+    deleteTask(id);
+  }
+  let delete_content = document.createElement('p');
+  delete_content.textContent = "Delete";
+  delete_button.appendChild(delete_content);
 
+  top.appendChild(headBox);
+  top.appendChild(header);
+  top.appendChild(line1);
+  top.appendChild(taglist);
+  top.appendChild(line2);
+  top.appendChild(description);
+  top.appendChild(line3);
+
+  bottom.appendChild(time);
+  bottom.appendChild(delete_button);
+
+  detailtask_box.appendChild(top);
+  detailtask_box.appendChild(bottom);
+  
   openScreenOverlay();
   document.body.appendChild(detailtask_box);
+}
+function openDetailmcvtaskOverlay(info) {
+  let now = Date().now();
+
+  let mcvtitle = info.course_title;
+  
+  let box = document.createElement("div");
+  box.id = "mcvdetailtask"
+  
+  let top = document.createElement("div");
+
+  let line1 = document.createElement("hr");
+  line1.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
+  let line2 = document.createElement("hr");
+  line2.style = "width: 36.3vw; margin-top: 2%; margin-bottom: 2%";
+
+  let headBox = document.createElement("div");
+  headBox.style = "border-radius: 0.512vw 0.512vw 0px 0px; width: 100%; min-height: 0.985vw";
+ 
+  let header = document.createElement("div");
+  header.id = "mcvdetailtask_header";
+  if(now > Date(info.duetime)) {
+    headBox.style.background = "#E63946";
+  }
+  else {
+    headBox.style.background = "#49DFC4";
+  }
+  
+  let icon = document.createElement("div");
+  icon.style ="width: 3vw; height: 3vw; margin: 3%";
+  let title = document.createElement("id");
+  title.textContent = mcvtitle;
+  let close_button = document.createElement("img");
+  close_button.src = "image/createtask_close.png";
+  close_button.id = "detailtask_close";
+  close_button.onclick = function () {
+    let detailtaskbox = document.getElementById("mcvdetailtask");
+    document.body.removeChild(detailtaskbox);
+    closeScreenOverlay();
+  }
+
+  header.appendChild(icon);
+  header.appendChild(title);
+  header.appendChild(closebutton);
+
+  let desheader = document.createElement("p");
+  desheader.id = "mcvdetailtask_desheader";
+  desheader.textContent = info.title;
+
+  let des = document.createElement('div');
+  des.innerHTML = info.instruction;
+
+  let bottom = document.createElement("div");
+  bottom.style = "display: flex; align-items: center;justify-content: space-between;padding: 1vw";
+
+  let time = document.createElement("div");
+  time.id ="detailtask_deadline";
+  let text = document.createElement("p");
+  text.textContent = getDateString(Date(info.duetime));
+
+  top.appendChild(headBox);
+  top.appendChild(header);
+  top.appendChild(line1);
+  top.appendChild(des);
+  top.appendChild(line2);
+  
+  bottom.appendChild(time);
+
+  box.appendChild(top);
+  box.appendChild(bottom);
+
+  openScreenOverlay();
+  document.body.appendChild(box);
 }
 
 
@@ -703,7 +841,6 @@ const colordaybefore = {
   "Sat": "#FFB2AD",
   "Mon": "#BEADFF",
 }
-
 const colordayafter = {
   "Sun": "#FDFFAD",
   "Mon": "#FFADDE",
@@ -754,8 +891,6 @@ function addrotate() {
   }, { once: true });
 
 }
-
-
 function addrotatere() {
   const colorlast = document.getElementById("fsq2")
   const colorone = document.getElementById("ffsq2")
@@ -817,8 +952,6 @@ function getNextDateAndMonth(date, smonth, weekday) {
   const nextMonth = numberToMonth[dateObj.getMonth() + 1];
   return { nextDate, nextMonth, nextweekday };
 }
-
-
 function getBackDateAndMonth(date, smonth, weekday) {
   const monthToNumber = {
     Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
@@ -840,11 +973,7 @@ function getBackDateAndMonth(date, smonth, weekday) {
   const backMonth = numberToMonth[dateObj.getMonth() + 1];
   return { backDate, backMonth, backweekday };
 }
-
-
-
 /////////////////////////datebox///////////////////////
-
 function getDateString(date) {
   const monthname = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   let day = date.getDay() <= 9 ? "0" + date.getDay().toString() : date.getDay().toString();
@@ -853,4 +982,8 @@ function getDateString(date) {
   let hour = date.getHours().toString();
   let minute = date.getMinutes().toString();
   return day + " " + month + " " + year + "   " + hour + ":" + minute;
+}
+
+function getTaskInfo(id) {
+
 }
