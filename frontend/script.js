@@ -648,8 +648,7 @@ function createTask() {
   let minute = parseInt(minute_select.options[minute_select.selectedIndex].text)
   let time = new Date(year, month, day, hour, minute)
 
-  console.log(name, description, tags, time)
-
+  
   closeCreatetask();
   closeScreenOverlay();
 }

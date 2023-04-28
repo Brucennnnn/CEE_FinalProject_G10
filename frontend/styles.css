@@ -32,8 +32,12 @@ body {
   width: 90vw;
 }
 
+
 #taskpage{
+  display: flex;
+  flex-direction: column;
   font-family: Inter, sans-serif;
+  gap:1.2vw;
   width: 74vw;
   height: 100%;
   border-radius: 0.512vw;
@@ -111,16 +115,15 @@ input[type="text"]:focus {
 }
 
 #taskList{
-  margin-top: 2vw;
-  padding: 1.3vw;
-  height: 75%;
+  padding: 0.5vw;
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   background: #ABDADC;
-  border-radius: 0.512vw;
+  border-radius: 15px;
   border-color: black;
-  border: 0.118vw solid #000000;
+  border: 3px solid #000000;
   overflow: auto;
 }
 #taskList::-webkit-scrollbar {
@@ -420,17 +423,16 @@ input[type="text"]:focus {
   vertical-align: middle;
   font-weight: bold;
   font-size: 1.230vw;
-
   padding: 1vw;
   filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
   background: white;
-  width: 32.025vw;
+  width: 31vw;
   height: 3.158vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 0.512vw;
-  border: 0.0512vw solid #000000;
+  border: 2px solid #000000;
 
   margin: 1%;
   transition: width 200ms,height 200ms,margin 200ms;
@@ -617,7 +619,7 @@ input[type="text"]:focus {
   height: auto;
   max-height: 80vh;
   overflow: auto;
-  z-index: 110;
+  z-index: 25;
   animation-name: fade-in;
   animation-duration: 300ms;
 }
@@ -825,7 +827,7 @@ input[type="text"]:focus {
   width: 39vw;
   
   overflow: auto;
-  z-index: 110;
+  z-index: 200;
   animation-name: fade-in;
   animation-duration: 300ms;
 }
@@ -971,189 +973,212 @@ input[type="text"]:focus {
   left: 0;
   top: 0;
   opacity: 0.2;
-  z-index: 100;
+  z-index: 20;
   animation-name: over-layfade-in;
   animation-duration: 300ms;
 }
 
-p{
-  display: inline;
-  vertical-align: middle;
-}
-.outside{
-  margin-left: 2vw;
-  max-width: 280px;
-  max-height: 155px;
-  min-width: 140px;
-  width: 13vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #ABDADC;
-  border: 0.118vw solid #000000;
-  border-radius: 0.751vw;
-  aspect-ratio: 280/155;
-  position: relative;
-}
-.loader{
-  aspect-ratio: 250/122;
-  border-radius: 0.512vw;
-  width: 87%;
-  display: flex;
-  z-index: 5;
-  align-items: center;
-  justify-content: center;
 
 
-}
-.loader2{
-  aspect-ratio: 250/122;
-  border-radius: 0.512vw;
-  position: absolute;
-  display: flex;
-  width: 87%;
-  align-items: center;
-  justify-content: center;
-} 
-.sq1,.sq2{
-  background-color: #FFFFFF;
-  aspect-ratio: 122/122;
-  width: 50%;
-  margin: 0%;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  backface-visibility: revert;
-  border: 0.118vw solid #000000;
-}
-.month{
-font-size: 2.316vw;
-
-text-align: center;
-font-weight: bold;
-}
-.right{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.weekday{
-  font-size: 0.722vw;
-  text-align: center;
-  font-weight: bold;
-}
-.daynumber{
-  font-size: 2.702vw;
-  text-align: center;
-  font-weight: bold;
-}
-.sq1{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  border-radius: 0.512vw 0px 0px 0.512vw;
-
-}
-.sq2{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  border-radius: 0px 0.512vw 0.512vw 0px;
-}
-.rotate{
-  transform-origin: right;
-  animation: fold 0.2s ;
-  animation-iteration-count: 3;
-  z-index: 10;
-}
-.rotatere{
-  transform-origin:left;
-  animation: foldre 0.2s ;
-  transition-property: transform;
-  animation-iteration-count: 3;
-  z-index: 10;
-}
-@keyframes fold {
-  0%{
-      transform: rotateY(0deg);
-      transform: rotateY(20deg);
-      
+button{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
   }
-  25%{
-      transform: translateX(1px);
-      transform: rotateY(45deg);
-  }
-  30%{
-      transfomr:translateX(1px);
-      transform: rotateY(70deg);
-  }
-  50%{
+  p{
+    display: inline;
+    vertical-align: middle;
     
-      transform: rotateY(100deg);
   }
-  70%{
-      transform:rotateY(135deg);
+  .formargin{
+    margin-left: 35px;
   }
-  75%{
-      transform:translateX(1px);
-      transform:rotateY(160deg);
+  .outside{
+    max-width: 280px;
+    max-height: 155px;
+    min-width: 140px;
+    width: 15vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ABDADC;
+    border: 3px solid #000000;
+    border-radius: 19px;
+    aspect-ratio: 280/155;
+    position: relative;
+  }
+
+  .loader{
+    aspect-ratio: 250/122;
+    border-radius: 10px;
+    width: 90%;
+    display: flex;
+    z-index: 5;
+    align-items: center;
+    justify-content: center;
+  
+
+  }
+  .loader2{
+    aspect-ratio: 250/122;
+    border-radius: 10px;
+    position: absolute;
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
 }
-  80%{
-      color: transparent;
-      transform:rotateY(180deg);
+  
+  .sq1,.sq2{
+    background-color: #FFFFFF;
+    aspect-ratio: 122/122;
+    width: 50%;
+    margin: 0%;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    backface-visibility: revert;
+    border: 3px solid #000000;
   }
-  85%{
-      color: transparent;
-      transform:translateX(1px);
-      transform:rotateY(0deg);
-      
-  }
-}
-@keyframes foldre {
-  0%{
-      transform: rotateY(0deg);
-      transform: rotateY(-20deg);
-  }
-  25%{
-      transform: translateX(-1px);
-      transform: rotateY(-45deg);
-  }
-  30%{
-      transform:translateX(-1px);
-      transform: rotateY(-70deg);
-  }
-  50%{
-      transform: rotateY(-100deg);
-  }
-  70%{
-      transform:rotateY(-135deg);
-  }
-  75%{
-      transform:translateX(-1px);
-      transform:rotateY(-160deg);
-}
-  80%{
-      color: transparent;
-      transform:rotateY(-180deg);
-  }
-  85%{
-      color: transparent;
-      transform:translateX(1px);
-      transform:rotateY(0deg);
-      
-  }
-}
-@media screen and (max-width: 780px) {
   .month{
-    font-size: 25px;
+  font-size: 3vw;
+  
+  text-align: center;
+  font-weight: bold;
+  }
+  .right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .weekday{
-    font-size: 10px;
+    font-size: 1vw;
+    text-align: center;
+    font-weight: bold;
   }
   .daynumber{
-    font-size: 25px;
+    font-size: 3.5vw;
+    text-align: center;
+    font-weight: bold;
   }
   
-}
+  .sq1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 10px 0px 0px 10px;
+  
+  }
+  .sq2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    border-radius: 0px 10px 10px 0px;
+  }
+  
+
+
+  .rotate{
+    transform-origin: right;
+    animation: fold 0.2s ;
+    animation-iteration-count: 3;
+    z-index: 10;
+  }
+  
+  .rotatere{
+    transform-origin:left;
+    animation: foldre 0.2s ;
+    transition-property: transform;
+    animation-iteration-count: 3;
+    z-index: 10;
+  }
+  
+  
+  
+  
+  @keyframes fold {
+    0%{
+        transform: rotateY(0deg);
+        transform: rotateY(20deg);
+        
+    }
+    25%{
+        transform: translateX(1px);
+        transform: rotateY(45deg);
+    }
+    30%{
+        transfomr:translateX(1px);
+        transform: rotateY(70deg);
+    }
+    50%{
+     
+        transform: rotateY(100deg);
+    }
+    70%{
+        transform:rotateY(135deg);
+    }
+    75%{
+        transform:translateX(1px);
+        transform:rotateY(160deg);
+  }
+    80%{
+        color: transparent;
+        transform:rotateY(180deg);
+    }
+    85%{
+        color: transparent;
+        transform:translateX(1px);
+        transform:rotateY(0deg);
+        
+    }
+  }
+  
+  @keyframes foldre {
+    0%{
+        transform: rotateY(0deg);
+        transform: rotateY(-20deg);
+    }
+    25%{
+        transform: translateX(-1px);
+        transform: rotateY(-45deg);
+    }
+    30%{
+        transform:translateX(-1px);
+        transform: rotateY(-70deg);
+    }
+    50%{
+        transform: rotateY(-100deg);
+    }
+    70%{
+        transform:rotateY(-135deg);
+    }
+    75%{
+        transform:translateX(-1px);
+        transform:rotateY(-160deg);
+  }
+    80%{
+        color: transparent;
+        transform:rotateY(-180deg);
+    }
+    85%{
+        color: transparent;
+        transform:translateX(1px);
+        transform:rotateY(0deg);
+        
+    }
+  }
+
+  @media screen and (max-width: 780px) {
+    .month{
+      font-size: 25px;
+    }
+    .weekday{
+      font-size: 8px;
+    }
+    .daynumber{
+      font-size: 30px;
+    }
+   
+  }
