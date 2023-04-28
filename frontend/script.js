@@ -217,38 +217,37 @@ function closeScreenOverlay() {
 
 
 function openAddFilterOverlay() {
-  const newfilterContainer = document.createElement("div");
-  newfilterContainer.id = "newfilter-container";
+  const container = document.createElement("div");
+  container.id = "newfilter-container";
+
+  const closeButton = document.createElement("img");
+  closeButton.src = "createtask_close.png";
+  closeButton.id = "close-addfilter-btn";
+  closeButton.onclick = function () {
+    closeScreenOverlay();
+  }
+  container.appendChild(closeButton);
 
   const filterText = document.createElement("div");
   filterText.id = "filter-text";
   filterText.textContent = "New Filter";
-
-  let close_button = document.createElement("img");
-  close_button.src = "image/createtask_close.png";
-  close_button.onclick = function () {
-    closeScreenOverlay();
-  }
+  container.appendChild(filterText);
 
   const filterInput = document.createElement("input");
-  filterInput.id = "filter";
+  filterInput.id = "fliter";
   filterInput.type = "text";
   filterInput.placeholder = "Filter Name";
+  container.appendChild(filterInput);
 
   const buttonContainer = document.createElement("div");
   buttonContainer.id = "button-container";
-
-  const addfilterButton = document.createElement("button");
-  addfilterButton.id = "addfilter-button";
-  addfilterButton.textContent = "Add";
-
-  newfilterContainer.appendChild(filterText);
-  newfilterContainer.appendChild(close_button);
-  newfilterContainer.appendChild(filterInput);
-  buttonContainer.appendChild(addfilterButton);
-  newfilterContainer.appendChild(buttonContainer);
+  const addButton = document.createElement("button");
+  addButton.id = "addfilter-button";
+  addButton.textContent = "Add";
+  buttonContainer.appendChild(addButton);
+  container.appendChild(buttonContainer);
   openScreenOverlay();
-  document.body.appendChild(newfilterContainer);
+  document.body.appendChild(container);
 }
 
 

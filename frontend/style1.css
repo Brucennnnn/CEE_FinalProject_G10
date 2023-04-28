@@ -1247,6 +1247,7 @@ font-weight: bold;
 }
 
 #newfilter-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -1306,4 +1307,13 @@ font-weight: bold;
   align-items: center;
   flex-direction: row;
   gap: 16px;
+}
+
+#close-addfilter-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  aspect-ratio: 1;
+  cursor: pointer;
 }
