@@ -1159,7 +1159,7 @@ font-weight: bold;
   overflow: auto;
 }
 
-#myButton {
+.myButton {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
