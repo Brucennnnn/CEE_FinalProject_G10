@@ -160,24 +160,20 @@ document.querySelector('#next-year').onclick = () => {
 }
 
 
-const button = document.getElementById("myButton");
-const circle = document.getElementById("circle");
-const circleNumber = document.getElementById("circle-number");
-const text = document.getElementById("text");
+const Today_btn = document.getElementById("Today");
+const Today_num = document.getElementById("Today_cnt");
+const All_Tasks_btn = document.getElementById("All_Tasks");
+const All_Tasks_num = document.getElementById("All_Tasks_cnt");
+const Completed_btn = document.getElementById("Completed");
+const Completed_num = document.getElementById("Completed_cnt");
+// const text = document.getElementById("text");
 let numberTask = 0;
 
 const c1 = "white";
 const c2 = "#A6E4FF";
 
-// circle.appendChild(circleNumber);
-// circleNumber.innerHTML = numberTask;
-
-// button.appendChild(circle);
-// button.appendChild(text);
-
-function changeColor() {
+function changeColor(button) {
     button.classList.toggle("clicked");
-    circle.classList.toggle("clicked");
     if (button.style.backgroundColor === c1) {
       button.style.backgroundColor = c2;
     } else {
@@ -188,6 +184,15 @@ function changeColor() {
 function PageChange() {
   circleNumber.innerHTML = numberTask;
 }
-
-button.addEventListener("click", changeColor);
-button.addEventListener("click", PageChange);
+Today_btn.onclick = function(){
+  changeColor(this);
+}
+All_Tasks_btn.onclick = function(){
+  changeColor(this);
+}
+Completed_btn.onclick = function(){
+  changeColor(this);
+}
+Today_btn.addEventListener("click", PageChange);
+All_Tasks_btn.addEventListener("click", PageChange);
+Completed_btn.addEventListener("click", PageChange);
