@@ -204,13 +204,50 @@ Today_btn.addEventListener("click", PageChange);
 All_Tasks_btn.addEventListener("click", PageChange);
 Completed_btn.addEventListener("click", PageChange);
 
-function openAddFilterOverlay() {
-    let screenOverlay = document.createElement("div");
-    screenOverlay.className = "overlay_add_filter";
-    document.body.appendChild(screenOverlay);
+function openScreenOverlay() {
+  let screenOverlay = document.createElement("div");
+  screenOverlay.className = "overlay_screen";
+  document.body.appendChild(screenOverlay);
 }
 function closeScreenOverlay() {
   document.querySelectorAll(".overlay_add_filter").forEach(overlay => {
     document.body.removeChild(overlay);
   });
 }
+
+
+function openAddFilterOverlay() {
+  const newfilterContainer = document.createElement("div");
+  newfilterContainer.id = "newfilter-container";
+
+  const filterText = document.createElement("div");
+  filterText.id = "filter-text";
+  filterText.textContent = "New Filter";
+
+  let close_button = document.createElement("img");
+  close_button.src = "image/createtask_close.png";
+  close_button.onclick = function () {
+    closeScreenOverlay();
+  }
+
+  const filterInput = document.createElement("input");
+  filterInput.id = "filter";
+  filterInput.type = "text";
+  filterInput.placeholder = "Filter Name";
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.id = "button-container";
+
+  const addfilterButton = document.createElement("button");
+  addfilterButton.id = "addfilter-button";
+  addfilterButton.textContent = "Add";
+
+  newfilterContainer.appendChild(filterText);
+  newfilterContainer.appendChild(close_button);
+  newfilterContainer.appendChild(filterInput);
+  buttonContainer.appendChild(addfilterButton);
+  newfilterContainer.appendChild(buttonContainer);
+  document.body.appendChild(newfilterContainer);
+}
+
+
