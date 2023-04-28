@@ -203,3 +203,14 @@ Completed_btn.onclick = function(){
 Today_btn.addEventListener("click", PageChange);
 All_Tasks_btn.addEventListener("click", PageChange);
 Completed_btn.addEventListener("click", PageChange);
+
+function openAddFilterOverlay() {
+    let screenOverlay = document.createElement("div");
+    screenOverlay.className = "overlay_add_filter";
+    document.body.appendChild(screenOverlay);
+}
+function closeScreenOverlay() {
+  document.querySelectorAll(".overlay_add_filter").forEach(overlay => {
+    document.body.removeChild(overlay);
+  });
+}
