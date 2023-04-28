@@ -178,7 +178,7 @@ input[type="text"]:focus {
   --color-hover: var(--light-hover);
   --color-txt: var(--light-text);
 }
-.calendar {
+.ctcalendar {
   height: auto;
   width: 20.21vw;
   background-color: white;
@@ -188,10 +188,10 @@ input[type="text"]:focus {
   overflow: hidden;
   border: 0.118vw solid #000000;
 }
-.light .calendar {
+.ctlight .ctcalendar {
   box-shadow: var(--shadow);
 }
-.calendar-header {
+.ctcalendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -200,10 +200,10 @@ input[type="text"]:focus {
   color: var(--color-txt);
   padding: 0.512vw;
 }
-.calendar-body {
+.ctcalendar-body {
   padding: 0.512vw;
 }
-.calendar-week-day {
+.ctcalendar-week-day {
   height: 2.56vw;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -211,19 +211,19 @@ input[type="text"]:focus {
   font-size: 0.955vw;
   color: #7f7f7f;
 }
-.calendar-week-day div {
+.ctcalendar-week-day div {
   display: grid;
   place-items: center;
   color: var(--bg-second);
 }
-.calendar-days {
+.ctcalendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.102vw;
   color: var(--color-txt);
   font-size: 0.77vw;
 }
-.calendar-days div {
+.ctcalendar-days div {
   width: 2.25vw;
   height: 2.5vw;
   display: flex;
@@ -233,24 +233,24 @@ input[type="text"]:focus {
   position: relative;
   animation: to-top 1s forwards;
 }
-.calendar-days div span {
+.ctcalendar-days div span {
   position: absolute;
 }
 /* .calendar-days div:hover span {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
 } */
-.calendar-day-cursor{
+.ctcalendar-day-cursor{
   cursor: pointer;
 }
-.calendar-day-hover:hover {
+.ctcalendar-day-hover:hover {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   background-color: #fbc7d4;
   /* border-radius: 20%; */
   border-radius: 50%;
   color: var(--dark-text);
 }
-.calendar-days div span:nth-child(1),
-.calendar-days div span:nth-child(3) {
+.ctcalendar-days div span:nth-child(1),
+.ctcalendar-days div span:nth-child(3) {
   width: 0.102;
   height: 0;
   background-color: var(--color-txt);
@@ -259,16 +259,16 @@ input[type="text"]:focus {
 .calendar-days div:hover span:nth-child(3) {
   height: 100%;
 } */
-.calendar-days div span:nth-child(1) {
+.ctcalendar-days div span:nth-child(1) {
   bottom: 0;
   left: 0;
 }
-.calendar-days div span:nth-child(3) {
+.ctcalendar-days div span:nth-child(3) {
   top: 0;
   right: 0;
 }
-.calendar-days div span:nth-child(2),
-.calendar-days div span:nth-child(4) {
+.ctcalendar-days div span:nth-child(2),
+.ctcalendar-days div span:nth-child(4) {
   width: 0;
   height: 0.102;
   background-color: var(--color-txt);
@@ -277,11 +277,11 @@ input[type="text"]:focus {
 .calendar-days div:hover span:nth-child(4) {
   width: 100%;
 } */
-.calendar-days div span:nth-child(2) {
+.ctcalendar-days div span:nth-child(2) {
   top: 0;
   left: 0;
 }
-.calendar-days div span:nth-child(4) {
+.ctcalendar-days div span:nth-child(4) {
   bottom: 0;
   right: 0;
 }
@@ -296,14 +296,14 @@ input[type="text"]:focus {
 .calendar-days div:hover span:nth-child(4) {
   transition-delay: 0.6s;
 } */
-.calendar-days div.curr-date,
-.calendar-days div.curr-date:hover {
+.ctcalendar-days div.curr-date,
+.ctcalendar-days div.curr-date:hover {
   background-color: var(--blue);
   color: var(--white);
   border-radius: 50%;
 }
-.calendar-days div.ctselect-date,
-.calendar-days div.ctselect-date:hover {
+.ctcalendar-days div.ctselect-date,
+.ctcalendar-days div.ctselect-date:hover {
   background-color: var(--red);
   color: var(--white);
   border-radius: 50%;
@@ -311,19 +311,19 @@ input[type="text"]:focus {
 .calendar-days div.curr-date span {
   display: none;
 }
-.month-picker {
+.ctmonth-picker {
   padding: 0.256vw 0.512vw;
   border-radius: 0.512vw;
   cursor: pointer;
 }
-.month-picker:hover {
+.ctmonth-picker:hover {
   background-color: #e3e3e3;
 }
-.year-picker {
+.ctyear-picker {
   display: flex;
   align-items: center;
 }
-.year-change {
+.ctyear-change {
   height: 1.548vw;
   width: 1.548vw;
   border-radius: 50%;
@@ -333,23 +333,23 @@ input[type="text"]:focus {
   margin-bottom: 0.128vw;
   cursor: pointer;
 }
-.year-change:hover {
+.ctyear-change:hover {
   background-color: #d0d0d0;
 }
-.calendar-footer {
+.ctcalendar-footer {
   padding: 0.512vw;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.toggle {
+.cttoggle {
   display: flex;
 }
-.toggle span {
+.cttoggle span {
   margin-right: 0.512vw;
   color: var(--color-txt);
 }
-.month-list {
+.ctmonth-list {
   position: absolute;
   font-size: 0.955vw;
   width: 100%;
@@ -366,24 +366,24 @@ input[type="text"]:focus {
   visibility: hidden;
   pointer-events: none;
 }
-.month-list.show {
+.ctmonth-list.show {
   transform: scale(1);
   visibility: visible;
   pointer-events: visible;
   transition: all 0.2s ease-in-out;
 }
-.month-list > div {
+.ctmonth-list > div {
   display: grid;
   place-items: center;
 }
-.month-list > div > div {
+.ctmonth-list > div > div {
   padding: 0.256vw 0.512vw;
   border-radius: 0.512vw;
   text-align: center;
   cursor: pointer;
   color: var(--color-txt);
 }
-.month-list > div > div:hover {
+.ctmonth-list > div > div:hover {
   background-color: #e3e3e3;
 }
 

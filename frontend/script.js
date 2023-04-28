@@ -445,20 +445,20 @@ function regenerateCtCalendar(month, year) {
 }
 function getCalendar(month, year) {
     let calendar = document.createElement('div')
-    calendar.className = 'calendar';
+    calendar.className = 'ctcalendar';
     calendar.id = "ctcalendar";
 
     let calendar_header = document.createElement('div');
-    calendar_header.className = "calendar-header";
-    let insideheader = '<span class="month-picker" id="month-picker">April</span><div class="year-picker"><span class="year-change" id="ctprev-year"><</span><span id="year">2022</span><span class="year-change" id="ctnext-year">></span></div>';
+    calendar_header.className = "ctcalendar-header";
+    let insideheader = '<span class="ctmonth-picker" id="month-picker">April</span><div class="ctyear-picker"><span class="ctyear-change" id="ctprev-year"><</span><span id="year">2022</span><span class="ctyear-change" id="ctnext-year">></span></div>';
     calendar_header.innerHTML = insideheader;
 
     let calendar_body = document.createElement('div');
-    let insidebody = '<div class="calendar-week-day"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendar-days"></div>';
+    let insidebody = '<div class="ctcalendar-week-day"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="ctcalendar-days"></div>';
     calendar_body.innerHTML = insidebody;
 
     let month_list = document.createElement('div');
-    month_list.className = "month-list";
+    month_list.className = "ctmonth-list";
     month_list.id = "month-list";
 
     calendar.appendChild(calendar_header);
@@ -499,7 +499,7 @@ function getCalendar(month, year) {
         month_list.classList.add('show')
     }
 
-    let calendar_days = calendar.querySelector('.calendar-days')
+    let calendar_days = calendar.querySelector('.ctcalendar-days')
     let calendar_header_year = calendar.querySelector('#year')
 
     let days_of_month = [31, getFebDays(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -519,8 +519,8 @@ function getCalendar(month, year) {
     for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
         let day = document.createElement('div')
         if (i >= first_day.getDay()) {
-            day.classList.add('calendar-day-cursor')
-            day.classList.add('calendar-day-hover')
+            day.classList.add('ctcalendar-day-cursor')
+            day.classList.add('ctcalendar-day-hover')
             day.innerHTML = i - first_day.getDay() + 1
             day.innerHTML += `<span></span>
                             <span></span>
