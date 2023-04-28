@@ -178,15 +178,16 @@ input[type="text"]:focus {
   --color-hover: var(--light-hover);
   --color-txt: var(--light-text);
 }
+
 .calendar {
+  width: 100%;
   height: auto;
-  width: 20.21vw;
-  background-color: white;
-  border-radius: 1.024vw;
-  padding: 1.024vw;
+  background-color: #F1FAFE;
+  border-radius: 1vw;
+  padding: 1vw;
   position: relative;
   overflow: hidden;
-  border: 0.118vw solid #000000;
+  border: 0.1vw solid #000000;
 }
 .light .calendar {
   box-shadow: var(--shadow);
@@ -198,10 +199,11 @@ input[type="text"]:focus {
   font-size: 1.4vw;
   font-weight: 600;
   color: var(--color-txt);
-  padding: 0.512vw;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
 }
 .calendar-body {
-  padding: 0.512vw;
+  padding: 0.5vw;
 }
 .calendar-week-day {
   height: 2.56vw;
@@ -225,12 +227,12 @@ input[type="text"]:focus {
 }
 .calendar-days div {
   width: 2.25vw;
-  height: 2.5vw;
+  height: 2.25vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.256vw;
   position: relative;
+  cursor: pointer;
   animation: to-top 1s forwards;
 }
 .calendar-days div span {
@@ -239,10 +241,10 @@ input[type="text"]:focus {
 /* .calendar-days div:hover span {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
 } */
-.calendar-day-cursor{
+.calendar-days-cursor{
   cursor: pointer;
 }
-.calendar-day-hover:hover {
+.calendar-days-hover:hover {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   background-color: #fbc7d4;
   /* border-radius: 20%; */
@@ -270,7 +272,7 @@ input[type="text"]:focus {
 .calendar-days div span:nth-child(2),
 .calendar-days div span:nth-child(4) {
   width: 0;
-  height: 0.102;
+  height: 0;
   background-color: var(--color-txt);
 }
 /* .calendar-days div:hover span:nth-child(2),
@@ -302,8 +304,8 @@ input[type="text"]:focus {
   color: var(--white);
   border-radius: 50%;
 }
-.calendar-days div.ctselect-date,
-.calendar-days div.ctselect-date:hover {
+.calendar-days div.select-date,
+.calendar-days div.select-date:hover {
   background-color: var(--red);
   color: var(--white);
   border-radius: 50%;
@@ -324,7 +326,7 @@ input[type="text"]:focus {
   align-items: center;
 }
 .year-change {
-  height: 1.548vw;
+  height: auto;
   width: 1.548vw;
   border-radius: 50%;
   display: grid;
@@ -1156,4 +1158,160 @@ font-weight: bold;
     font-size: 25px;
   }
   
+}
+
+/*Left*/
+
+#leftpage{
+  font-family: Inter, sans-serif;
+  min-width: 25vw;
+  border-radius: 0.5vw;
+  padding: 1.5vw;
+  display: flex;
+}
+
+#leftside{
+  padding: 1.5vw;
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: #ABDADC;
+  border-radius: 0.5vw;
+  border: 0.2vw solid #000000;
+  overflow: auto;
+}
+
+#myButton {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  background-color: #F1FAFE;
+  border-radius: 0.512vw;
+  border-color: black;
+  border: 0.2vw solid #000000;
+}
+
+.circle {
+  width: 35px;
+  height: 35px;
+  left: 292px;
+  top: 421px;
+  background-color: #E63946;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle.white {
+  background-color: white;
+}
+
+#circle-number {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 27px;
+  color: #FFFFFF;
+}
+
+#text {
+  width: 93px;
+  height: 37px;
+  left: 67px;
+  top: 420px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 36px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #000000;
+}
+
+.clicked {
+  background-color: black;
+  border-color: #F1FAFE;
+
+}
+
+.clicked .circle {
+  background-color: white;
+  color: #000000;
+}
+
+#filter-text {
+  width: 100%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #000000;
+}
+
+#filter-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
+  background-color: #F1FAFE;
+  border-radius: 0.512vw;
+  border: 0.2vw solid #000000;
+}
+
+#checkbox-container {
+  display: flex;
+  flex-direction: column;
+}
+#checkbox-content {
+  margin: 2px 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-size: 16px;
+
+}
+
+#newfilter-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  width: 100%;
+  background-color: #F1FAFE;
+  border-radius: 0.512vw;
+  border-color: black;
+  border: 3px solid #000000;
+  gap: 16px;
+}
+
+#addfilter-button {
+  display: flex;
+  padding: 1rem;
+  width: 30%;
+  font-weight: 700;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: #5FC9CD;
+  border-radius: 0.5vw;
+  border-color: black;
+  border: 1px solid #000000;
+  color: #ffffff;
+  padding: 8px 56px;
+}
+
+#button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

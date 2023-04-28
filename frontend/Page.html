@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style1.css">
+    <!-- <link rel="stylesheet" href="Calendar.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+
+<body style="padding: 1vw; display: flex;justify-content: space-between;">
+    <div id="leftpage">
+        <div id="leftside">
+            <div class="calendar">
+                <div class="calendar-header">
+                    <span class="month-picker" id="month-picker">April</span>
+                    <div class="year-picker">
+                        <span class="year-change" id="prev-year">
+                            <pre></pre>
+                        </span>
+                        <span id="year">2022</span>
+                        <span class="year-change" id="next-year">
+                            <pre></pre>
+                        </span>
+                    </div>
+                </div>
+                <div class="calendar-body">
+                    <div class="calendar-week-day">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div class="calendar-days"></div>
+                </div>
+                <div class="month-list"></div>
+            </div>
+            <div id="myButton">
+                <div id="text">Today</div> 
+                <div class="circle" id="circle">
+                    <div id="circle-number">0</div>
+                </div>
+            </div>
+            <div id="myButton">
+                <div id="text">All&nbspTasks</div> 
+                <div class="circle" id="circle">
+                    <div id="circle-number">0</div>
+                </div>
+            </div>
+            <div id="myButton">
+                <div id="text">Completed</div> 
+                <div class="circle" id="circle">
+                    <div id="circle-number">0</div>
+                </div>
+            </div>
+            <!-- filter -->
+            <div id="filter-container">
+                <div id="filter-text">
+                    Filter 
+                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.4185 0.28418C10.7639 0.28418 11.0951 0.419235 11.3393 0.659635C11.5836 0.900035 11.7208 1.22609 11.7208 1.56606V9.25736H19.5346C19.88 9.25736 20.2112 9.39242 20.4555 9.63282C20.6997 9.87322 20.8369 10.1993 20.8369 10.5392C20.8369 10.8792 20.6997 11.2053 20.4555 11.4457C20.2112 11.6861 19.88 11.8211 19.5346 11.8211H11.7208V19.5124C11.7208 19.8524 11.5836 20.1785 11.3393 20.4189C11.0951 20.6593 10.7639 20.7943 10.4185 20.7943C10.0731 20.7943 9.74182 20.6593 9.49759 20.4189C9.25336 20.1785 9.11615 19.8524 9.11615 19.5124V11.8211H1.30231C0.956914 11.8211 0.625667 11.6861 0.381437 11.4457C0.137207 11.2053 0 10.8792 0 10.5392C0 10.1993 0.137207 9.87322 0.381437 9.63282C0.625667 9.39242 0.956914 9.25736 1.30231 9.25736H9.11615V1.56606C9.11615 1.22609 9.25336 0.900035 9.49759 0.659635C9.74182 0.419235 10.0731 0.28418 10.4185 0.28418Z" fill="#0D0D0D"/></svg>
+                </div>
+                <div id="checkbox-container">
+                    <div id="checkbox-content">
+                        <input type="checkbox"  value="mcv">
+                        <label>MCV Assignments</label>
+                    </div>
+                    <div id="checkbox-content">
+                        <input type="checkbox"  value="myTask">
+                        <label>My Task</label>
+                    </div>
+                </div>
+            </div>
+            <div id="newfilter-container">
+                <div id="filter-text">New Filter</div>
+                <input id="fliter" type="text" placeholder="Filter Name"></input>
+                <div id="button-container"><button id="addfilter-button">Add</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="taskpage">
+        <div id="taskpage_header">
+          <div class="outside">
+            <div class="loader">
+                <div class="sq1" id="fsq1">
+                    <span id="month" class="month">Apr</span>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div class="sq2" id="fsq2">
+    
+                    <div class="right">
+                        <span class="weekday" id="weekday">Fri</span>
+                        <span class="daynumber" id="daynumber">21</span>
+                    </div>
+                </div>
+            </div>
+            <div class="loader2">
+                <div class="sq1" id="ffsq1">
+                    <span id="monthchange" class="month">Apr</span>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div class="sq2" id="ffsq2">
+                    <div class="right">
+                        <span class="weekday " id="weekdaychange">Fri</span>
+                        <span class="daynumber " id="daynumberchange">21</span>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <img src="image/createtask_button.png" id="createtask_button" onclick="openCreatetaskOverlay()">
+          </img>
+        </div>
+        <div id="taskList">
+          <div style="height: 0vh; display: flex; flex-wrap: wrap;justify-content: left;">
+            <div class= "taskitem" onclick='openDetailtaskOverlay("d")'>
+                <div style="display:flex;">
+                  <label class="checkbox" for="myCheckboxList">
+                  <input onclick="event.stopPropagation();" class="checkbox_input" type="checkbox" name="myCheckboxName" id="myCheckboxList"
+                    onchange=handleCheckboxChange()>
+                  <div onclick="event.stopPropagation();" class="checkbox_box"></div>
+                  </label>
+                  <div style="margin-left: 3%; word-wrap: break-word; width: 21vw;">
+                    fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                  </div>
+                </div >
+                <div class="outdate">
+                  <div class="outdate_top" style="background: #D43F00;">
+                  </div>
+                  <div class="outdate_bottom">
+                      08.00
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+        
+    </div>
+    
+</body>
+<script src="script.js"></script>
+<!-- <script src="Calendar.css"></script> -->
+</html>
