@@ -431,9 +431,9 @@ function getCreatetaskTagSelector(list) {
   return selector;
 }
 /* ---------------------------------------------------------- calendar thingy-----------------------------------------*/
-let currDate = new Date()
-let ctcurr_month = { value: currDate.getMonth() }
-let ctcurr_year = { value: currDate.getFullYear() }
+let ctcurrDate = new Date()
+let ctcurr_month = { value: ctcurrDate.getMonth() }
+let ctcurr_year = { value: ctcurrDate.getFullYear() }
 function regenerateCtCalendar(month, year) {
   let newcalendar = getCalendar(month, year);
   let calendar = document.getElementById("ctcalendar");
@@ -506,8 +506,8 @@ function getCalendar(month, year) {
 
     calendar_days.innerHTML = ''
 
-    if (month > 11 || month < 0) month = currDate.getMonth()
-    if (!year) year = currDate.getFullYear()
+    if (month > 11 || month < 0) month = ctcurrDate.getMonth()
+    if (!year) year = ctcurrDate.getFullYear()
 
     month_picker.innerHTML = `${month_names[month]}`
     calendar_header_year.innerHTML = year
@@ -527,7 +527,7 @@ function getCalendar(month, year) {
                             <span></span>
                             <span></span>`
             day.id = "ctday" + (i - first_day.getDay() + 1);
-            if (i - first_day.getDay() + 1 === currDate.getDate() && year === currDate.getFullYear() && month === currDate.getMonth()) {
+            if (i - first_day.getDay() + 1 === ctcurrDate.getDate() && year === ctcurrDate.getFullYear() && month === ctcurrDate.getMonth()) {
                 day.classList.add('curr-date')
             }
             day.addEventListener('click', changeSelect);
@@ -662,8 +662,8 @@ function openCreatetaskOverlay() {
 
   openScreenOverlay();
   taskpage.appendChild(createtask_box);
-  ctcurr_month = { value: currDate.getMonth() }
-  ctcurr_year = { value: currDate.getFullYear() }
+  ctcurr_month = { value: ctcurrDate.getMonth() }
+  ctcurr_year = { value: ctcurrDate.getFullYear() }
   regenerateCtCalendar(ctcurr_month.value, ctcurr_year.value);
 }
 function createTask() {
@@ -676,7 +676,7 @@ function createTask() {
   let calendar = document.getElementById("ctcalendar");
   let month = ctcurr_month.value;
   let year = ctcurr_year.value;
-  let day = currDate.getDate();
+  let day = ctcurrDate.getDate();
   if (calendar.querySelector('.ctselect-date') != null) {
     day = parseInt(calendar.querySelector('.ctselect-date').id.slice(5));
   }
