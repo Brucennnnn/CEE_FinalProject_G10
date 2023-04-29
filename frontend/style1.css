@@ -24,7 +24,7 @@
 }
 
 body {
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   background-color: white;
   margin: 0;
   padding: 0;
@@ -33,7 +33,7 @@ body {
 }
 
 #taskpage{
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   width: 74vw;
   height: 100%;
   border-radius: 0.512vw;
@@ -65,7 +65,7 @@ body {
 #taskpage_header {
   display: flex;
   justify-content: space-between;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   font-size: 2vw;
   font-weight: bold;
   width: 75vw;
@@ -589,7 +589,7 @@ input[type="text"]:focus {
   right: 1.2vw;
   top: 2.5vw;
   height: 8vh;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   border-radius: 0.512vw;
   padding: 1vw;
   background-color: #ECECEC;
@@ -603,7 +603,7 @@ input[type="text"]:focus {
   animation-duration: 300ms;
 }
 #createtask_header{
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.68vw;
   display: flex;
@@ -626,7 +626,7 @@ input[type="text"]:focus {
   margin-right: -0.5%;
 }
 #createtask_Name {
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   border: none;
   margin-top: 4%;
   padding: 0.512vw;
@@ -647,7 +647,7 @@ input[type="text"]:focus {
   font-size: 1.4vw;
 }
 #createtask_Description {
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   width: 90%;
   min-height: 1.25vw;
   background: none;
@@ -746,7 +746,7 @@ input[type="text"]:focus {
   border: 0.118vw solid #000000;
 }
 .createtask_select div {
-  font-family: Inter;
+  font-family: sans-serif;
   border-radius: 0.512vw;
   border: none;
 }
@@ -758,7 +758,7 @@ input[type="text"]:focus {
   text-align: center;
   font-weight: bold;
   font-size: 1.356vw;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   color: white;
   background: #5FC9CD;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -812,7 +812,7 @@ input[type="text"]:focus {
 }
 #detailtask_header{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-weight: bold;
@@ -837,7 +837,7 @@ input[type="text"]:focus {
 }
 #detailtask_description{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-size: 1vw;
@@ -877,7 +877,7 @@ input[type="text"]:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 1.48vw;
   max-width: 36.3vw;
@@ -885,7 +885,7 @@ input[type="text"]:focus {
 }
 #detailtask_delete{
   display: flex;
-  font-family: Inter;
+  font-family: sans-serif;
   font-size: 1.2vw;
   width: 8.5vw;
   height: 2.5vw;
@@ -922,7 +922,7 @@ input[type="text"]:focus {
 }
 #mcvdetailtask_header{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-weight: bold;
@@ -933,7 +933,7 @@ input[type="text"]:focus {
 }
 #mcvdetailtask_desheader{
   overflow-wrap: anywhere;
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   margin-top: 3%;
   margin-left: 3%;
   font-weight: bold;
@@ -1142,7 +1142,7 @@ font-weight: bold;
 /*Left*/
 
 #leftpage{
-  font-family: Inter, sans-serif;
+  font-family: sans-serif;
   min-width: 22vw;
   border-radius: 0.5vw;
   /* padding: 1.5vw; */
@@ -1193,7 +1193,7 @@ font-weight: bold;
 }
 
 .circle-number {
-  font-family: 'Inter';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 1.7vw;
@@ -1204,7 +1204,7 @@ font-weight: bold;
 #text {
   width: 60%;
   aspect-ratio: 2.93/1;
-  font-family: 'Inter',sans-serif;
+  font-family: sans-serif;
   font-weight: 700;
   font-size: 1.7vw;
   line-height: 36px;
@@ -1217,7 +1217,7 @@ font-weight: bold;
 
 #filter-text {
   width: 100%;
-  font-family: 'Inter';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 2vw;
@@ -1246,7 +1246,7 @@ font-weight: bold;
 }
 #checkbox-content {
   margin: 2px 0;
-  font-family: 'Inter';
+  font-family: sans-serif;
   font-style: normal;
   font-size: 1vw;
 
@@ -1309,7 +1309,7 @@ font-weight: bold;
 
 #profile_name {
   width: 100%;
-  font-family: 'Inter';
+  font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 1.7vw;
