@@ -182,8 +182,6 @@ async function handleCheckboxChange(checkbox) {
     console.log(checkbox.id)
     const task = {
       task_id: checkbox.id,
-      task_name: "Bruce",
-      task_description: "Wayne",
       task_status: "completed",
     }
     const options = {

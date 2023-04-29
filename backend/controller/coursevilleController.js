@@ -49,6 +49,7 @@ exports.accessToken = async (req, res) => {
     try {
       const tokenRes = await axios.post(access_token_url, postData, tokenOptions);
       const token = tokenRes.data;
+      res.set("Authorization", `Bearer ${token.access_token}`)
       req.session.token = token;
       console.log(req.session);
       if (token) {
@@ -93,6 +94,7 @@ exports.getCourse = async (req, res) => {
     console.log(err);
   }
 };
+
 
 exports.getSemesterAndYear = async (req, res) => {
   try {
@@ -145,6 +147,7 @@ exports.getAssignments = async (req, res) => {
   }
 }
 
+
 exports.getUserInfo = async (req, res) => {
   try {
     const profileOptions = {
@@ -162,6 +165,7 @@ exports.getUserInfo = async (req, res) => {
     console.log(err);
   }
 };
+
 
 exports.getAllAssignments = async (req, res) => {
   try {
@@ -184,7 +188,7 @@ exports.getAllAssignments = async (req, res) => {
           // Promise.all(all_courses.map(element => {
           //   findAllAssignmentbyID(req, element.cv_cid).then(e => e.forEach(k => k.forEach(s => (arr.push({course_title: element.title, item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
           // }))
-          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, icon: s.icon, created: s.created, duetime: s.duetime, instruction: s.instruction}))))).then(() => res.send(arr)).then(() => res.end())
+          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, icon: s.icon, created: s.created, duetime: s.duetime, instruction: s.instruction }))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
         });
