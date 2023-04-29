@@ -1172,7 +1172,9 @@ input[type="text"]:focus {
     overflow-y: scroll;
     
   }
-
+  #taskList::-webkit-scrollbar {
+    display: none;
+  }
   .foraddtask{
   position: relative;
   width: 100%;
