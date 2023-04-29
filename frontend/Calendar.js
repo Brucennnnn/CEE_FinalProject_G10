@@ -17,7 +17,7 @@ function changeSelect(e){
     if(last != null) last.classList.remove('select-date');
 
     e.currentTarget.classList.add('select-date');
-    console.log(this.innerHTML.substring(0, this.innerHTML.indexOf('<')))
+    console.log(this.innerHTML.substring(0, this.innerHTML.indexOf('<')));
     console.log(curr_month.value+1)
     console.log(curr_year.value)
 }

@@ -140,8 +140,9 @@ input[type="text"]:focus {
 .checkbox{
   display: inline-flex;
   align-items: center;
-  cursor: pointer;
+  cursor: pointer
 }
+
 .checkbox_input{
   display: none;
 }
@@ -1152,32 +1153,38 @@ font-weight: bold;
   padding: 1.5vw;
   align-items: flex-start;
   display: flex;
-  gap: 1rem;
+  gap: 1vw;
   flex-wrap: wrap;
   background: #ABDADC;
   border-radius: 15px;
   border: 0.2vw solid #000000;
-  overflow: auto;
+  overflow-y: scroll;
+}
+#leftside::-webkit-scrollbar {
+  display: none;
 }
 
 .myButton {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1vw;
   align-items: center;
   flex-direction: row;
   width: 20vw;
+  height: 3vw;
+  min-height: 45px;
+  min-width: 80px;
   background-color: #F1FAFE;
-  border-radius: 0.512vw;
+  border-radius: 10px;
   border-color: black;
   border: 0.2vw solid #000000;
 }
 
 .circle {
-  width: 35px;
-  height: 35px;
-  left: 292px;
-  top: 421px;
+  width: 3vw;
+  aspect-ratio: 1/1;
+  min-width: 24px;
+
   background-color: #E63946;
   border-radius: 50%;
   display: flex;
@@ -1189,20 +1196,17 @@ font-weight: bold;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  font-size: 17px;
+  font-size: 1.7vw;
   line-height: 27px;
   color: #FFFFFF;
 }
 
 #text {
-  width: 93px;
-  height: 37px;
-  left: 67px;
-  top: 420px;
-  font-family: 'Inter';
-  font-style: normal;
+  width: 60%;
+  aspect-ratio: 2.93/1;
+  font-family: 'Inter',sans-serif;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 1.7vw;
   line-height: 36px;
   display: flex;
   align-items: center;
@@ -1216,7 +1220,7 @@ font-weight: bold;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 2vw;
   line-height: 36px;
   display: flex;
   justify-content: space-between;
@@ -1229,6 +1233,7 @@ font-weight: bold;
   flex-direction: column;
   padding: 1rem;
   width: 100%;
+  gap:1vw;
   background-color: #F1FAFE;
   border-radius: 0.512vw;
   border: 0.2vw solid #000000;
@@ -1236,22 +1241,30 @@ font-weight: bold;
 
 #checkbox-container {
   display: flex;
+  gap:0.5vw;
   flex-direction: column;
 }
 #checkbox-content {
   margin: 2px 0;
   font-family: 'Inter';
   font-style: normal;
-  font-size: 16px;
+  font-size: 1vw;
 
 }
 
 #newfilter-container {
-  position: relative;
+  position: absolute;
+  z-index: 100;
+  left:0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  width: 100%;
+  width: 30%;
+  height: 20%;
   background-color: #F1FAFE;
   border-radius: 0.512vw;
   border-color: black;
@@ -1273,6 +1286,12 @@ font-weight: bold;
   border: 1px solid #000000;
   color: #ffffff;
   padding: 8px 56px;
+  cursor: pointer;
+}
+
+#addfilter-button:hover {
+  background-color: #44adb2;
+  color: #ffffff;
 }
 
 #button-container {
@@ -1283,7 +1302,8 @@ font-weight: bold;
 
 .circular-image {
   border-radius: 50%;
-  width: 78px;
+  min-width: auto;
+  width: 5vw;
   aspect-ratio: 1;
 }
 
@@ -1292,7 +1312,7 @@ font-weight: bold;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 1.7vw;
   line-height: 24px;
   display: flex;
   justify-content: space-between;
