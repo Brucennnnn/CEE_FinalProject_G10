@@ -155,8 +155,8 @@ exports.getUserInfo = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    axios.get("https://www.mycourseville.com/api/v1/public/users/me", profileOptions).then(profileRes => {
-      res.send(profileRes.data);
+    axios.get("https://www.mycourseville.com/api/v1/public/get/user/info", profileOptions).then(profileRes => {
+      res.send(profileRes.data.data);
       res.end();
     }).catch((err) => {
       console.log(err);

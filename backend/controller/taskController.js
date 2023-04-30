@@ -38,11 +38,12 @@ exports.addTask = async (req, res) => {
 exports.getTasks = async (req, res) => {
     const params = {
         TableName: process.env.aws_user_tasks_table_name,
+        IndexName: "user_id-due_date-index",
         KeyConditionExpression: "user_id = :pk",
         ExpressionAttributeValues: {
             ":pk": req.user_id
-
         },
+        ScanIndexForward: true
     };
     try {
         const data = await docClient.send(new QueryCommand(params));
@@ -64,10 +65,12 @@ exports.getTaskByTags = async (req, res) => {
                 TableName: process.env.aws_user_tasks_table_name,
                 KeyConditionExpression: "user_id = :pk",
                 FilterExpression: "contains(tags, :sk)",
+                IndexName: "user_id-due_date-index",
                 ExpressionAttributeValues: {
                     ":pk": req.user_id,
                     ":sk": tag
                 },
+                ScanIndexForward: true
             };
             const data = await docClient.send(new QueryCommand(params));
             data.Items.forEach(element => {
@@ -94,17 +97,25 @@ exports.getTasksByDueDate = async (req, res) => {
     const params = {
         TableName: process.env.aws_user_tasks_table_name,
         KeyConditionExpression: "user_id = :pk",
-        FilterExpression: "due_date = :sk",
+        FilterExpression: "task_status = :sk",
         ExpressionAttributeValues: {
             ":pk": req.user_id,
-            ":sk": req.body.due_date
+            ":sk": "incompleted"
         },
     };
 
     try {
         const data = await docClient.send(new QueryCommand(params));
-        res.send(data.Items)
-    } catch {
+        console.log(data)
+        filtered_data = data.Items.filter(item => {
+            let itemdate = new Date(item.due_date)
+            let reqdate = new Date(req.params.date)
+            if (itemdate.getDate() === reqdate.getDate()) {
+                return item
+            }
+        })
+        res.send(filtered_data)
+    } catch (err) {
         console.error(err);
         res.status(500).json({
             message: 'Error getting item from DynamoDB',
@@ -115,26 +126,22 @@ exports.getTasksByDueDate = async (req, res) => {
 
 exports.getTasksByStatus = async (req, res) => {
     try {
-        let status = false;
-        if (req.params.status === "completed") {
-            status = true;
-        } else if (req.params.status === "incompleted") {
-            status = false;
-        } else {
-            throw new Error("Invalid status");
-        }
+        if (req.params.status === "completed" || req.params.status === "incompleted") {
         const params = {
             TableName: process.env.aws_user_tasks_table_name,
             KeyConditionExpression: "user_id = :pk",
             FilterExpression: "task_status = :sk",
+            IndexName: "user_id-due_date-index",
             ExpressionAttributeValues: {
                 ":pk": req.user_id,
-                ":sk": status
+                ":sk": req.params.status
             },
+            ScanIndexForward: true
         };
 
         const data = await docClient.send(new QueryCommand(params));
         res.send(data.Items)
+    }
     } catch (err) {
         console.error(err);
         res.status(500).json({
