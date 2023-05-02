@@ -23,7 +23,7 @@ exports.addTag = async (req, res) => {
     };
     try {
       const data = await docClient.send(new PutCommand(params));
-      res.send(data)  
+      res.send({...data,tag_id})  
     } catch (error) {
         console.log(error);
         res.status(500).json({

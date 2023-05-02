@@ -1,3 +1,5 @@
+const env = require('env.js');
+
 async function addTask(task) {
   Object.assign(task, { status: false })
   const options = {
@@ -8,7 +10,7 @@ async function addTask(task) {
     },
     body: JSON.stringify(task)
   };
-  await fetch(`http://127.0.0.1:3000/task/addTask`, options)
+  await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/addTask`, options)
     .then(res => res.json())
     .catch(err => console.error(err.error))
 }
@@ -31,7 +33,7 @@ async function logout() {
     }
   }
   console.log("logout")
-  await fetch(`http://127.0.0.1:3000/courseville/logout`, options).then(res => console.log(res)).catch(err => console.log(err));
+  await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/logout`, options).then(res => console.log(res)).catch(err => console.log(err));
   location.reload();
 }
 
@@ -45,7 +47,7 @@ window.onload = async function getAllTask() {
         "Content-Type": "application/json",
       }
     }
-    me = await fetch(`http://127.0.0.1:3000/courseville/me`, options).then(res => res.status).catch(err => console.log("is not login"));
+    me = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/me`, options).then(res => res.status).catch(err => console.log("is not login"));
   } catch (error) {
     console.log("is not login")
     // document.body.innerHTML = `<h1>Please Login First</h1>`
@@ -73,14 +75,14 @@ window.onload = async function getAllTask() {
     </g>
     </g>
     </svg><h2>loading...<h2>`
-    me = await fetch(`http://127.0.0.1:3000/courseville/me`, options).then(res => res.json()).catch(err => console.log(err));
+    me = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/me`, options).then(res => res.json()).catch(err => console.log(err));
     document.getElementById("profile-header").innerHTML = `<img class="circular-image" src=${me.account.profile_pict}><div id="profile_name">${me.student.firstname_en} ${me.student.lastname_en}</div>`
     changeColor(document.getElementById("Today"))
     changeTodayPage()
     getUserTags()
-    const userTask = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
-    const mcvTask = await fetch(`http://127.0.0.1:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
-    const completedTasks = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
+    const userTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
+    const mcvTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+    const completedTasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
     const allTasks = userTask.concat(mcvTask);
     let allbtntext = document.getElementById("All_Tasks_cnt")
     let combtntext = document.getElementById("Completed_cnt")
@@ -123,7 +125,7 @@ window.onload = async function getAllTask() {
 }
 
 async function login() {
-  window.location.href = `http://127.0.0.1:3000/courseville/auth_app`;
+  window.location.href = `http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/auth_app`;
 }
 
 
@@ -155,7 +157,7 @@ async function getMyCourseVilleTask() {
       'Content-Type': 'application/json'
     },
   }
-  const mcvTask = await fetch(`http://127.0.0.1:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+  const mcvTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
   const sortedmcvTask = mcvTask.sort((a, b) => {
     return a.duetime - b.duetime
   })
@@ -235,7 +237,7 @@ async function getTodayTask() {
       'Content-Type': 'application/json'
     },
   }
-  const todaytasks = await fetch(`http://127.0.0.1:3000/task/getTasksByDueDate/${new Date()}`, options).then(res => res.json()).catch(err => console.log(err));
+  const todaytasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByDueDate/${new Date()}`, options).then(res => res.json()).catch(err => console.log(err));
   return todaytasks;
 }
 
@@ -247,7 +249,7 @@ async function getAllTagList() {
       'Content-Type': 'application/json'
     },
   }
-  const list = await fetch(`http://127.0.0.1:3000/tag/getTags`, options).then(res => res.json()).then(data => data.map(tag => tag.tag_name)).then(a => a).catch(err => console.log(err));
+  const list = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/getTags`, options).then(res => res.json()).then(data => data.map(tag => tag.tag_name)).then(a => a).catch(err => console.log(err));
   return list;
 }
 async function changeTodayPage() {
@@ -323,7 +325,7 @@ async function getDayTask(date) {
       'Content-Type': 'application/json'
     },
   }
-  const dayTasks = await fetch(`http://127.0.0.1:3000/task/getTasksByDueDate/${date}`, options).then(res => res.json()).catch(err => console.log(err));
+  const dayTasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByDueDate/${date}`, options).then(res => res.json()).catch(err => console.log(err));
   return dayTasks;
 }
 
@@ -398,7 +400,7 @@ async function getCompletedTasks() {
       'Content-Type': 'application/json'
     },
   }
-  const completeTasks = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
+  const completeTasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
   return completeTasks;
 }
 
@@ -569,8 +571,8 @@ async function changeAllTaskPage() {
       "Content-Type": "application/json",
     }
   }
-  const userTask = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
-  const mcvTask = await fetch(`http://127.0.0.1:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+  const userTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
+  const mcvTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
   const allTasks = userTask.concat(mcvTask);
   let allbtntext = document.getElementById("All_Tasks_cnt")
   console.log(allTasks)
@@ -586,7 +588,7 @@ async function getUserTags() {
       "Content-Type": "application/json",
     }
   }
-  const tags = await fetch(`http://127.0.0.1:3000/tag/getTags`, options).then(res => res.json()).catch(err => console.log(error));
+  const tags = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/getTags`, options).then(res => res.json()).catch(err => console.log(error));
   tags.forEach(tag => {
     createTag(tag)
   })
@@ -594,6 +596,7 @@ async function getUserTags() {
 }
 
 function createTag(tag) {
+  let deleteButton = document.createElement('button')
   let checkbox_container = document.getElementById("checkbox-container");
   let checkbox_content = document.createElement('div')
   let icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -624,18 +627,26 @@ function createTag(tag) {
   checkbox_content.id = "checkbox-content"
   checkbox.type = "checkbox";
   checkbox.className = "filter_checkbox";
-  checkbox.id = tag.tag_name;
+  checkbox.id = tag.tag_id;
   checkbox.name = tag.tag_name;
   checkbox.value = tag.tag_name;
 
   let label = document.createElement('label')
   label.innerText = tag.tag_name;
+  deleteButton.innerText = "X";
+  deleteButton.className = "tagDeleteButton";
+
+  deleteButton.onclick = function () {
+    deleteTag(tag.tag_id);
+    checkbox_container.removeChild(checkbox_content);
+  }
 
   icon.appendChild(iconPath1)
   icon.appendChild(iconPath2)
   checkbox_content.appendChild(checkbox);
   checkbox_content.appendChild(icon)
   checkbox_content.appendChild(label);
+  checkbox_content.appendChild(deleteButton);
   checkbox_container.appendChild(checkbox_content);
 }
 
@@ -839,7 +850,7 @@ async function deleteTask(id) {
     },
     body: JSON.stringify(task)
   }
-  await fetch(`http://127.0.0.1:3000/task/deleteTask`, options).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
+  await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/deleteTask`, options).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
   let button = [...document.getElementsByClassName("myButton")].filter(button => button.classList.contains("clicked"))[0];
   console.log(button.id)
   if (button.id === "Today" || button.id === "All_Tasks") {
@@ -880,7 +891,7 @@ async function handleCheckboxChange(checkbox) {
     }
     try {
       console.log(task)
-      const upDateTask = await fetch(`http://127.0.0.1:3000/task/updateTask`, options).then(res => res.json()).catch(err => console.log(err));
+      const upDateTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/updateTask`, options).then(res => res.json()).catch(err => console.log(err));
       const taskList = document.getElementsByClassName("foraddtask")[0];
       const taskitem = document.getElementById(checkbox.id);
       taskList.removeChild(taskitem);
@@ -2037,11 +2048,12 @@ function openAddFilterOverlay() {
       }),
     }
 
-    await fetch(`http://127.0.0.1:3000/tag/addTag`, options)
+    const res = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/addTag`, options)
       .then(res => res.json())
       .catch(err => console.log(err))
 
 
+    let deleteButton = document.createElement("button");
     let filter = document.getElementById("filter").value;
     let checkbox_container = document.getElementById("checkbox-container");
     let checkbox_content = document.createElement('div')
@@ -2080,11 +2092,18 @@ function openAddFilterOverlay() {
     let label = document.createElement('label')
     label.innerText = filter;
 
+    deleteButton.innerText = "X";
+    deleteButton.className = "tagDeleteButton";
+    deleteButton.onclick = function () {
+      deleteTag(res.tag_id);
+      checkbox_container.removeChild(checkbox_content)
+    }
     icon.appendChild(iconPath1)
     icon.appendChild(iconPath2)
     checkbox_content.appendChild(checkbox);
     checkbox_content.appendChild(icon)
     checkbox_content.appendChild(label);
+    checkbox_content.appendChild(deleteButton);
     checkbox_container.appendChild(checkbox_content);
     document.body.removeChild(container);
     closeScreenOverlay();
@@ -2094,4 +2113,23 @@ function openAddFilterOverlay() {
   openScreenOverlay();
 
   document.body.appendChild(container);
+}
+
+async function deleteTag(tag_id) {
+  const options = {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      tag_id: tag_id
+    })
+  }
+  try {
+    const res = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/deleteTag`, options);
+    console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
 }

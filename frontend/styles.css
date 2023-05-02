@@ -1329,3 +1329,22 @@ input[type="text"]:focus {
     margin: -0.05;
     cursor: pointer;
   }
+
+  .fitler_checkbox{
+    margin: 2px 0;
+  font-family: sans-serif;
+  font-style: normal;
+  font-size: 1vw;
+  }
+
+  .tagDeleteButton{
+    font-weight: 900;
+    border: transparent;
+    background: transparent;
+    width: fit-content;
+    height: fit-content;
+    vertical-align: middle;
+    color: var(--red);
+    margin-left: auto;
+
+  }

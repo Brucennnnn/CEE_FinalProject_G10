@@ -54,7 +54,7 @@ exports.accessToken = async (req, res) => {
       console.log(req.session);
       if (token) {
         res.writeHead(302, {
-          Location: `http://${process.env.frontendIPAddress}/frontend/taskpage.html`,
+          Location: `http://${process.env.frontendIPAddress}/frontend/index.html`,
         });
         res.send(getUserID(req));
         res.end();
