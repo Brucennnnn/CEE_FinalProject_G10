@@ -110,7 +110,7 @@ exports.getTasksByDueDate = async (req, res) => {
         filtered_data = data.Items.filter(item => {
             let itemdate = new Date(item.due_date)
             let reqdate = new Date(req.params.date)
-            if (itemdate.getDate() === reqdate.getDate()) {
+            if (itemdate.getDate() === reqdate.getDate() && itemdate.getMonth()==reqdate.getMonth() && itemdate.getFullYear()==reqdate.getFullYear() ){
                 return item
             }
         })
