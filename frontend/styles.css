@@ -1346,5 +1346,5 @@ input[type="text"]:focus {
     vertical-align: middle;
     color: var(--red);
     margin-left: auto;
-
+    cursor: pointer;
   }
