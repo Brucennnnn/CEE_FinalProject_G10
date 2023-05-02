@@ -49,6 +49,7 @@ exports.accessToken = async (req, res) => {
     try {
       const tokenRes = await axios.post(access_token_url, postData, tokenOptions);
       const token = tokenRes.data;
+      res.set("Authorization", `Bearer ${token.access_token}`)
       req.session.token = token;
       console.log(req.session);
       if (token) {
@@ -67,6 +68,10 @@ exports.accessToken = async (req, res) => {
   }
 };
 
+exports.returnSession = async (req, res) => {
+  res.send(req.session.token)
+  res.end()
+}
 
 
 exports.getCourse = async (req, res) => {
@@ -81,7 +86,6 @@ exports.getCourse = async (req, res) => {
         let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
           return { cv_cid: e.cv_cid, title: e.title }
         })
-        
         res.send(all_courses)
         res.end()
         return
@@ -90,6 +94,8 @@ exports.getCourse = async (req, res) => {
     console.log(err);
   }
 };
+
+
 exports.getSemesterAndYear = async (req, res) => {
   try {
     const profileOptions = {
@@ -97,17 +103,22 @@ exports.getSemesterAndYear = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    let sem=0;
-    let year=0;
-    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>  
-    profileRes.data.data.student).then(courses => {
-         courses.map(e => {
-          if(e.year>year && e.semester>sem ){
-            sem=e.semester
-            year=e.year
+    let sem = 0;
+    let year = 0;
+    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions)
+      .then(profileRes => profileRes.data.data.student)
+      .then(courses => {
+        courses.map(e => {
+          if (e.year > year) {
+            year = e.year
+            sem = e.semester
+          }
+          else if (e.year == year && e.semester > sem) {
+            sem = e.semester
+
           }
         })
-        res.send({sem:sem,year:year})
+        res.send({ sem: sem, year: year })
         res.end()
         return
       })
@@ -115,6 +126,8 @@ exports.getSemesterAndYear = async (req, res) => {
     console.log(err);
   }
 };
+
+
 
 
 exports.getAssignments = async (req, res) => {
@@ -134,6 +147,7 @@ exports.getAssignments = async (req, res) => {
   }
 }
 
+
 exports.getUserInfo = async (req, res) => {
   try {
     const profileOptions = {
@@ -141,16 +155,19 @@ exports.getUserInfo = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    axios.get("https://www.mycourseville.com/api/v1/public/users/me", profileOptions).then(profileRes => {
-      res.send(profileRes.data);
+    axios.get("https://www.mycourseville.com/api/v1/public/get/user/info", profileOptions).then(profileRes => {
+      res.send(profileRes.data.data);
       res.end();
     }).catch((err) => {
+      res.status(401).send(err);
       console.log(err);
     })
   } catch (err) {
+    res.status(401).send(err)
     console.log(err);
   }
 };
+
 
 exports.getAllAssignments = async (req, res) => {
   try {
@@ -159,10 +176,10 @@ exports.getAllAssignments = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
-    axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
+    await axios.get("https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1", profileOptions).then(profileRes =>
       profileRes.data.data.student).then(courses => {
         let all_courses = courses.filter(e => e.semester == req.params.semester).filter(e => e.year == req.params.year).map(e => {
-          return { cv_cid: e.cv_cid, title: e.title }
+          return { cv_cid: e.cv_cid, title: e.title, icon: e.course_icon }
         })
         return all_courses
       }
@@ -173,7 +190,7 @@ exports.getAllAssignments = async (req, res) => {
           // Promise.all(all_courses.map(element => {
           //   findAllAssignmentbyID(req, element.cv_cid).then(e => e.forEach(k => k.forEach(s => (arr.push({course_title: element.title, item_id: s.itemid, title: s.title, created: s.created, duetime: s.duetime }))))).then(() => res.send(arr)).then(() => res.end())
           // }))
-          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, created: s.created, duetime: s.duetime, instruction: s.instruction}))))).then(() => res.send(arr)).then(() => res.end())
+          return passer(all_courses, req).then(e => e.forEach(k => k.forEach(s => (arr.push({ item_id: s.itemid, title: s.title, cv_cid: s.cv_cid, course_title: s.course_title, icon: s.icon, created: s.created, duetime: s.duetime, instruction: s.instruction }))))).then(() => res.send(arr)).then(() => res.end())
         }).catch(error => {
           console.log(error)
         });
@@ -184,7 +201,7 @@ exports.getAllAssignments = async (req, res) => {
 
 async function passer(courseid, req) {
   try {
-    const re = Promise.all(courseid.map(element => {
+    const re = await Promise.all(courseid.map(element => {
       return findAllAssignmentbyID(req, element)
     }))
     return re
@@ -212,9 +229,10 @@ function findAllAssignmentbyID(req, element) {
           profile.data.forEach((e) => {
             Object.assign(e, { course_title: element.title })
             Object.assign(e, { cv_cid: element.cv_cid })
+            Object.assign(e, { icon: element.icon })
           });
           const now = new Date();
-          profile.data = profile.data.filter(e => e.duetime > now.getTime()/1000)
+          profile.data = profile.data.filter(e => e.duetime > now.getTime() / 1000)
           resolve(profile.data);
         }
       })
@@ -243,5 +261,15 @@ const getUserID = (req) => {
   }
 };
 
+
+exports.logout = (req, res) => {
+  try {
+    req.session.destroy();
+    res.redirect(`http://${process.env.frontendIPAddress}/frontend/taskpage.html`);
+    res.end();
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 

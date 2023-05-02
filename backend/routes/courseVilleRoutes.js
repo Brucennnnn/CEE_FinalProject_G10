@@ -9,4 +9,6 @@ router.get("/allAssignments/:semester/:year", coursevilleController.getAllAssign
 router.get("/courses/:semester/:year", coursevilleController.getCourse);
 router.get("/assignment/:id", coursevilleController.getAssignments);
 router.get("/recentyns", coursevilleController.getSemesterAndYear);
+router.get("/gettoken",coursevilleController.returnSession);
+router.get("/logout", coursevilleController.logout);
 module.exports = router;
