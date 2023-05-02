@@ -54,7 +54,7 @@ exports.accessToken = async (req, res) => {
       console.log(req.session);
       if (token) {
         res.writeHead(302, {
-          Location: `http://${process.env.frontendIPAddress}/frontend/index.html`,
+          Location: `http://${process.env.frontendIPAddress}/index.html`,
         });
         res.send(getUserID(req));
         res.end();
@@ -265,7 +265,7 @@ const getUserID = (req) => {
 exports.logout = (req, res) => {
   try {
     req.session.destroy();
-    res.redirect(`http://${process.env.frontendIPAddress}/frontend/taskpage.html`);
+    res.redirect(`http://${process.env.frontendIPAddress}/index.html`);
     res.end();
   } catch (err) {
     console.log(err);

@@ -42,7 +42,7 @@ app.use("/", (req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`Server started at http://${process.env.backendIPAddress}/couresville/auth_app`);
+  console.log(`Server started at http://${process.env.backendIPAddress}/courseville/auth_app`);
 });
 
 
