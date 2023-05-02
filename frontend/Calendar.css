@@ -1,0 +1,207 @@
+.ctcalendar {
+    height: auto;
+    width: 20.21vw;
+    background-color: white;
+    border-radius: 1.024vw;
+    padding: 1.024vw;
+    position: relative;
+    overflow: hidden;
+    border: 0.118vw solid #000000;
+  }
+  .ctlight .ctcalendar {
+    box-shadow: var(--shadow);
+  }
+  .ctcalendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.4vw;
+    font-weight: 600;
+    color: var(--color-txt);
+    padding: 0.512vw;
+  }
+  .ctcalendar-body {
+    padding: 0.512vw;
+  }
+  .ctcalendar-week-day {
+    height: 2.56vw;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: 600;
+    font-size: 0.955vw;
+    color: #7f7f7f;
+  }
+  .ctcalendar-week-day div {
+    display: grid;
+    place-items: center;
+    color: var(--bg-second);
+  }
+  .ctcalendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.102vw;
+    color: var(--color-txt);
+    font-size: 0.77vw;
+  }
+  .ctcalendar-days div {
+    width: 2.25vw;
+    height: 2.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.256vw;
+    position: relative;
+    animation: to-top 1s forwards;
+  }
+  .ctcalendar-days div span {
+    position: absolute;
+  }
+  /* .calendar-days div:hover span {
+    transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  } */
+  .ctcalendar-day-cursor{
+    cursor: pointer;
+  }
+  .ctcalendar-day-hover:hover {
+    transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+    background-color: #fbc7d4;
+    /* border-radius: 20%; */
+    border-radius: 50%;
+    color: var(--dark-text);
+  }
+  .ctcalendar-days div span:nth-child(1),
+  .ctcalendar-days div span:nth-child(3) {
+    width: 0.102;
+    height: 0;
+    background-color: var(--color-txt);
+  }
+  /* .calendar-days div:hover span:nth-child(1),
+  .calendar-days div:hover span:nth-child(3) {
+    height: 100%;
+  } */
+  .ctcalendar-days div span:nth-child(1) {
+    bottom: 0;
+    left: 0;
+  }
+  .ctcalendar-days div span:nth-child(3) {
+    top: 0;
+    right: 0;
+  }
+  .ctcalendar-days div span:nth-child(2),
+  .ctcalendar-days div span:nth-child(4) {
+    width: 0;
+    height: 0.102;
+    background-color: var(--color-txt);
+  }
+  /* .calendar-days div:hover span:nth-child(2),
+  .calendar-days div:hover span:nth-child(4) {
+    width: 100%;
+  } */
+  .ctcalendar-days div span:nth-child(2) {
+    top: 0;
+    left: 0;
+  }
+  .ctcalendar-days div span:nth-child(4) {
+    bottom: 0;
+    right: 0;
+  }
+  /* .calendar-days div:hover span:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+  .calendar-days div:hover span:nth-child(3) {
+    transition-delay: 0.4s;
+  }
+  .calendar-days div:hover span:nth-child(4) {
+    transition-delay: 0.6s;
+  } */
+  .ctcalendar-days div.curr-date,
+  .ctcalendar-days div.curr-date:hover {
+    background-color: var(--blue);
+    color: var(--white);
+    border-radius: 50%;
+  }
+  .ctcalendar-days div.ctselect-date,
+  .ctcalendar-days div.ctselect-date:hover {
+    background-color: var(--red);
+    color: var(--white);
+    border-radius: 50%;
+  }
+  .calendar-days div.curr-date span {
+    display: none;
+  }
+  .ctmonth-picker {
+    padding: 0.256vw 0.512vw;
+    border-radius: 0.512vw;
+    cursor: pointer;
+  }
+  .ctmonth-picker:hover {
+    background-color: #e3e3e3;
+  }
+  .ctyear-picker {
+    display: flex;
+    align-items: center;
+  }
+  .ctyear-change {
+    height: 1.548vw;
+    width: 1.548vw;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 0.512vw;
+    margin-bottom: 0.128vw;
+    cursor: pointer;
+  }
+  .ctyear-change:hover {
+    background-color: #d0d0d0;
+  }
+  .ctcalendar-footer {
+    padding: 0.512vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .cttoggle {
+    display: flex;
+  }
+  .cttoggle span {
+    margin-right: 0.512vw;
+    color: var(--color-txt);
+  }
+  .ctmonth-list {
+    position: absolute;
+    font-size: 0.955vw;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: white;
+    padding: 1.024vw;
+    padding-left: 0.112vw;
+    grid-template-columns: repeat(3, auto);
+    gap: 0.256vw;
+    display: grid;
+    transform: scale(1.5);
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .ctmonth-list.show {
+    transform: scale(1);
+    visibility: visible;
+    pointer-events: visible;
+    transition: all 0.2s ease-in-out;
+  }
+  .ctmonth-list > div {
+    display: grid;
+    place-items: center;
+  }
+  .ctmonth-list > div > div {
+    padding: 0.256vw 0.512vw;
+    border-radius: 0.512vw;
+    text-align: center;
+    cursor: pointer;
+    color: var(--color-txt);
+  }
+  .ctmonth-list > div > div:hover {
+    background-color: #e3e3e3;
+  }
+  

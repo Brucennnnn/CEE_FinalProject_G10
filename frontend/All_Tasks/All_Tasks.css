@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d93b3b;
+    margin: 0;
+    padding: 0;
+}
+
+#myButton {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    align-items: center;
+    flex-direction: row;
+    max-width: 220px;
+    max-height: 6px;
+    background-color: white;
+    border-radius: 10px;
+    outline: none;
+}
+
+.circle {
+    width: 36px;
+    height: 36px;
+    left: 292px;
+    top: 421px;
+    background-color: #FF7676;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle.white {
+    background-color: white;
+}
+
+#circle-number {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 27px;
+    color: #000000;
+}
+
+#text {
+    width: 93px;
+    height: 37px;
+    left: 67px;
+    top: 420px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 36px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+}
+
+.clicked {
+    background-color: #FF7676;
+}
+
+.clicked .circle {
+    background-color: white;
+    color: #000000;
+}
