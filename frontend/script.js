@@ -1,6 +1,6 @@
 // import {PUBLIC_IP_ADDRESS} from "./env.js";
 var activeFilters = []
-const IP_ADDRESS = '127.0.0.1'
+const IP_ADDRESS = '44.215.207.206'
 
 function setDisabled(loading) {
   [...document.getElementsByClassName("myButton")].forEach(button => {
