@@ -1,4 +1,11 @@
-const env = require('env.js');
+// import {PUBLIC_IP_ADDRESS} from "./env.js";
+const IP_ADDRESS = '127.0.0.1'
+
+function setDisabled(loading) {
+  [...document.getElementsByClassName("myButton")].forEach(button => {
+    button.style.pointerEvents = loading ? "none" : "auto";
+  })
+}
 
 async function addTask(task) {
   Object.assign(task, { status: false })
@@ -10,7 +17,7 @@ async function addTask(task) {
     },
     body: JSON.stringify(task)
   };
-  await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/addTask`, options)
+  await fetch(`http://${IP_ADDRESS}:3000/task/addTask`, options)
     .then(res => res.json())
     .catch(err => console.error(err.error))
 }
@@ -33,7 +40,7 @@ async function logout() {
     }
   }
   console.log("logout")
-  await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/logout`, options).then(res => console.log(res)).catch(err => console.log(err));
+  await fetch(`http://${IP_ADDRESS}:3000/courseville/logout`, options).then(res => console.log(res)).catch(err => console.log(err));
   location.reload();
 }
 
@@ -47,7 +54,7 @@ window.onload = async function getAllTask() {
         "Content-Type": "application/json",
       }
     }
-    me = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/me`, options).then(res => res.status).catch(err => console.log("is not login"));
+    me = await fetch(`http://${IP_ADDRESS}:3000/courseville/me`, options).then(res => res.status).catch(err => console.log("is not login"));
   } catch (error) {
     console.log("is not login")
     // document.body.innerHTML = `<h1>Please Login First</h1>`
@@ -75,14 +82,14 @@ window.onload = async function getAllTask() {
     </g>
     </g>
     </svg><h2>loading...<h2>`
-    me = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/me`, options).then(res => res.json()).catch(err => console.log(err));
+    me = await fetch(`http://${IP_ADDRESS}:3000/courseville/me`, options).then(res => res.json()).catch(err => console.log(err));
     document.getElementById("profile-header").innerHTML = `<img class="circular-image" src=${me.account.profile_pict}><div id="profile_name">${me.student.firstname_en} ${me.student.lastname_en}</div>`
     changeColor(document.getElementById("Today"))
     changeTodayPage()
     getUserTags()
-    const userTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
-    const mcvTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
-    const completedTasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
+    const userTask = await fetch(`http://${IP_ADDRESS}:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
+    const mcvTask = await fetch(`http://${IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+    const completedTasks = await fetch(`http://${IP_ADDRESS}:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
     const allTasks = userTask.concat(mcvTask);
     let allbtntext = document.getElementById("All_Tasks_cnt")
     let combtntext = document.getElementById("Completed_cnt")
@@ -125,7 +132,7 @@ window.onload = async function getAllTask() {
 }
 
 async function login() {
-  window.location.href = `http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/auth_app`;
+  window.location.href = `http://${IP_ADDRESS}:3000/courseville/auth_app`;
 }
 
 
@@ -157,7 +164,7 @@ async function getMyCourseVilleTask() {
       'Content-Type': 'application/json'
     },
   }
-  const mcvTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+  const mcvTask = await fetch(`http://${IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
   const sortedmcvTask = mcvTask.sort((a, b) => {
     return a.duetime - b.duetime
   })
@@ -170,6 +177,7 @@ async function getMyCourseVilleTask() {
 
 async function changeMCVPage() {
   resetCheckbox()
+  setDisabled(true);
   document.getElementsByClassName("foraddtask")[0].style.height = "100%";
   document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
   <g>
@@ -219,6 +227,7 @@ async function changeMCVPage() {
   } else {
     document.getElementsByClassName("foraddtask")[0].innerHTML = `<h2>There is no task on this day</h2>`
   }
+  setDisabled(false);
 }
 
 
@@ -237,7 +246,7 @@ async function getTodayTask() {
       'Content-Type': 'application/json'
     },
   }
-  const todaytasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByDueDate/${new Date()}`, options).then(res => res.json()).catch(err => console.log(err));
+  const todaytasks = await fetch(`http://${IP_ADDRESS}:3000/task/getTasksByDueDate/${new Date()}`, options).then(res => res.json()).catch(err => console.log(err));
   return todaytasks;
 }
 
@@ -249,10 +258,11 @@ async function getAllTagList() {
       'Content-Type': 'application/json'
     },
   }
-  const list = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/getTags`, options).then(res => res.json()).then(data => data.map(tag => tag.tag_name)).then(a => a).catch(err => console.log(err));
+  const list = await fetch(`http://${IP_ADDRESS}:3000/tag/getTags`, options).then(res => res.json()).then(data => data.map(tag => tag.tag_name)).then(a => a).catch(err => console.log(err));
   return list;
 }
 async function changeTodayPage() {
+  setDisabled(true);
   addDateBox()
   getAllTagList()
   resetCheckbox()
@@ -307,6 +317,7 @@ async function changeTodayPage() {
   } else {
     document.getElementsByClassName("foraddtask")[0].innerHTML = `<h2>There is no task today</h2>`
   }
+  setDisabled(false);
 }
 
 
@@ -325,7 +336,7 @@ async function getDayTask(date) {
       'Content-Type': 'application/json'
     },
   }
-  const dayTasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByDueDate/${date}`, options).then(res => res.json()).catch(err => console.log(err));
+  const dayTasks = await fetch(`http://${IP_ADDRESS}:3000/task/getTasksByDueDate/${date}`, options).then(res => res.json()).catch(err => console.log(err));
   return dayTasks;
 }
 
@@ -339,6 +350,7 @@ function resetSidebar() {
 }
 
 async function changeDayPage(date) {
+  setDisabled(true);
   resetCheckbox()
   resetSidebar()
   document.getElementsByClassName("foraddtask")[0].style.height = "100%";
@@ -390,6 +402,7 @@ async function changeDayPage(date) {
   } else {
     document.getElementsByClassName("foraddtask")[0].innerHTML = `<h2>There is no task on this day</h2>`
   }
+  setDisabled(false);
 }
 
 async function getCompletedTasks() {
@@ -400,11 +413,12 @@ async function getCompletedTasks() {
       'Content-Type': 'application/json'
     },
   }
-  const completeTasks = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
+  const completeTasks = await fetch(`http://${IP_ADDRESS}:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
   return completeTasks;
 }
 
 async function changeCompletedPage() {
+  setDisabled(true);
   resetCheckbox()
   document.getElementsByClassName("foraddtask")[0].style.height = "100%";
   document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="194px" height="194px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -464,6 +478,7 @@ async function changeCompletedPage() {
   } else {
     document.getElementsByClassName("foraddtask")[0].innerHTML = `<h2>There is no completed task</h2>`
   }
+  setDisabled(false);
 }
 
 
@@ -521,6 +536,7 @@ function addDateBox() {
 
 
 async function changeAllTaskPage() {
+  setDisabled(true);
   resetCheckbox()
   document.getElementsByClassName("foraddtask")[0].style.height = "100%";
   document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="211px" height="211px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -571,13 +587,14 @@ async function changeAllTaskPage() {
       "Content-Type": "application/json",
     }
   }
-  const userTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
-  const mcvTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+  const userTask = await fetch(`http://${IP_ADDRESS}:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
+  const mcvTask = await fetch(`http://${IP_ADDRESS}:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
   const allTasks = userTask.concat(mcvTask);
   let allbtntext = document.getElementById("All_Tasks_cnt")
   console.log(allTasks)
   renderTasklist(allTasks);
   setupButton(allbtntext, allTasks.length)
+  setDisabled(false);
 }
 
 async function getUserTags() {
@@ -588,7 +605,7 @@ async function getUserTags() {
       "Content-Type": "application/json",
     }
   }
-  const tags = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/getTags`, options).then(res => res.json()).catch(err => console.log(error));
+  const tags = await fetch(`http://${IP_ADDRESS}:3000/tag/getTags`, options).then(res => res.json()).catch(err => console.log(error));
   tags.forEach(tag => {
     createTag(tag)
   })
@@ -850,13 +867,13 @@ async function deleteTask(id) {
     },
     body: JSON.stringify(task)
   }
-  await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/deleteTask`, options).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
+  await fetch(`http://${IP_ADDRESS}:3000/task/deleteTask`, options).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
   let button = [...document.getElementsByClassName("myButton")].filter(button => button.classList.contains("clicked"))[0];
   console.log(button.id)
   if (button.id === "Today" || button.id === "All_Tasks") {
-
     document.getElementById("All_Tasks_cnt").innerText = parseInt(document.getElementById("All_Tasks_cnt").innerText) - 1;
   } else if (button.id === "Completed") {
+    console.log("delete")
     console.log(document.getElementById("Completed_cnt"))
     document.getElementById("Completed_cnt").innerText = parseInt(document.getElementById("Completed_cnt").innerText) - 1;
   } else {
@@ -891,7 +908,7 @@ async function handleCheckboxChange(checkbox) {
     }
     try {
       console.log(task)
-      const upDateTask = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/task/updateTask`, options).then(res => res.json()).catch(err => console.log(err));
+      const upDateTask = await fetch(`http://${IP_ADDRESS}:3000/task/updateTask`, options).then(res => res.json()).catch(err => console.log(err));
       const taskList = document.getElementsByClassName("foraddtask")[0];
       const taskitem = document.getElementById(checkbox.id);
       taskList.removeChild(taskitem);
@@ -1163,6 +1180,8 @@ function getCalendar(month, year) {
     console.log(ctcurr_year.value)
   }
 
+
+
   month_names.forEach((e, index) => {
     let month = document.createElement('div')
     month.innerHTML = `<div data-month="${index}">${e}</div>`
@@ -1173,7 +1192,8 @@ function getCalendar(month, year) {
     }
     month_list.appendChild(month)
   })
-  month_picker = calendar.querySelector('#month-picker');
+
+  let month_picker = calendar.querySelector('#month-picker');
   month_picker.onclick = () => {
     month_list.classList.add('show')
   }
@@ -2048,7 +2068,7 @@ function openAddFilterOverlay() {
       }),
     }
 
-    const res = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/addTag`, options)
+    const res = await fetch(`http://${IP_ADDRESS}:3000/tag/addTag`, options)
       .then(res => res.json())
       .catch(err => console.log(err))
 
@@ -2127,7 +2147,7 @@ async function deleteTag(tag_id) {
     })
   }
   try {
-    const res = await fetch(`http://${env.PUBLIC_IP_ADDRESS}:3000/tag/deleteTag`, options);
+    const res = await fetch(`http://${IP_ADDRESS}:3000/tag/deleteTag`, options);
     console.log(res);
   } catch (err) {
     console.log(err);
