@@ -1,5 +1,6 @@
 // import {PUBLIC_IP_ADDRESS} from "./env.js";
-const IP_ADDRESS = '44.215.207.206'
+var activeFilters = []
+const IP_ADDRESS = '127.0.0.1'
 
 function setDisabled(loading) {
   [...document.getElementsByClassName("myButton")].forEach(button => {
@@ -102,10 +103,12 @@ window.onload = async function getAllTask() {
     let filters = [...document.getElementsByClassName("filter_checkbox")]
     filters.forEach(filter => {
       filter.addEventListener("click", async function () {
-        const activeFilters = []
         filters.forEach(filter => {
           if (filter.checked) {
             activeFilters.push(filter.value)
+          }
+          else {
+            activeFilters = activeFilters.filter(val => val != filter.value)
           }
         })
         const allcurrenttasks = [...document.getElementsByClassName("taskitem")]
@@ -2074,6 +2077,29 @@ function openAddFilterOverlay() {
       deleteTag(res.tag_id);
       checkbox_container.removeChild(checkbox_content)
     }
+    checkbox.addEventListener("click", async function () {
+      if (checkbox.checked) {
+        activeFilters.push(checkbox.value)
+      }
+      else {
+        activeFilters = activeFilters.filter(val => val != checkbox.value)
+      }
+
+
+      const allcurrenttasks = [...document.getElementsByClassName("taskitem")]
+      allcurrenttasks.forEach(task => {
+        if (activeFilters.every(val => task.tags.includes(val))) {
+          task.style.display = ""
+        } else {
+          task.style.display = "none"
+        }
+      })
+    })
+
+
+
+
+
 
     checkbox_content.appendChild(checkbox);
     checkbox_content.appendChild(label);
@@ -2081,6 +2107,14 @@ function openAddFilterOverlay() {
     checkbox_container.appendChild(checkbox_content);
     document.body.removeChild(container);
     closeScreenOverlay();
+
+
+
+
+
+
+
+
   }
   buttonContainer.appendChild(addButton);
   container.appendChild(buttonContainer);
