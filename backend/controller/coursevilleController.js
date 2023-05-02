@@ -159,9 +159,11 @@ exports.getUserInfo = async (req, res) => {
       res.send(profileRes.data.data);
       res.end();
     }).catch((err) => {
+      res.status(401).send(err);
       console.log(err);
     })
   } catch (err) {
+    res.status(401).send(err)
     console.log(err);
   }
 };
@@ -259,5 +261,15 @@ const getUserID = (req) => {
   }
 };
 
+
+exports.logout = (req, res) => {
+  try {
+    req.session.destroy();
+    res.redirect(`http://${process.env.frontendIPAddress}/frontend/taskpage.html`);
+    res.end();
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 

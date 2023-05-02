@@ -1009,7 +1009,7 @@ input[type="text"]:focus {
     border: 3px solid #000000;
   }
   .month{
-  font-size: 3vw;
+  font-size: 2.5vw;
   
   text-align: center;
   font-weight: bold;
@@ -1274,4 +1274,58 @@ input[type="text"]:focus {
     vertical-align: middle;
     align-self: center;
     padding-right: 25%;
+  }
+
+
+  #loginbox{
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 25vw;
+    height: 12vw;
+    background: #A8DADC;
+    border-radius: 0.512vw;
+    border: 0.188vw black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+  }
+  #logintitle{
+    margin: 0.65vw;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.25vw;
+  }
+  #loginsubtitle{
+    margin: 0.65vw;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.859vw;
+  }
+  #loginbutton{
+    font-weight: bold;
+    background: white;
+    border-radius: 0.512vw;
+    filter: drop-shadow(0px 0.205vw 0.205vw rgba(0, 0, 0, 0.25));
+    width: 90%;
+    height: 2.5vw;
+    transition: 200ms;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 15px;
+  }
+  #loginbutton:hover{
+    width: 95%;
+    height: 2.65vw;
+    margin: -0.05;
+    cursor: pointer;
   }

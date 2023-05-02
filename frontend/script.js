@@ -22,20 +22,7 @@ async function addTask(task) {
 //   );
 // }
 
-window.onload = async function getAllTask() {
-  document.getElementById("profile-header").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-  <g transform="translate(50 50)">
-    <g transform="scale(1)">
-      <g transform="translate(-50 -50)">
-        <g>
-          <animateTransform attributeName="transform" type="translate" repeatCount="indefinite" dur="1s" values="-20 -20;20 -20;0 20;-20 -20" keyTimes="0;0.33;0.66;1"></animateTransform>
-          <path fill="#667395" d="M44.19 26.158c-4.817 0-9.345 1.876-12.751 5.282c-3.406 3.406-5.282 7.934-5.282 12.751 c0 4.817 1.876 9.345 5.282 12.751c3.406 3.406 7.934 5.282 12.751 5.282s9.345-1.876 12.751-5.282 c3.406-3.406 5.282-7.934 5.282-12.751c0-4.817-1.876-9.345-5.282-12.751C53.536 28.033 49.007 26.158 44.19 26.158z"></path>
-          <path fill="#292664" d="M78.712 72.492L67.593 61.373l-3.475-3.475c1.621-2.352 2.779-4.926 3.475-7.596c1.044-4.008 1.044-8.23 0-12.238 c-1.048-4.022-3.146-7.827-6.297-10.979C56.572 22.362 50.381 20 44.19 20C38 20 31.809 22.362 27.085 27.085 c-9.447 9.447-9.447 24.763 0 34.21C31.809 66.019 38 68.381 44.19 68.381c4.798 0 9.593-1.425 13.708-4.262l9.695 9.695 l4.899 4.899C73.351 79.571 74.476 80 75.602 80s2.251-0.429 3.11-1.288C80.429 76.994 80.429 74.209 78.712 72.492z M56.942 56.942 c-3.406 3.406-7.934 5.282-12.751 5.282s-9.345-1.876-12.751-5.282c-3.406-3.406-5.282-7.934-5.282-12.751 c0-4.817 1.876-9.345 5.282-12.751c3.406-3.406 7.934-5.282 12.751-5.282c4.817 0 9.345 1.876 12.751 5.282 c3.406 3.406 5.282 7.934 5.282 12.751C62.223 49.007 60.347 53.536 56.942 56.942z"></path>
-        </g>
-      </g>
-    </g>
-  </g>
-  </svg><h2>loading...<h2>`
+async function logout() {
   const options = {
     method: "GET",
     credentials: "include",
@@ -43,47 +30,100 @@ window.onload = async function getAllTask() {
       "Content-Type": "application/json",
     }
   }
-  const me = await fetch(`http://127.0.0.1:3000/courseville/me`, options).then(res => res.json()).catch(err => console.log(err));
-  document.getElementById("profile-header").innerHTML = `<img class="circular-image" src=${me.account.profile_pict}><div id="profile_name">${me.student.firstname_en} ${me.student.lastname_en}</div>`
-  changeColor(document.getElementById("Today"))
-  changeTodayPage()
-  getUserTags()
-  const userTask = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
-  const mcvTask = await fetch(`http://127.0.0.1:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
-  const completedTasks = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
-  const allTasks = userTask.concat(mcvTask);
-  let allbtntext = document.getElementById("All_Tasks_cnt")
-  let combtntext = document.getElementById("Completed_cnt")
-  let mcvbtntext = document.getElementById("Mycourseville_cnt")
-  setupButton(allbtntext, allTasks.length)
-  setupButton(mcvbtntext, mcvTask.length)
-  setupButton(combtntext, completedTasks.length)
-  resetCheckbox()
+  console.log("logout")
+  await fetch(`http://127.0.0.1:3000/courseville/logout`, options).then(res => console.log(res)).catch(err => console.log(err));
+  location.reload();
+}
 
-  let filters = [...document.getElementsByClassName("filter_checkbox")]
-  filters.forEach(filter => {
-    filter.addEventListener("click", async function () {
-      const activeFilters = []
-      filters.forEach(filter => {
-        if (filter.checked) {
-          activeFilters.push(filter.value)
-        }
-      })
-      const allcurrenttasks = [...document.getElementsByClassName("taskitem")]
-      allcurrenttasks.forEach(task => {
-        if (activeFilters.every(val => task.tags.includes(val))) {
-          task.style.display = ""
-        } else {
-          task.style.display = "none"
-        }
+window.onload = async function getAllTask() {
+  let me = false;
+  try {
+    const options = {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }
+    me = await fetch(`http://127.0.0.1:3000/courseville/me`, options).then(res => res.status).catch(err => console.log("is not login"));
+  } catch (error) {
+    console.log("is not login")
+    // document.body.innerHTML = `<h1>Please Login First</h1>`
+  }
+  console.log(me);
+  if (me === 200) {
+    const options = {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }
+    console.log("login success")
+    document.getElementById("profile-header").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+    <g transform="translate(50 50)">
+    <g transform="scale(1)">
+    <g transform="translate(-50 -50)">
+    <g>
+    <animateTransform attributeName="transform" type="translate" repeatCount="indefinite" dur="1s" values="-20 -20;20 -20;0 20;-20 -20" keyTimes="0;0.33;0.66;1"></animateTransform>
+    <path fill="#667395" d="M44.19 26.158c-4.817 0-9.345 1.876-12.751 5.282c-3.406 3.406-5.282 7.934-5.282 12.751 c0 4.817 1.876 9.345 5.282 12.751c3.406 3.406 7.934 5.282 12.751 5.282s9.345-1.876 12.751-5.282 c3.406-3.406 5.282-7.934 5.282-12.751c0-4.817-1.876-9.345-5.282-12.751C53.536 28.033 49.007 26.158 44.19 26.158z"></path>
+    <path fill="#292664" d="M78.712 72.492L67.593 61.373l-3.475-3.475c1.621-2.352 2.779-4.926 3.475-7.596c1.044-4.008 1.044-8.23 0-12.238 c-1.048-4.022-3.146-7.827-6.297-10.979C56.572 22.362 50.381 20 44.19 20C38 20 31.809 22.362 27.085 27.085 c-9.447 9.447-9.447 24.763 0 34.21C31.809 66.019 38 68.381 44.19 68.381c4.798 0 9.593-1.425 13.708-4.262l9.695 9.695 l4.899 4.899C73.351 79.571 74.476 80 75.602 80s2.251-0.429 3.11-1.288C80.429 76.994 80.429 74.209 78.712 72.492z M56.942 56.942 c-3.406 3.406-7.934 5.282-12.751 5.282s-9.345-1.876-12.751-5.282c-3.406-3.406-5.282-7.934-5.282-12.751 c0-4.817 1.876-9.345 5.282-12.751c3.406-3.406 7.934-5.282 12.751-5.282c4.817 0 9.345 1.876 12.751 5.282 c3.406 3.406 5.282 7.934 5.282 12.751C62.223 49.007 60.347 53.536 56.942 56.942z"></path>
+    </g>
+    </g>
+    </g>
+    </g>
+    </svg><h2>loading...<h2>`
+    me = await fetch(`http://127.0.0.1:3000/courseville/me`, options).then(res => res.json()).catch(err => console.log(err));
+    document.getElementById("profile-header").innerHTML = `<img class="circular-image" src=${me.account.profile_pict}><div id="profile_name">${me.student.firstname_en} ${me.student.lastname_en}</div>`
+    changeColor(document.getElementById("Today"))
+    changeTodayPage()
+    getUserTags()
+    const userTask = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/incompleted`, options).then(res => res.json()).catch(err => console.log(error));
+    const mcvTask = await fetch(`http://127.0.0.1:3000/courseville/allAssignments/2/2022`, options).then(res => res.json()).catch(err => console.log(err));
+    const completedTasks = await fetch(`http://127.0.0.1:3000/task/getTasksByStatus/completed`, options).then(res => res.json()).catch(err => console.log(err));
+    const allTasks = userTask.concat(mcvTask);
+    let allbtntext = document.getElementById("All_Tasks_cnt")
+    let combtntext = document.getElementById("Completed_cnt")
+    let mcvbtntext = document.getElementById("Mycourseville_cnt")
+    setupButton(allbtntext, allTasks.length)
+    setupButton(mcvbtntext, mcvTask.length)
+    setupButton(combtntext, completedTasks.length)
+    resetCheckbox()
+
+    let filters = [...document.getElementsByClassName("filter_checkbox")]
+    filters.forEach(filter => {
+      filter.addEventListener("click", async function () {
+        const activeFilters = []
+        filters.forEach(filter => {
+          if (filter.checked) {
+            activeFilters.push(filter.value)
+          }
+        })
+        const allcurrenttasks = [...document.getElementsByClassName("taskitem")]
+        allcurrenttasks.forEach(task => {
+          if (activeFilters.every(val => task.tags.includes(val))) {
+            task.style.display = ""
+          } else {
+            task.style.display = "none"
+          }
+        })
       })
     })
-  })
+  } else {
+    document.body.innerHTML = `<h2><div id="loginbox">
+    <p id="logintitle">DoToo</p>
+    <p id="loginsubtitle">Welcome Back!</p>
+    <div id="loginbutton" onClick = "login()">
+        <img src="image/mcvlogo.png" style="width: 2vw;height: 2vw;">
+        <p>Authenticate with myCourseVille</p>
+        <img src="image/loginicon.png" style="width: 1vw;height: 1vw;">
+    </div>
+</div><h2>`
+  }
+}
 
-  // completedTask.forEach(task => {
-  //   console.log(task)
-  //   createTaskitem(task)
-  // })
+async function login() {
+  window.location.href = `http://127.0.0.1:3000/courseville/auth_app`;
 }
 
 
@@ -128,7 +168,8 @@ async function getMyCourseVilleTask() {
 
 async function changeMCVPage() {
   resetCheckbox()
-  document.getElementsByClassName("foraddtask")[0].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+  document.getElementsByClassName("foraddtask")[0].style.height = "100%";
+  document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1" begin="-0.1s"></animateTransform>
     <circle cx="50" cy="50" r="39.891" stroke="#6994b7" stroke-width="14.4" fill="none" stroke-dasharray="0 300">
@@ -168,7 +209,7 @@ async function changeMCVPage() {
     <path fill="#000000" d="M85.5,36.3c0.2,0.6-0.1,1.2-0.7,1.5c-0.6,0.2-1.3,0-1.5-0.6C83,36.7,83.4,36,84,35.8C84.6,35.5,85.3,35.7,85.5,36.3z"></path>
   
   </g>
-  </svg>`
+  </svg></div>`
   let mcvTask = await getMyCourseVilleTask();
   console.log(mcvTask);
   if (mcvTask.length !== 0) {
@@ -213,7 +254,8 @@ async function changeTodayPage() {
   addDateBox()
   getAllTagList()
   resetCheckbox()
-  document.getElementsByClassName("foraddtask")[0].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="187px" height="187px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+  document.getElementsByClassName("foraddtask")[0].style.height = "100%";
+  document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="187px" height="187px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="1.1764705882352942s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1" begin="-0.1235294117647059s"></animateTransform>
     <circle cx="50" cy="50" r="39.891" stroke="#b4eaed" stroke-width="14.4" fill="none" stroke-dasharray="0 300">
@@ -253,7 +295,7 @@ async function changeTodayPage() {
     <path fill="#000000" d="M85.5,36.3c0.2,0.6-0.1,1.2-0.7,1.5c-0.6,0.2-1.3,0-1.5-0.6C83,36.7,83.4,36,84,35.8C84.6,35.5,85.3,35.7,85.5,36.3z"></path>
   
   </g>
-  </svg>`
+  </svg></div>`
   console.log("changeTodayPage")
   let todaytasks = await getTodayTask();
   let todaybtntext = document.getElementById("Today_cnt")
@@ -285,9 +327,20 @@ async function getDayTask(date) {
   return dayTasks;
 }
 
+function resetSidebar() {
+  const sidebarButtonColor = hexToRgb("#F1FAFE");
+  const sidebarButtons = [...document.getElementsByClassName("myButton")];
+  sidebarButtons.forEach(b => {
+    b.classList.remove("clicked");
+    b.style.backgroundColor = sidebarButtonColor;
+  })
+}
+
 async function changeDayPage(date) {
   resetCheckbox()
-  document.getElementsByClassName("foraddtask")[0].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+  resetSidebar()
+  document.getElementsByClassName("foraddtask")[0].style.height = "100%";
+  document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1" begin="-0.1s"></animateTransform>
     <circle cx="50" cy="50" r="39.891" stroke="#6994b7" stroke-width="14.4" fill="none" stroke-dasharray="0 300">
@@ -327,7 +380,7 @@ async function changeDayPage(date) {
     <path fill="#000000" d="M85.5,36.3c0.2,0.6-0.1,1.2-0.7,1.5c-0.6,0.2-1.3,0-1.5-0.6C83,36.7,83.4,36,84,35.8C84.6,35.5,85.3,35.7,85.5,36.3z"></path>
   
   </g>
-  </svg>`
+  </svg></div>`
   let dayTasks = await getDayTask(date);
 
   if (dayTasks.length !== 0) {
@@ -351,7 +404,8 @@ async function getCompletedTasks() {
 
 async function changeCompletedPage() {
   resetCheckbox()
-  document.getElementsByClassName("foraddtask")[0].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="194px" height="194px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+  document.getElementsByClassName("foraddtask")[0].style.height = "100%";
+  document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="194px" height="194px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="0.8474576271186441s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1" begin="-0.08474576271186442s"></animateTransform>
     <circle cx="50" cy="50" r="39.891" stroke="#fefefe" stroke-width="14.4" fill="none" stroke-dasharray="0 300">
@@ -400,7 +454,7 @@ async function changeCompletedPage() {
     <path fill="#000000" d="M85.3,37.4l0.7-0.2l-0.2-0.6c-0.3-0.8-1.3-1.2-2.1-0.8L82.9,36l0.2,0.6C83.5,37.4,84.4,37.7,85.3,37.4z"></path>
   
   </g>
-  </svg>
+  </svg></div>
   `
   let completeTasks = await getCompletedTasks();
   if (completeTasks.length !== 0) {
@@ -466,47 +520,48 @@ function addDateBox() {
 
 async function changeAllTaskPage() {
   resetCheckbox()
-  document.getElementsByClassName("foraddtask")[0].innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+  document.getElementsByClassName("foraddtask")[0].style.height = "100%";
+  document.getElementsByClassName("foraddtask")[0].innerHTML = `<div style="width:100%;height:100%;display:flex;justify-content:center;align-item:center;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="211px" height="211px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1" begin="-0.1s"></animateTransform>
-    <circle cx="50" cy="50" r="39.891" stroke="#6994b7" stroke-width="14.4" fill="none" stroke-dasharray="0 300">
+    <circle cx="50" cy="50" r="39.891" stroke="#e0dcb8" stroke-width="14.4" fill="none" stroke-dasharray="0 300">
       <animate attributeName="stroke-dasharray" values="15 300;55.1413599195142 300;15 300" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" calcMode="linear" keySplines="0 0.4 0.6 1;0.4 0 1 0.6" begin="-0.046s"></animate>
     </circle>
-    <circle cx="50" cy="50" r="39.891" stroke="#eeeeee" stroke-width="7.2" fill="none" stroke-dasharray="0 300">
+    <circle cx="50" cy="50" r="39.891" stroke="#aca730" stroke-width="7.2" fill="none" stroke-dasharray="0 300">
       <animate attributeName="stroke-dasharray" values="15 300;55.1413599195142 300;15 300" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" calcMode="linear" keySplines="0 0.4 0.6 1;0.4 0 1 0.6" begin="-0.046s"></animate>
     </circle>
-    <circle cx="50" cy="50" r="32.771" stroke="#000000" stroke-width="1" fill="none" stroke-dasharray="0 300">
+    <circle cx="50" cy="50" r="32.771" stroke="#985d4e" stroke-width="1" fill="none" stroke-dasharray="0 300">
       <animate attributeName="stroke-dasharray" values="15 300;45.299378454348094 300;15 300" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" calcMode="linear" keySplines="0 0.4 0.6 1;0.4 0 1 0.6" begin="-0.046s"></animate>
     </circle>
-    <circle cx="50" cy="50" r="47.171" stroke="#000000" stroke-width="1" fill="none" stroke-dasharray="0 300">
+    <circle cx="50" cy="50" r="47.171" stroke="#985d4e" stroke-width="1" fill="none" stroke-dasharray="0 300">
       <animate attributeName="stroke-dasharray" values="15 300;66.03388996804073 300;15 300" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" calcMode="linear" keySplines="0 0.4 0.6 1;0.4 0 1 0.6" begin="-0.046s"></animate>
     </circle>
   </g>
   
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1"></animateTransform>
-    <path fill="#6994b7" stroke="#000000" d="M97.2,50.1c0,6.1-1.2,12.2-3.5,17.9l-13.3-5.4c1.6-3.9,2.4-8.2,2.4-12.4"></path>
-    <path fill="#eeeeee" d="M93.5,49.9c0,1.2,0,2.7-0.1,3.9l-0.4,3.6c-0.4,2-2.3,3.3-4.1,2.8l-0.2-0.1c-1.8-0.5-3.1-2.3-2.7-3.9l0.4-3 c0.1-1,0.1-2.3,0.1-3.3"></path>
-    <path fill="#6994b7" stroke="#000000" d="M85.4,62.7c-0.2,0.7-0.5,1.4-0.8,2.1c-0.3,0.7-0.6,1.4-0.9,2c-0.6,1.1-2,1.4-3.2,0.8c-1.1-0.7-1.7-2-1.2-2.9 c0.3-0.6,0.5-1.2,0.8-1.8c0.2-0.6,0.6-1.2,0.7-1.8"></path>
-    <path fill="#6994b7" stroke="#000000" d="M94.5,65.8c-0.3,0.9-0.7,1.7-1,2.6c-0.4,0.9-0.7,1.7-1.1,2.5c-0.7,1.4-2.3,1.9-3.4,1.3h0 c-1.1-0.7-1.5-2.2-0.9-3.4c0.4-0.8,0.7-1.5,1-2.3c0.3-0.8,0.7-1.5,0.9-2.3"></path>
+    <path fill="#e0dcb8" stroke="#985d4e" d="M97.2,50.1c0,6.1-1.2,12.2-3.5,17.9l-13.3-5.4c1.6-3.9,2.4-8.2,2.4-12.4"></path>
+    <path fill="#aca730" d="M93.5,49.9c0,1.2,0,2.7-0.1,3.9l-0.4,3.6c-0.4,2-2.3,3.3-4.1,2.8l-0.2-0.1c-1.8-0.5-3.1-2.3-2.7-3.9l0.4-3 c0.1-1,0.1-2.3,0.1-3.3"></path>
+    <path fill="#e0dcb8" stroke="#985d4e" d="M85.4,62.7c-0.2,0.7-0.5,1.4-0.8,2.1c-0.3,0.7-0.6,1.4-0.9,2c-0.6,1.1-2,1.4-3.2,0.8c-1.1-0.7-1.7-2-1.2-2.9 c0.3-0.6,0.5-1.2,0.8-1.8c0.2-0.6,0.6-1.2,0.7-1.8"></path>
+    <path fill="#e0dcb8" stroke="#985d4e" d="M94.5,65.8c-0.3,0.9-0.7,1.7-1,2.6c-0.4,0.9-0.7,1.7-1.1,2.5c-0.7,1.4-2.3,1.9-3.4,1.3h0 c-1.1-0.7-1.5-2.2-0.9-3.4c0.4-0.8,0.7-1.5,1-2.3c0.3-0.8,0.7-1.5,0.9-2.3"></path>
   </g>
   <g>
     <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" keyTimes="0;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1" begin="-0.1s"></animateTransform>
-    <path fill="#eeeeee" stroke="#000000" d="M86.9,35.3l-6,2.4c-0.4-1.2-1.1-2.4-1.7-3.5c-0.2-0.5,0.3-1.1,0.9-1C82.3,33.8,84.8,34.4,86.9,35.3z"></path>
-    <path fill="#eeeeee" stroke="#000000" d="M87.1,35.3l6-2.4c-0.6-1.7-1.5-3.3-2.3-4.9c-0.3-0.7-1.2-0.6-1.4,0.1C88.8,30.6,88.2,33,87.1,35.3z"></path>
-    <path fill="#6994b7" stroke="#000000" d="M82.8,50.1c0-3.4-0.5-6.8-1.6-10c-0.2-0.8-0.4-1.5-0.3-2.3c0.1-0.8,0.4-1.6,0.7-2.4c0.7-1.5,1.9-3.1,3.7-4l0,0 c1.8-0.9,3.7-1.1,5.6-0.3c0.9,0.4,1.7,1,2.4,1.8c0.7,0.8,1.3,1.7,1.7,2.8c1.5,4.6,2.2,9.5,2.3,14.4"></path>
-    <path fill="#eeeeee" d="M86.3,50.2l0-0.9l-0.1-0.9l-0.1-1.9c0-0.9,0.2-1.7,0.7-2.3c0.5-0.7,1.3-1.2,2.3-1.4l0.3,0 c0.9-0.2,1.9,0,2.6,0.6c0.7,0.5,1.3,1.4,1.4,2.4l0.2,2.2l0.1,1.1l0,1.1"></path>
-    <path fill="#ff9922" d="M93.2,34.6c0.1,0.4-0.3,0.8-0.9,1c-0.6,0.2-1.2,0.1-1.4-0.2c-0.1-0.3,0.3-0.8,0.9-1 C92.4,34.2,93,34.3,93.2,34.6z"></path>
-    <path fill="#ff9922" d="M81.9,38.7c0.1,0.3,0.7,0.3,1.3,0.1c0.6-0.2,1-0.6,0.9-0.9c-0.1-0.3-0.7-0.3-1.3-0.1 C82.2,38,81.8,38.4,81.9,38.7z"></path>
-    <path fill="#000000" d="M88.5,36.8c0.1,0.3-0.2,0.7-0.6,0.8c-0.5,0.2-0.9,0-1.1-0.3c-0.1-0.3,0.2-0.7,0.6-0.8C87.9,36.3,88.4,36.4,88.5,36.8z"></path>
-    <path stroke="#000000" d="M85.9,38.9c0.2,0.6,0.8,0.9,1.4,0.7c0.6-0.2,0.9-0.9,0.6-2.1c0.3,1.2,1,1.7,1.6,1.5c0.6-0.2,0.9-0.8,0.8-1.4"></path>
-    <path fill="#6994b7" stroke="#000000" d="M86.8,42.3l0.4,2.2c0.1,0.4,0.1,0.7,0.2,1.1l0.1,1.1c0.1,1.2-0.9,2.3-2.2,2.3c-1.3,0-2.5-0.8-2.5-1.9l-0.1-1 c0-0.3-0.1-0.6-0.2-1l-0.3-1.9"></path>
-    <path fill="#6994b7" stroke="#000000" d="M96.2,40.3l0.5,2.7c0.1,0.5,0.2,0.9,0.2,1.4l0.1,1.4c0.1,1.5-0.9,2.8-2.2,2.9h0c-1.3,0-2.5-1.1-2.6-2.4 L92.1,45c0-0.4-0.1-0.8-0.2-1.2l-0.4-2.5"></path>
-    <path fill="#000000" d="M91.1,34.1c0.3,0.7,0,1.4-0.7,1.6c-0.6,0.2-1.3-0.1-1.6-0.7c-0.2-0.6,0-1.4,0.7-1.6C90.1,33.1,90.8,33.5,91.1,34.1z"></path>
-    <path fill="#000000" d="M85.5,36.3c0.2,0.6-0.1,1.2-0.7,1.5c-0.6,0.2-1.3,0-1.5-0.6C83,36.7,83.4,36,84,35.8C84.6,35.5,85.3,35.7,85.5,36.3z"></path>
+    <path fill="#aca730" stroke="#985d4e" d="M86.9,35.3l-6,2.4c-0.4-1.2-1.1-2.4-1.7-3.5c-0.2-0.5,0.3-1.1,0.9-1C82.3,33.8,84.8,34.4,86.9,35.3z"></path>
+    <path fill="#aca730" stroke="#985d4e" d="M87.1,35.3l6-2.4c-0.6-1.7-1.5-3.3-2.3-4.9c-0.3-0.7-1.2-0.6-1.4,0.1C88.8,30.6,88.2,33,87.1,35.3z"></path>
+    <path fill="#e0dcb8" stroke="#985d4e" d="M82.8,50.1c0-3.4-0.5-6.8-1.6-10c-0.2-0.8-0.4-1.5-0.3-2.3c0.1-0.8,0.4-1.6,0.7-2.4c0.7-1.5,1.9-3.1,3.7-4l0,0 c1.8-0.9,3.7-1.1,5.6-0.3c0.9,0.4,1.7,1,2.4,1.8c0.7,0.8,1.3,1.7,1.7,2.8c1.5,4.6,2.2,9.5,2.3,14.4"></path>
+    <path fill="#aca730" d="M86.3,50.2l0-0.9l-0.1-0.9l-0.1-1.9c0-0.9,0.2-1.7,0.7-2.3c0.5-0.7,1.3-1.2,2.3-1.4l0.3,0 c0.9-0.2,1.9,0,2.6,0.6c0.7,0.5,1.3,1.4,1.4,2.4l0.2,2.2l0.1,1.1l0,1.1"></path>
+    <path fill="#4f563b" d="M93.2,34.6c0.1,0.4-0.3,0.8-0.9,1c-0.6,0.2-1.2,0.1-1.4-0.2c-0.1-0.3,0.3-0.8,0.9-1 C92.4,34.2,93,34.3,93.2,34.6z"></path>
+    <path fill="#4f563b" d="M81.9,38.7c0.1,0.3,0.7,0.3,1.3,0.1c0.6-0.2,1-0.6,0.9-0.9c-0.1-0.3-0.7-0.3-1.3-0.1 C82.2,38,81.8,38.4,81.9,38.7z"></path>
+    <path fill="#985d4e" d="M88.5,36.8c0.1,0.3-0.2,0.7-0.6,0.8c-0.5,0.2-0.9,0-1.1-0.3c-0.1-0.3,0.2-0.7,0.6-0.8C87.9,36.3,88.4,36.4,88.5,36.8z"></path>
+    <path stroke="#985d4e" d="M85.9,38.9c0.2,0.6,0.8,0.9,1.4,0.7c0.6-0.2,0.9-0.9,0.6-2.1c0.3,1.2,1,1.7,1.6,1.5c0.6-0.2,0.9-0.8,0.8-1.4"></path>
+    <path fill="#e0dcb8" stroke="#985d4e" d="M86.8,42.3l0.4,2.2c0.1,0.4,0.1,0.7,0.2,1.1l0.1,1.1c0.1,1.2-0.9,2.3-2.2,2.3c-1.3,0-2.5-0.8-2.5-1.9l-0.1-1 c0-0.3-0.1-0.6-0.2-1l-0.3-1.9"></path>
+    <path fill="#e0dcb8" stroke="#985d4e" d="M96.2,40.3l0.5,2.7c0.1,0.5,0.2,0.9,0.2,1.4l0.1,1.4c0.1,1.5-0.9,2.8-2.2,2.9h0c-1.3,0-2.5-1.1-2.6-2.4 L92.1,45c0-0.4-0.1-0.8-0.2-1.2l-0.4-2.5"></path>
+    <path fill="#985d4e" d="M91.1,34.1c0.3,0.7,0,1.4-0.7,1.6c-0.6,0.2-1.3-0.1-1.6-0.7c-0.2-0.6,0-1.4,0.7-1.6C90.1,33.1,90.8,33.5,91.1,34.1z"></path>
+    <path fill="#985d4e" d="M85.5,36.3c0.2,0.6-0.1,1.2-0.7,1.5c-0.6,0.2-1.3,0-1.5-0.6C83,36.7,83.4,36,84,35.8C84.6,35.5,85.3,35.7,85.5,36.3z"></path>
   
   </g>
-  </svg>`
+  </svg></div>`
   const options = {
     method: "GET",
     credentials: "include",
@@ -585,6 +640,7 @@ function createTag(tag) {
 }
 
 function createTaskitem(task) {
+  document.getElementsByClassName("foraddtask")[0].style.height = "fit-content";
   let taskList = document.getElementsByClassName("foraddtask")[0];
   let taskitem = document.createElement('div');
   let checkandtext = document.createElement('div');
@@ -720,6 +776,7 @@ function createCompletedTaskitem(task) {
 }
 
 function createMCVTaskitem(task) {
+  document.getElementsByClassName("foraddtask")[0].style.height = "fit-content";
   let taskList = document.getElementsByClassName("foraddtask")[0];
   let taskitemmcv = document.createElement('div');
   let mcviconandtext = document.createElement('div');
@@ -783,17 +840,35 @@ async function deleteTask(id) {
     body: JSON.stringify(task)
   }
   await fetch(`http://127.0.0.1:3000/task/deleteTask`, options).then(res => res.json()).then(data => console.log(data)).catch(err => console.log(err));
+  let button = [...document.getElementsByClassName("myButton")].filter(button => button.classList.contains("clicked"))[0];
+  console.log(button.id)
+  if (button.id === "Today" || button.id === "All_Tasks") {
 
+    document.getElementById("All_Tasks_cnt").innerText = parseInt(document.getElementById("All_Tasks_cnt").innerText) - 1;
+  } else if (button.id === "Completed") {
+    console.log(document.getElementById("Completed_cnt"))
+    document.getElementById("Completed_cnt").innerText = parseInt(document.getElementById("Completed_cnt").innerText) - 1;
+  } else {
+    changeTodayPage();
+  }
+  let todaytasks = await getTodayTask();
+  let todaybtntext = document.getElementById("Today_cnt")
+  setupButton(todaybtntext, todaytasks.length)
 }
 async function handleCheckboxChange(checkbox) {
+
   if (checkbox.checked) {
     const task = {
       task_id: checkbox.id,
     }
     if (checkbox.status == "incomplete") {
-      task.task_status = "complete";
+      document.getElementById("All_Tasks_cnt").innerText = parseInt(document.getElementById("All_Tasks_cnt").innerText) - 1;
+      document.getElementById("Completed_cnt").innerText = parseInt(document.getElementById("Completed_cnt").innerText) + 1;
+      task.task_status = "completed";
     } else if (checkbox.status == "complete") {
-      task.task_status = "incomplete"
+      document.getElementById("Completed_cnt").innerText = parseInt(document.getElementById("Completed_cnt").innerText) - 1;
+      document.getElementById("All_Tasks_cnt").innerText = parseInt(document.getElementById("All_Tasks_cnt").innerText) + 1;
+      task.task_status = "incompleted"
     }
     const options = {
       method: "POST",
@@ -804,7 +879,7 @@ async function handleCheckboxChange(checkbox) {
       body: JSON.stringify(task),
     }
     try {
-
+      console.log(task)
       const upDateTask = await fetch(`http://127.0.0.1:3000/task/updateTask`, options).then(res => res.json()).catch(err => console.log(err));
       const taskList = document.getElementsByClassName("foraddtask")[0];
       const taskitem = document.getElementById(checkbox.id);
@@ -814,9 +889,10 @@ async function handleCheckboxChange(checkbox) {
     catch (err) {
       console.log(err);
     }
-
+    let todaytasks = await getTodayTask();
+    let todaybtntext = document.getElementById("Today_cnt")
+    setupButton(todaybtntext, todaytasks.length)
   }
-
 }
 
 function addMCVTask(info) {
@@ -906,10 +982,13 @@ function createTask() {
 
   closeCreatetask();
   closeScreenOverlay();
+  document.getElementById("All_Tasks_cnt").innerText = parseInt(document.getElementById("All_Tasks_cnt").innerText) + 1;
+  changeColor(document.getElementById("Today"))
   changeTodayPage();
 }
 
 function renderTasklist(tasks) {
+  document.getElementsByClassName("foraddtask")[0].style.height = "fit-content";
   let taskList = document.getElementsByClassName("foraddtask")[0];
   taskList.innerHTML = "";
   tasks.forEach(task => {
@@ -1393,32 +1472,32 @@ function openDetailtaskOverlay(info) {
     closeScreenOverlay();
     document.body.removeChild(detailtaskbox)
     deleteTask(id)
-    
+
     // const c2 = hexToRgb("#A6E4FF");
 
-      // let sidebarbuttons = [...document.getElementsByClassName("myButton")];
-      // sidebarbuttons.forEach((b) => {
-      //   if (b.style.backgroundColor == c2){
-          
-      //     const secondc = b.childNodes[1];
-      //     const num = secondc.childNodes[0];
-      //     const foradd = document.getElementsByClassName("foraddtask")
-      //     setupButton(num,foradd.length)
-      //   }
+    // let sidebarbuttons = [...document.getElementsByClassName("myButton")];
+    // sidebarbuttons.forEach((b) => {
+    //   if (b.style.backgroundColor == c2){
 
-      // })
+    //     const secondc = b.childNodes[1];
+    //     const num = secondc.childNodes[0];
+    //     const foradd = document.getElementsByClassName("foraddtask")
+    //     setupButton(num,foradd.length)
+    //   }
 
-        //       let todaybtntext = document.getElementById("Today_cnt")
-        //   let allbtntext = document.getElementById("All_Tasks_cnt")
-        //   let combtntext = document.getElementById("Completed_cnt")
-        //   let mcvbtntext = document.getElementById("Mycourseville_cnt")
-        //   setupButton(todaybtntext, todaytasks.length)
-        // setupButton(allbtntext, allTasks.length)
-        // setupButton(mcvbtntext, mcvTask.length)
-        // setupButton(combtntext, completedTasks.length)
-      
+    // })
 
-      
+    //       let todaybtntext = document.getElementById("Today_cnt")
+    //   let allbtntext = document.getElementById("All_Tasks_cnt")
+    //   let combtntext = document.getElementById("Completed_cnt")
+    //   let mcvbtntext = document.getElementById("Mycourseville_cnt")
+    //   setupButton(todaybtntext, todaytasks.length)
+    // setupButton(allbtntext, allTasks.length)
+    // setupButton(mcvbtntext, mcvTask.length)
+    // setupButton(combtntext, completedTasks.length)
+
+
+
 
   }
   let delete_content = document.createElement('p');
@@ -2013,5 +2092,6 @@ function openAddFilterOverlay() {
   buttonContainer.appendChild(addButton);
   container.appendChild(buttonContainer);
   openScreenOverlay();
+
   document.body.appendChild(container);
 }

@@ -886,6 +886,7 @@ input[type="text"]:focus {
   border-radius: 15px;
   border: 0.2vw solid #000000;
   overflow-y: scroll;
+  height: 100%;
 }
 #leftside::-webkit-scrollbar {
   display: none;
@@ -1040,7 +1041,7 @@ input[type="text"]:focus {
   font-family: sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 1.7vw;
+  font-size: 1.3vw;
   line-height: 2vw;
   display: flex;
   justify-content: space-between;
